@@ -1,0 +1,53 @@
+.search-area {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+}
+
+.combobox-input {
+  border: none;
+  width: 95%;
+  height: 48px;
+  padding: 0 0.75rem;
+  font-size: 16px;
+  color: #e7e7eb;
+  background-color: #1e213a;
+  border: 1px solid #616475;
+
+  &::placeholder {
+    color: #e7e7eb;
+  }
+
+  &:focus {
+    outline: 1px solid #e7e7eb;
+  }
+}
+
+.button {
+  width: 86px;
+  height: 48px;
+  margin-right: 320px;
+  background-color: #3c47e9;
+  color: #e7e7eb;
+  border-style: none;
+}
+
+
+#select {
+  width: 100%;
+  height: fit-content;
+  background-color: #1e213a;
+  padding: 0.5rem;
+  font-size: 16px;
+  color: #e7e7eb;
+}
+
+#select li {
+  border-bottom: 1px solid #e7e7eb;
+  padding: 1rem;
+}
+
+#select li:hover {
+  background-color: #1e213a;
+  padding: 1rem;
+}

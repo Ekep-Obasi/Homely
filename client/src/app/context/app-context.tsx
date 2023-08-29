@@ -12,7 +12,7 @@ export default function AppProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [toggleShowMap, setToggleShowMap] = React.useState(false);
+  const [toggleShowMap, setToggleShowMap] = React.useState(true);
   return (
     <AppContext.Provider
       value={{

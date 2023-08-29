@@ -1,5 +1,5 @@
 # Homely 🏠
-[![Homely](https://img.shields.io/badge/Homely-Full-Stack--House--Rental--Application-green)](https://github.com/Ekep-Obasi/homely)
+[![Homely](client/src/app/assets/preview.jpg)](https://github.com/Ekep-Obasi/homely)
 
 ## 💥 Introduction
 

@@ -5,8 +5,11 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
+import { usePathname, useRouter } from "next/navigation";
+import { products } from "../constants/product-card";
 
 interface productProps {
+  id: string;
   image: string;
   address: string;
   location: string;
@@ -19,8 +22,14 @@ interface productProps {
 }
 
 export function ProductCard(props: productProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   return (
-    <Card className="min-w-[325px]">
+    <Card
+      className="min-w-[325px] hover:cursor-pointer scale-100 hover:scale-95 transition-all"
+      onClick={() => router.push(`${pathname}/${props.id}`)}
+    >
       <CardHeader
         className="h-[250px] bg-cover bg-center rounded-t"
         style={{

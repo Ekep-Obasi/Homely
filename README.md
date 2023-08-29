@@ -31,7 +31,7 @@ That's pretty easy. To ensure that you are able to install everything properly, 
 We will first start with setting up the Local Project Environment:
 
 ```sh
-git clone https://github.com/apoorvdwi/Homely.git
+git clone https://github.com/Ekep-Obasi/Homely.git
 cd Homely
 npm run dev:install
 ```

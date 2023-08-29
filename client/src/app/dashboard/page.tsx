@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Tabs,
   TabsContent,
@@ -9,19 +9,18 @@ import {
 } from "../components/ui/tabs";
 import { Switch } from "../components/ui/switch";
 import { Label } from "../components/ui/label";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuItem,
-} from "../components/ui/navigation-menu";
+import ProductTabs from "../components/product-tabs";
+import { ProductCard } from "../components/product-card";
+import { AppContext } from "../context/app-context";
+import { DropDown } from "../components/dropdown";
 
 type Props = {};
 
-const categories = ["All Categories", "Rooms", "Studio", "Apartement"];
+const categories = ["All Categories", "Minimalist", "Classic", "Modern"];
 
 const DashBoardTabs = () => {
+  const { toogleShowMap, setToggleShowMap }: any = useContext(AppContext);
+
   return (
     <Tabs defaultValue={categories[0]} className="w-[1600px] my-2">
       <TabsList className="flex justify-between">
@@ -34,32 +33,25 @@ const DashBoardTabs = () => {
         </div>
 
         <div className="flex space-x-2 items-center relative">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem className="border-none">
-                <NavigationMenuTrigger className="bg-muted border-none text-black">
-                  Quality
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="">
-                  <ul className="grid gap-3 p-6 w-[150px] bg-white">
-                    <li className="row-span-3 hover:bg-muted">Minimalist</li>
-                    <li className="row-span-3 hover:bg-muted">Classic</li>
-                    <li className="row-span-3 hover:bg-muted">Mordern</li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          <DropDown
+            placeholder="House Type"
+            options={["All", "Rooms", "Studios", "Apartements"]}
+            styles="w-[135px] border-none bg-muted focus:ring-0 focus:ring-offset-0"
+          />
           <div className="flex items-center space-x-2">
-            <Switch id="map" />
+            <Switch
+              id="map"
+              checked={toogleShowMap}
+              onClick={() => setToggleShowMap((prev: any) => !prev)}
+            />
             <Label htmlFor="map">Map View</Label>
           </div>
         </div>
       </TabsList>
-      <TabsContent value="All Categories">All Categoried here</TabsContent>
-      <TabsContent value="Rooms">All Rooms Here</TabsContent>
-      <TabsContent value="Studio">All Studios Here</TabsContent>
-      <TabsContent value="Apartement">All Apartements Here</TabsContent>
+      <ProductTabs value="All Categories" list={[]} Component={ProductCard} />
+      <ProductTabs value="Minimalist" list={[]} Component={ProductCard} />
+      <ProductTabs value="Classic" list={[]} Component={ProductCard} />
+      <ProductTabs value="Modern" list={[]} Component={ProductCard} />
     </Tabs>
   );
 };

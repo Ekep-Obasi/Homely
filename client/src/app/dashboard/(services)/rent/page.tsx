@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GoogleMapWrapper from "../../../components/GoogleMap/GoogleMap";
 import { ProductCard } from "../../../components/product-card";
 import { products } from "@/app/constants/product-card";
 import * as Icons from "lucide-react";
@@ -15,8 +14,8 @@ import { Switch } from "@/app/components/ui/switch";
 import { Label } from "@/app/components/ui/label";
 import { DropDown } from "@/app/components/dropdown";
 import { quality, sortQueries } from "../../../constants/product-card";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { AppContext } from "@/app/context/app-context";
+import ProductTabs from "@/app/components/product-tabs";
 type Props = {};
 
 export default function RentPage({}: Props) {
@@ -71,27 +70,15 @@ export default function RentPage({}: Props) {
           </div>
         </TabsList>
 
-        <TabsContent
+        <ProductTabs
           value="All Categories"
-          className="w-full flex py-0 space-x-2 items-center px-2"
-        >
-          <section className="h-[620px] w-full flex gap-x-2 gap-y-4 flex-wrap overflow-y-auto mx-auto justify-center">
-            {products.map((payload, id) => (
-              <ProductCard key={id} {...payload} />
-            ))}
-          </section>
-          {toggleShowMap && (
-            <div className="bg-primary w-full h-full">
-              <GoogleMapWrapper />
-            </div>
-          )}
-        </TabsContent>
+          list={products}
+          Component={ProductCard}
+        />
 
-        <TabsContent value="Rooms">All Rooms Here</TabsContent>
-
-        <TabsContent value="Studio">All Studios Here</TabsContent>
-
-        <TabsContent value="Apartement">All Apartements Here</TabsContent>
+        <ProductTabs value="Rooms" list={[]} Component={ProductCard} />
+        <ProductTabs value="Studio" list={[]} Component={ProductCard} />
+        <ProductTabs value="Apartement" list={[]} Component={ProductCard} />
       </Tabs>
     </div>
   );

@@ -11,7 +11,7 @@ import {
 } from "../components/ui/select";
 
 interface dropDownProps {
-  label: string;
+  label?: string;
   placeholder?: string | React.ReactNode;
   options: string[];
   styles?: string;

@@ -76,4 +76,3 @@ Contributions are welcome! Please open a pull request if you have any improvemen
 ## License
 
 Homely is licensed under the 📝 **MIT License**.
-

@@ -22,15 +22,15 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
     if (token) {
       const user = await VerifyAuthToken(token) as IAuthPayload;
 
-      req.user = user;
+      req.user = user; // set the user on the request stream
 
       next();
     } else {
 
       return res.send('Unable to login user');
     }
+  }else {
+
+    return res.send({ message: "login credentials not valid" });
   }
-
-
-  return res.send({ message: "login credentials not valid" });
 }

@@ -12,6 +12,8 @@ export interface ICreateUserTypes {
   phone?: string;
   adress?: string;
   avatar?: string;
+  properties: string;
+  location: any;
 }
 
 export interface ILoginUserTypes {
@@ -43,4 +45,10 @@ export interface IUserPayload {
     enum: ['client', 'property-owner'],
     default: 'client'
   }
+}
+
+export interface IEditUserTypes {
+  first_name: string;
+  last_name: string;
+  address: string;
 }

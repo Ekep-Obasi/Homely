@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ICreateUserTypes, ILoginUserTypes } from "../dto";
+import { ICreateUserTypes, IEditUserTypes, ILoginUserTypes } from "../dto";
 import { User } from "../models";
 import { SignAuthToken, ValidatePassword } from "../utility";
 
@@ -7,7 +7,7 @@ import { SignAuthToken, ValidatePassword } from "../utility";
 
 export async function CreateUser(req: Request, res: Response, next: NextFunction) {
 
-  const { first_name, last_name, email, password } = <ICreateUserTypes>req.body;
+  const { first_name, last_name, email, password, ...rest } = <ICreateUserTypes>req.body;
 
   // check for existing user
   const existingUser = await User.findByEmail(email);
@@ -15,13 +15,13 @@ export async function CreateUser(req: Request, res: Response, next: NextFunction
   if (existingUser !== null) return res.send({ message: "user already exits with this email" });
 
   try {
-    const user = await User.create({ first_name, last_name, email, password });
+    const user = await User.create({ first_name, last_name, email, password, ...rest });
 
     res.send(user);
 
   } catch (err) {
 
-    res.send({ message: "An error occured" });
+    res.send({ message: "An error occured in creating user" });
   }
 }
 
@@ -34,7 +34,7 @@ export async function GetAllUsers(req: Request, res: Response, next: NextFunctio
     return res.send(users);
   } catch (err) {
 
-    return res.send({ message: "An error occured" });
+    return res.send({ message: "An error occured in all users" });
   }
 }
 
@@ -46,7 +46,7 @@ export async function GetUserID(req: Request, res: Response, next: NextFunction)
 
     return res.send(user);
   } catch (err) {
-    res.send({ message: "An error occured" });
+    res.send({ message: "An error occured in id" });
   }
 }
 
@@ -64,7 +64,7 @@ export async function UserLogin(req: Request, res: Response, next: NextFunction)
       const isValidPassword = await ValidatePassword(password, existingUser.password, existingUser.salt);
 
       if (isValidPassword) {
-        
+
         const token = SignAuthToken({
           password: existingUser.password,
           email: existingUser.email,
@@ -82,7 +82,47 @@ export async function UserLogin(req: Request, res: Response, next: NextFunction)
     }
 
   } catch (err) {
-    res.send({ message: "An error occured" })
+    res.send({ message: "An error occured from somewhere" })
+  }
+}
+
+// get user profile 
+
+export async function GetUserProfile(req: Request, res: Response, next: NextFunction) {
+  const user = req.user;
+
+  if (user) {
+    const data = await User.findByEmail(user.email);
+
+    return res.send(data);
   }
 
+  return res.send({ message: "Unable to find user data" });
+}
+
+export async function EditUserProfile(req: Request, res: Response, next: NextFunction) {
+  const user = req.user;
+
+  if (user) {
+
+    try {
+      const fullUserData = await User.findByEmail(user.email);
+
+      const { first_name, last_name, address } = <IEditUserTypes>req.body;
+
+      fullUserData.first_name = first_name;
+      fullUserData.last_name = last_name;
+      fullUserData.address = address;
+
+      const updatedUser = await fullUserData.save();
+
+      res.send(updatedUser);
+    } catch (err) {
+
+      res.send("Internal server error")
+    }
+
+  } else {
+    return res.send('Something went wrong, please try again')
+  }
 }

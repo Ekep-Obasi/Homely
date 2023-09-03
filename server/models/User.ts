@@ -1,7 +1,8 @@
 import mongoose, { Document, Schema, HydratedDocument, Model } from "mongoose";
 import { GenerateSalt, HashPassord } from "../utility";
+import { PropertySchema } from './index'
 
-interface IUser {
+export interface IUser {
   first_name: string;
   last_name: string;
   email: string;
@@ -11,13 +12,15 @@ interface IUser {
   status: string;
   salt: string;
   phone?: string;
-  adress?: string;
+  address?: string;
   avatar?: string;
   role: {
     type: String,
     enum: ['client', 'property-owner'],
     default: 'client'
-  }
+  };
+  properties: any;
+  reviews: string;
 }
 
 type IUserDoc = IUser & Document;
@@ -27,7 +30,7 @@ interface IUserModel extends Model<IUser> {
 }
 
 
-const UserSchema = new Schema<IUser, IUserModel>({
+export const UserSchema = new Schema<IUser, IUserModel>({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -37,9 +40,10 @@ const UserSchema = new Schema<IUser, IUserModel>({
   status: String,
   salt: String,
   phone: String,
-  adress: String,
+  address: String,
   avatar: String,
   role: String,
+  properties: [PropertySchema]
 }, {
   timestamps: true,
   toJSON: {
@@ -60,21 +64,21 @@ UserSchema.static('findByEmail', function findByEmail(email: string) {
 
 // Middleware to hash password before saving
 
-UserSchema.pre('save', async function(next) {
-  if(this.isModified('password')) {
+UserSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
     try {
       const generatedSalt = await GenerateSalt();
 
       const hashedPassword = await HashPassord(this.password, generatedSalt);
-      
+
       this.password = hashedPassword; // save hashed Password
-      
+
       this.salt = generatedSalt; // save generated salt
 
-    }catch(err) {
+    } catch (err) {
       throw new Error('An error occured while hashing password');
-    }    
-  }else {
+    }
+  } else {
     next();
   }
 })

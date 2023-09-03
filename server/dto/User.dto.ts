@@ -19,6 +19,12 @@ export interface ILoginUserTypes {
   password: string;
 }
 
+export interface IAuthPayload {
+  email: string;
+  password: string;
+}
+
+
 export interface IUserPayload {
   _id: string;
   first_name: string;

@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ICreateUserTypes, ILoginUserTypes } from "../dto";
 import { User } from "../models";
-import { ValidatePassword } from "../utility";
-import { SignToken } from "../utility/TokenUtility";
+import { SignAuthToken, ValidatePassword } from "../utility";
 
 // create User
 
@@ -27,6 +26,7 @@ export async function CreateUser(req: Request, res: Response, next: NextFunction
 }
 
 // get all users
+
 export async function GetAllUsers(req: Request, res: Response, next: NextFunction) {
   try {
     const users = await User.find();
@@ -51,6 +51,7 @@ export async function GetUserID(req: Request, res: Response, next: NextFunction)
 }
 
 // login User
+
 export async function UserLogin(req: Request, res: Response, next: NextFunction) {
   const { email, password } = <ILoginUserTypes>req.body;
 
@@ -63,17 +64,16 @@ export async function UserLogin(req: Request, res: Response, next: NextFunction)
       const isValidPassword = await ValidatePassword(password, existingUser.password, existingUser.salt);
 
       if (isValidPassword) {
-        const token = await SignToken({
-          _id: existingUser._id.toString(),
-          first_name: existingUser.first_name,
-          last_name: existingUser.last_name,
+        
+        const token = SignAuthToken({
           password: existingUser.password,
           email: existingUser.email,
         });
 
-        res.send(token);
+        return res.send(token);
       } else {
-        res.send({ message: "email or password is incorrect" });
+
+        return res.send({ message: "email or password is incorrect" });
       }
 
     } else {

@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken';
-import { IUserPayload } from "../dto";
+import dotEnv from 'dotenv';
+import { IAuthPayload } from "../dto";
+dotEnv.config();
 
-const JWT_SECRETE_KEY = process.env.MONGODB_CONNECTION_STRING || "";
+const JWT_SECRETE_KEY = process.env.JWT_SECRETE_KEY || "";
 
-export const SignToken = async (payload: IUserPayload) => {
-  return await jwt.sign(payload, JWT_SECRETE_KEY);
+export const SignAuthToken = (payload: IAuthPayload) => {
+  return jwt.sign(payload, JWT_SECRETE_KEY, { expiresIn: "1d" });
 }
 
-export const VerifyToken = async (token: string) => {
+export const VerifyAuthToken = async (token: string) => {
   return await jwt.verify(token, JWT_SECRETE_KEY);
 }

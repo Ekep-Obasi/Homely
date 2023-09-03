@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 // Property Doc Types
-interface IPropertyDoc extends Document {
+export interface IProperty {
   name: string;
   address: string;
   description: string;
@@ -13,13 +13,15 @@ interface IPropertyDoc extends Document {
   room_count: number;
   bed_count: number;
   bath_count: number;
-  // location: any;
   price: number;
+  location: any;
   // category: any;
   status: string;
 }
 
-const PropertyModel = new Schema<IPropertyDoc>({
+type IPropertyDoc = IProperty & Document; 
+
+export const PropertySchema = new Schema<IPropertyDoc>({
   name: { type: String, required: true },
   address: { type: String, required: true, unique: true },
   description: { type: String, required: true },
@@ -53,4 +55,4 @@ const PropertyModel = new Schema<IPropertyDoc>({
 });
 
 
-export const Property = mongoose.model<IPropertyDoc>('property', PropertyModel);
+export const Property = mongoose.model<IPropertyDoc>('property', PropertySchema);

@@ -1,3 +1,3 @@
-export * from './Property';
-export * from './Location';
-export * from './User';
+export * from "./Property";
+export * from "./User";
+export * from "./Reviews";

@@ -1,29 +1,33 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { UserSchema } from './User';
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IReviews {
-  senderId: string;
-  senderName: string;
+  id?: string;
   message: string;
   likes?: number;
-  sender_info: any;
+  sender_id: string;
+  sender_name: string;
+  sender_avatar: string;
 }
 
 type IReviewsDocs = IReviews & Document;
 
-export const ReviewShema = new Schema<IReviewsDocs>({
-  senderName: { type: String, required: true },
-  message: { types: String, required: true },
-  likes: Number,
-  sender_info: UserSchema
-}, {
-  timestamps: true,
-  toJSON: {
-    transform(doc, ret, options) {
-      delete ret.updatedAt;
-      delete ret.__v;
-    }
+export const ReviewShema = new Schema<IReviewsDocs>(
+  {
+    message: { type: String, required: true },
+    likes: { type: Number, default: 0 },
+    sender_id: { type: String, required: true },
+    sender_name: { type: String, required: true },
+    sender_avatar: { type: String },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret, options) {
+        delete ret.updatedAt;
+        delete ret.__v;
+      },
+    },
   }
-});
+);
 
-export const Review = mongoose.model<IReviewsDocs>('review', ReviewShema)
+export const Review = mongoose.model<IReviewsDocs>("review", ReviewShema);

@@ -1,46 +1,55 @@
 import { Request, Response, NextFunction } from "express";
-import { ICreateUserTypes, IEditUserTypes, ILoginUserTypes } from "../dto";
-import { User } from "../models";
+import {
+  ICreateUserTypes,
+  IEditUserTypes,
+  ILoginUserTypes,
+  IPostReviewsTypes,
+} from "../dto";
+import { Review, User } from "../models";
 import { SignAuthToken, ValidatePassword } from "../utility";
 
-// create User
+/* ------------------------------- SignUp User ------------------------------ */
 
-export async function CreateUser(req: Request, res: Response, next: NextFunction) {
-
-  const { first_name, last_name, email, password, ...rest } = <ICreateUserTypes>req.body;
+export async function CreateUser(req: Request, res: Response) {
+  const { first_name, last_name, email, password } = <ICreateUserTypes>req.body;
 
   // check for existing user
   const existingUser = await User.findByEmail(email);
 
-  if (existingUser !== null) return res.send({ message: "user already exits with this email" });
+  if (existingUser !== null)
+    return res.send({ message: "user already exits with this email" });
 
   try {
-    const user = await User.create({ first_name, last_name, email, password, ...rest });
+    const user = await User.create({
+      first_name,
+      last_name,
+      email,
+      password,
+    });
 
     res.send(user);
-
   } catch (err) {
-
-    res.send({ message: "An error occured in creating user" });
+    res.send({ message: "An error occured in creating user", err: err });
   }
 }
 
-// get all users
+/* ------------------------------ Get All Users ----------------------------- */
 
-export async function GetAllUsers(req: Request, res: Response, next: NextFunction) {
+export async function GetAllUsers(req: Request, res: Response) {
   try {
     const users = await User.find();
 
     return res.send(users);
   } catch (err) {
-
     return res.send({ message: "An error occured in all users" });
   }
 }
 
-// get users by ID
-export async function GetUserID(req: Request, res: Response, next: NextFunction) {
+/* ----------------------------- Get User By Id ----------------------------- */
+
+export async function GetUserID(req: Request, res: Response) {
   const id = req.params.id;
+
   try {
     const user = await User.findById(id);
 
@@ -50,9 +59,9 @@ export async function GetUserID(req: Request, res: Response, next: NextFunction)
   }
 }
 
-// login User
+/* ------------------------------- Login User ------------------------------- */
 
-export async function UserLogin(req: Request, res: Response, next: NextFunction) {
+export async function UserLogin(req: Request, res: Response) {
   const { email, password } = <ILoginUserTypes>req.body;
 
   try {
@@ -61,10 +70,13 @@ export async function UserLogin(req: Request, res: Response, next: NextFunction)
 
     if (existingUser !== null) {
       // compare saved and entered password
-      const isValidPassword = await ValidatePassword(password, existingUser.password, existingUser.salt);
+      const isValidPassword = await ValidatePassword(
+        password,
+        existingUser.password,
+        existingUser.salt
+      );
 
       if (isValidPassword) {
-
         const token = SignAuthToken({
           password: existingUser.password,
           email: existingUser.email,
@@ -72,23 +84,19 @@ export async function UserLogin(req: Request, res: Response, next: NextFunction)
 
         return res.send(token);
       } else {
-
         return res.send({ message: "email or password is incorrect" });
       }
-
     } else {
-
       return res.send({ message: "access forbiden" });
     }
-
   } catch (err) {
-    res.send({ message: "An error occured from somewhere" })
+    res.send({ message: "An error occured from somewhere" });
   }
 }
 
-// get user profile 
+/* ---------------------------- Get User Profile ---------------------------- */
 
-export async function GetUserProfile(req: Request, res: Response, next: NextFunction) {
+export async function GetUserProfile(req: Request, res: Response) {
   const user = req.user;
 
   if (user) {
@@ -100,11 +108,12 @@ export async function GetUserProfile(req: Request, res: Response, next: NextFunc
   return res.send({ message: "Unable to find user data" });
 }
 
-export async function EditUserProfile(req: Request, res: Response, next: NextFunction) {
+/* ---------------------------- Edit User Profile --------------------------- */
+
+export async function EditUserProfile(req: Request, res: Response) {
   const user = req.user;
 
   if (user) {
-
     try {
       const fullUserData = await User.findByEmail(user.email);
 
@@ -118,11 +127,56 @@ export async function EditUserProfile(req: Request, res: Response, next: NextFun
 
       res.send(updatedUser);
     } catch (err) {
-
-      res.send("Internal server error")
+      res.send("Internal server error");
     }
-
   } else {
-    return res.send('Something went wrong, please try again')
+    return res.send("Something went wrong, please try again");
+  }
+}
+
+/* ------------------------- Post Review about User ------------------------- */
+
+export async function PostUserReview(req: Request, res: Response) {
+  const user = req.user;
+
+  const { message } = <IPostReviewsTypes>req.body;
+
+  if (user) {
+    const receiver_id = req.params.id;
+
+    try {
+      const sender = await User.findByEmail(user.email);
+
+      console.log(sender);
+
+      const review = await Review.create({
+        message: message,
+        sender_id: sender._id,
+        sender_name: sender.first_name,
+        sender_avatar: sender.avatar,
+      });
+
+      const receiver = await User.findById(receiver_id);
+
+      // check if receiver exist && prevent a user from posting a review about himself
+
+      if (receiver && receiver._id == sender._id) {
+        receiver.reviews.push(review);
+
+        await receiver.save();
+        res.send(review);
+      } else {
+        return res.send({
+          message:
+            "Reciever does not exist || receiver is trying to post about his profile",
+        });
+      }
+    } catch (err) {
+      
+      return res.send({
+        message: "somethin went wrong when trying to post a review",
+        err: err,
+      });
+    }
   }
 }

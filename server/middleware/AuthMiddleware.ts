@@ -3,7 +3,8 @@ import { IAuthPayload } from "../dto";
 import { VerifyAuthToken } from "../utility";
 
 
-// enable user in the request interface of express
+ /* ------------- Enable user in the request interface of express ------------ */
+
 declare global {
   namespace Express {
     interface Request {
@@ -12,7 +13,9 @@ declare global {
   }
 }
 
-export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+/* ------------------------ Authentication Middleware ----------------------- */
+
+export  async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const authorization = req.get('Authorization');
 
   if (authorization) {

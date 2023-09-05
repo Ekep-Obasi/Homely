@@ -10,10 +10,8 @@ export interface ICreatePropertyTypes {
   bed_count: number;
   bath_count: number;
   price: number;
-  category: {
-    house_type: "Rooms" | "Studio" | "Apartememts";
-    quality: "Minimalist" | "Classic" | "Modern";
-  };
+  house_type: "Rooms" | "Studio" | "Apartememts";
+  quality: "Minimalist" | "Classic" | "Modern";
   status: string;
   country: string;
   city: string;
@@ -28,4 +26,27 @@ export interface IPropertyPost {
   senderId: string;
   message: string;
   likes?: number;
+}
+
+export interface IEditProperty {
+  name: string;
+  description: string;
+  image_list: [string];
+  accomodation_count: number;
+  room_count: number;
+  bed_count: number;
+  bath_count: number;
+  price: number;
+  house_type: "Rooms" | "Studio" | "Apartememts";
+  quality: "Minimalist" | "Classic" | "Modern";
+  status: string;
+}
+
+export interface IGetPropertyQueries {
+  house_type?: "Rooms" | "Studio" | "Apartememts";
+  quality?: "Minimalist" | "Classic" | "Modern";
+  country: string;
+  city: string;
+  region: string;
+  street: string;
 }

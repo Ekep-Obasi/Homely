@@ -14,10 +14,8 @@ export interface IProperty {
   bed_count: number;
   bath_count: number;
   price: number;
-  category: {
-    house_type: "Rooms" | "Studio" | "Apartememts";
-    quality: "Minimalist" | "Classic" | "Modern";
-  };
+  house_type: "Rooms" | "Studio" | "Apartememts";
+  quality: "Minimalist" | "Classic" | "Modern";
   status: string;
   country: string;
   city: string;
@@ -45,15 +43,13 @@ export const PropertySchema = new Schema<IPropertyDoc>(
     bed_count: { type: Number, required: true },
     bath_count: { type: Number, required: true },
     price: { type: Number, required: true },
-    category: {
-      house_type: {
-        type: String,
-        enum: ["Rooms", "Studio", "Apartement"],
-      },
-      quality: {
-        type: String,
-        enum: ["Minimalist", "Classic", "Modern"],
-      },
+    house_type: {
+      type: String,
+      enum: ["Rooms", "Studio", "Apartement"],
+    },
+    quality: {
+      type: String,
+      enum: ["Minimalist", "Classic", "Modern"],
     },
     reviews: { type: [ReviewShema], default: [] },
     status: String,

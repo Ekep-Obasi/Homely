@@ -13,6 +13,7 @@ import ProductTabs from "../components/product-tabs";
 import { ProductCard } from "../components/product-card";
 import { AppContext } from "../context/app-context";
 import { DropDown } from "../components/dropdown";
+import { products } from "../constants/product-card";
 
 type Props = {};
 
@@ -48,7 +49,7 @@ const DashBoardTabs = () => {
           </div>
         </div>
       </TabsList>
-      <ProductTabs value="All Categories" list={[]} Component={ProductCard} />
+      <ProductTabs value="All Categories" list={products} Component={ProductCard} />
       <ProductTabs value="Minimalist" list={[]} Component={ProductCard} />
       <ProductTabs value="Classic" list={[]} Component={ProductCard} />
       <ProductTabs value="Modern" list={[]} Component={ProductCard} />

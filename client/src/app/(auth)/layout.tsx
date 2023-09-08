@@ -8,7 +8,7 @@ type Props = { children: ReactNode };
 
 const AuthLayout = ({ children }: Props) => {
   return (
-    <div className="container min-h-screen flex-col">
+    <div className="container min-h-screen flex-col relative">
       <Link href="/">
         <Image className="mx-auto" src={Logo} alt="logo" height="100" />
       </Link>

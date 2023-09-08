@@ -1,9 +1,6 @@
-import React from 'react'
+import React from "react";
+import LoaderSpinner from "../components/loader-spinner";
 
-type Props = {}
-
-export default function DashBoardLoading({}: Props) {
-  return (
-    <div>loading...</div>
-  )
+export default function LoadingPage() {
+  return <LoaderSpinner />;
 }

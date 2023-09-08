@@ -9,7 +9,7 @@ const getLocation = () => {
     return {
       lat: pos.coords.latitude,
       lng: pos.coords.longitude,
-    };
+    } as { lat: number; lng: number };
   });
 };
 

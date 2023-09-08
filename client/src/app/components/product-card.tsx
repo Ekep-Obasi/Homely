@@ -6,11 +6,12 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
 import { usePathname, useRouter } from "next/navigation";
-import { products } from "../constants/product-card";
+import Carousel, { carouselType } from "./carousel";
+
 
 interface productProps {
   id: string;
-  image: string;
+  image: [string];
   address: string;
   location: string;
   availability: "AVAILABLE" | "NOT AVAILABLE";
@@ -30,20 +31,7 @@ export function ProductCard(props: productProps) {
       className="min-w-[325px] hover:cursor-pointer scale-100 hover:scale-95 transition-all"
       onClick={() => router.push(`${pathname}/${props.id}`)}
     >
-      <CardHeader
-        className="h-[250px] bg-cover bg-center rounded-t"
-        style={{
-          backgroundImage: `url(${props.image})`,
-        }}
-      >
-        <div className="w-full flex justify-between items-center">
-          <Badge className="bg-green h-6">{props.availability}</Badge>
-          <Button variant="ghost" className="rounded px-0 w-[30px] bg-none">
-            <Icons.Heart />
-          </Button>
-        </div>
-      </CardHeader>
-
+      <Carousel image={props.image} type={carouselType.CARD} />
       <CardContent className="py-2 space-y-2">
         <div className="flex text-sm items-center space-x-1">
           <Icons.BadgeCheck className="bg-green" /> <p>verified</p>

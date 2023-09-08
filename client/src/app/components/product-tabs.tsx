@@ -1,10 +1,10 @@
 import React from "react";
 import { TabsContent } from "./ui/tabs";
 import { AppContext } from "../context/app-context";
-import GoogleMapWrapper from "./GoogleMap/GoogleMap";
+import Map from "./googleMap/map";
 
 interface listProps {
-  image: string;
+  image: string[];
   address: string;
   location: string;
   availability: "AVAILABLE" | "NOT AVAILABLE";
@@ -40,7 +40,7 @@ export default function ProductTabs(props: Props) {
       </section>
       {toggleShowMap && (
         <div className="bg-primary w-full h-full">
-          <GoogleMapWrapper />
+          <Map width="100%" height="620px" />
         </div>
       )}
     </TabsContent>

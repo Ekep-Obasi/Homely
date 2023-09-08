@@ -1,1 +1,3 @@
-export * from './PropertyRoute';
+export * from "./PropertyRoute";
+
+export * from "./UserRoute";

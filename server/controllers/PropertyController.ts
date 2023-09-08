@@ -1,17 +1,46 @@
 import { Request, Response } from "express";
-import { ICreatePropertyTypes, IPostReviewsTypes } from "../dto";
+import {
+  ICreatePropertyTypes,
+  IEditProperty,
+  IGetPropertyQueries,
+  IPostReviewsTypes,
+} from "../dto";
 import { IProperty, Property, Review, User } from "../models";
 
 /* ---------------------- Get All Properties Controller --------------------- */
 
-export async function GetAllProperties(req: Request, res: Response) {
+export async function GetAllProperties(
+  req: Request<{}, {}, {}, IGetPropertyQueries>,
+  res: Response
+) {
   const user = req.user;
 
-  if (user) {
-    try {
-      const properties = await Property.find();
+  const query = req.query;
 
-      return res.send(properties);
+  if (user) {
+
+    try {
+
+      // no queries
+
+      const properties = (await Property.find()) as [IProperty];
+
+      if (Object.keys(req.query).length === 0) {
+        return res.send(properties);
+      } else {
+
+        // query
+
+        const filteredProperties = Object.keys(query).flatMap((key) =>
+          properties.filter(
+            (property) =>
+              property[key as keyof IGetPropertyQueries].toLowerCase() ===
+              query[key as keyof IGetPropertyQueries]?.toLowerCase()
+          )
+        );
+
+        res.send(filteredProperties);
+      }
     } catch (err) {
       return res.send({ message: "An error occured" });
     }
@@ -86,7 +115,10 @@ export async function CreateProperty(req: Request, res: Response) {
 
 /* ----------------------------- Delete Property ---------------------------- */
 
-export function DeleteProperty(req: Response, res: Response) {}
+export function DeleteProperty(req: Response, res: Response) {
+
+
+}
 
 /* ----------------------- Post Review for a Property ----------------------- */
 
@@ -136,5 +168,68 @@ export async function PostPropertyReview(req: Request, res: Response) {
     }
   } else {
     return res.send({ message: "Access denied" });
+  }
+}
+
+/* -------------------------- Edit Properties Route ------------------------- */
+
+export async function EditProperties(req: Request, res: Response) {
+  const user = req.user;
+
+  const payload = <IEditProperty>req.body;
+
+  if (user) {
+    const property_id = req.params.id;
+
+    try {
+      const existingProperty = await Property.findById(property_id);
+
+      if (existingProperty) {
+        existingProperty.name = payload.name;
+        existingProperty.description = payload.description;
+        existingProperty.image_list = payload.image_list;
+        existingProperty.accomodation_count = payload.accomodation_count;
+        existingProperty.room_count = payload.room_count;
+        existingProperty.bed_count = payload.bed_count;
+        existingProperty.bath_count = payload.bath_count;
+        existingProperty.price = payload.price;
+        existingProperty.house_type = payload.house_type;
+        existingProperty.quality = payload.quality;
+        existingProperty.status = payload.status;
+
+        const updatedProperty = await existingProperty.save();
+
+        res.send(updatedProperty);
+      }
+    } catch (err) {
+      res.send({ message: "Something went wrong!" });
+    }
+  } else {
+    res.send({ message: "Unauthorised user" });
+  }
+}
+
+/* ------------------------------ Like Property ----------------------------- */
+
+export async function LikeProperty(req: Request, res: Response) {
+  const user = req.user;
+
+  if (user) {
+    const property = await Property.findById(req.params.id);
+
+    if (typeof property?.meta.likes === "number") {
+      let likes = property?.meta?.likes;
+      likes += 1;
+
+      property.meta.likes = likes;
+
+      const updatedProperty = await property.save();
+
+      res.send(updatedProperty);
+    } else {
+      res.send({ message: "This property does not exist" });
+    }
+  } else {
+    res.send({ message: "You must sign up first" });
   }
 }

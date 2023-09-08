@@ -1,4 +1,14 @@
-import { Schema } from "mongoose";
+import { IsEmail, Length } from "class-validator";
+
+export class CreateUserInputs {
+
+  @IsEmail() email: string;
+
+  @Length(7, 12) phone: string;
+
+  @Length(9, 12) password: string;
+  
+}
 
 export interface ICreateUserTypes {
   first_name: string;

@@ -76,7 +76,7 @@ export default function RentPage({}: Props) {
           Component={ProductCard}
         />
 
-        <ProductTabs value="Rooms" list={[]} Component={ProductCard} />
+        <ProductTabs value="Rooms" list={[]} Component={products} />
         <ProductTabs value="Studio" list={[]} Component={ProductCard} />
         <ProductTabs value="Apartement" list={[]} Component={ProductCard} />
       </Tabs>

@@ -11,7 +11,7 @@ interface Props {
 export default function DashBoardLayout({ children }: Props) {
   return (
     <>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="light">
         <DashBoardMenu />
         {children}
         <Footer />

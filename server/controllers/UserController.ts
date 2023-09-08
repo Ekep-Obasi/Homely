@@ -1,5 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { validate } from "class-validator";
+import { plainToClass } from "class-transformer";
+import { Request, Response, NextFunction, request, response } from "express";
 import {
+  CreateUserInputs,
   ICreateUserTypes,
   IEditUserTypes,
   ILoginUserTypes,
@@ -7,6 +10,29 @@ import {
 } from "../dto";
 import { Review, User } from "../models";
 import { SignAuthToken, ValidatePassword } from "../utility";
+
+/* -------------------------- Create User with OTP -------------------------- */
+
+export default async function SignUpUser(req: Request, res: Response) {
+  const userInputs = plainToClass(CreateUserInputs, req.body);
+
+  const inputErrors = await validate(userInputs, {
+    validationError: { target: true },
+  });
+
+  if (inputErrors.length > 0) {
+    res.status(400).send(inputErrors);
+  }
+
+  const {email, password, phone} = userInputs;  
+
+  // const user = await User.create({
+  //   first_name,
+  //   last_name,
+  //   email,
+  //   password,
+  // });
+}
 
 /* ------------------------------- SignUp User ------------------------------ */
 
@@ -172,7 +198,6 @@ export async function PostUserReview(req: Request, res: Response) {
         });
       }
     } catch (err) {
-      
       return res.send({
         message: "somethin went wrong when trying to post a review",
         err: err,

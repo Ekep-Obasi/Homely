@@ -39,8 +39,6 @@ Now we will add the environment variables in the client/ and server/
 
  - Create a .env file in both client and server folder according to .example.env given in both the folders respectively.
 
- - For creating and adding GOOGLE_CONFIG_BASE64 in server, checkout this [link](https://newbedev.com/deploying-firebase-app-with-service-account-to-heroku-environment-variables-with-dotenv)
-
 Once you run the Commands and get environment variables and everything fine, we are all set to run the app ✔️
 
 On the root level run the following command:
@@ -62,7 +60,7 @@ The app will be available at 🔗 **http://localhost:3000**.
 * 🎉 **Interactive dashboard**
 * 🗺️ **Amazing map**
 * 💬 **Minimal chat section**
-* 🗄️ **PostgreSQL and MongoDB for data storage**
+* 🗄️ **MongoDB for data storage**
 
 ## Tech Stack
 

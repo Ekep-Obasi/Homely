@@ -22,12 +22,23 @@ import {
   CardContent,
   Card,
 } from "../ui/card";
+
+import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/app/validator/auth";
 import Link from "next/link";
-import { Facebook } from "lucide-react";
+import { MdOutlineFacebook } from "react-icons/md";
+import { loginUser } from "@/app/api/auth";
+import { useApp } from "@/app/context/app-context";
+import { useToast } from "@/app/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
+import { FcGoogle } from "react-icons/fc";
+import { LOCAL_STORAGE } from "@/app/services/storage";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof LoginSchema>;
+  const { loading, setLoading, setUser } = useApp();
+  const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<InputProps>({
     resolver: zodResolver(LoginSchema),
@@ -37,12 +48,33 @@ const LoginForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
-    alert(JSON.stringify(values, null, 4));
+  async function onSubmit(values: z.infer<typeof LoginSchema>) {
+    try {
+      setLoading(true);
+      const res = await loginUser(values);
+      if (res.data.token) {
+        setUser(res.data);
+        LOCAL_STORAGE.set("token", res.data.token);
+        router.push("/dashboard");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: res.data.message,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        setLoading(false);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      return;
+    }
   }
 
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-w-[350px]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Welcome Back!</CardDescription>
@@ -85,7 +117,9 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <Button className="my-3 w-full">Login</Button>
+            <Button className="my-3 w-full" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
             <div
               className="mx-auto my-3 flex w-full items-center justify-evenly
             before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400
@@ -94,17 +128,24 @@ const LoginForm = () => {
               or
             </div>
             <div className="flex gap-2">
-              <Button className="w-full">
-                <i className="fa fa-google" aria-hidden="true"></i>
-                Sign Up with Google
+              <Button
+                variant="outline"
+                className="w-full flex space-x-1 items-center"
+              >
+                <FcGoogle size={18} />
+                <span>Google</span>
               </Button>
 
-              <Button className="w-full">
-                <Facebook /> Sign Up with Facebook
+              <Button
+                variant="outline"
+                className="w-full flex space-x-1 items-center"
+              >
+                <MdOutlineFacebook size={18} />
+                <span>facebook</span>
               </Button>
             </div>
             <div className="w-full text-left text-sm">
-              I don&apos;t have an account &nbsp;
+              Do you have an account? &nbsp;
               <Link href="/signup" className=" text-blue-400 hover:underline">
                 sign up
               </Link>

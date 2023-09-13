@@ -17,6 +17,7 @@ import Image from "next/image";
 import { Bell } from "lucide-react";
 import { Search } from "./search";
 import { usePathname } from "next/navigation";
+import { useApp } from "../context/app-context";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -53,6 +54,7 @@ const components: { title: string; href: string; description: string }[] = [
 export function DashBoardMenu() {
   const urlRef = React.useRef<string>("");
   const pathname = usePathname();
+  const { user } = useApp();
 
   console.log(pathname);
 
@@ -78,7 +80,7 @@ export function DashBoardMenu() {
           </NavigationMenuItem>
           <NavigationMenuItem className="flex justify-center items-center">
             <Button variant="ghost" className="text-white">
-              Ekep-Obasi
+              {user?.first_name}
             </Button>
           </NavigationMenuItem>
         </div>

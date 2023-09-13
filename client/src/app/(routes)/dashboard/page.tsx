@@ -6,14 +6,14 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../components/ui/tabs";
-import { Switch } from "../components/ui/switch";
-import { Label } from "../components/ui/label";
-import ProductTabs from "../components/product-tabs";
-import { ProductCard } from "../components/product-card";
-import { AppContext } from "../context/app-context";
-import { DropDown } from "../components/dropdown";
-import { products } from "../constants/product-card";
+} from "../../components/ui/tabs";
+import { Switch } from "../../components/ui/switch";
+import { Label } from "../../components/ui/label";
+import ProductTabs from "../../components/product-tabs";
+import { ProductCard } from "../../components/product-card";
+import { AppContext } from "../../context/app-context";
+import { DropDown } from "../../components/dropdown";
+import { products } from "../../constants/product-card";
 
 type Props = {};
 

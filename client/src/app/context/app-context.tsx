@@ -1,46 +1,32 @@
 "use client";
 
-import * as React from "react";
-import { CustomErrorTypes, LocationTypes } from "../../../types";
-import getLocation from "../utils/locations";
+import { useState, createContext, useContext, ReactNode } from "react";
+import { User } from "../types";
 
 interface Props {
-  children: React.ReactNode;
-  props: unknown;
+  children: ReactNode;
 }
 
-const initialState = {};
-
-export const AppContext = React.createContext(initialState);
+// because the initial state is not fully know at this moment
+export const AppContext = createContext<(User & any) | undefined>(undefined);
 
 export function useApp() {
-  return React.useContext<any>(AppContext);
+  return useContext<User & any>(AppContext);
 }
 
-export default function AppProvider({ children, ...props }: Props) {
-  const [error, setError] = React.useState<CustomErrorTypes | null>({
-    showError: false,
-    errorMessage: null,
-  });
-  const [toggleShowMap, setToggleShowMap] = React.useState(true);
-  const [cameraShow, setCameraShow] = React.useState(false);
-  const [location, setLocation] = React.useState<LocationTypes | null>(null);
-
-  React.useLayoutEffect(() => {
-    getLocation().then(({ lat, lng }) =>
-      setLocation({
-        latitude: lat,
-        longitude: lng,
-        address: "",
-      })
-    );
-  }, []);
+export default function AppProvider({ children }: Props) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [toggleShowMap, setToggleShowMap] = useState<boolean>(true);
+  const [cameraShow, setCameraShow] = useState<boolean>(false);
 
   const value = {
+    user,
+    setUser,
+    loading,
+    setLoading,
     toggleShowMap,
     setToggleShowMap,
-    location,
-    setLocation,
     cameraShow,
     setCameraShow,
   };

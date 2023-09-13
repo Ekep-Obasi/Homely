@@ -47,3 +47,8 @@ export interface IEditUserTypes {
   last_name: string;
   address: string;
 }
+
+
+export class IPasswordRecovery {
+ @IsEmail() email: string;
+}

@@ -1,9 +1,6 @@
-import React from 'react'
+import React from "react";
+import LoaderSpinner from "@/app/components/loader-spinner";
 
-type Props = {}
-
-export default function HomePage({}: Props) {
-  return (
-    <div>loading...</div>
-  )
+export default function LoadingPage() {
+  return <LoaderSpinner />;
 }

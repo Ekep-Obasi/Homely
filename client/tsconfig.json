@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboard/profile", "src/app/dashboard/(services)/rent/[id]"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(routes)/dashboard/profile", "src/app/(routes)/dashboard/(services)/rent/[id]"],
   "exclude": ["node_modules"]
 }

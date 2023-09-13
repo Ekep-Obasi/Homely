@@ -18,6 +18,7 @@ export interface IUser {
   role: "client" | "property-owner";
   properties: any;
   reviews: any;
+  token: string;
 }
 
 type IUserDoc = IUser & Document;
@@ -45,10 +46,12 @@ export const UserSchema = new Schema<IUser, IUserModel>(
       enum: ["client", "property-owner"],
       default: "client",
     },
-    properties: { type: [PropertySchema] },
+    properties: { type: [PropertySchema], default: [] },
     reviews: {
       type: [ReviewShema],
+      default: [],
     },
+    token: { type: String, default: "" },
   },
   {
     timestamps: true,
@@ -64,7 +67,7 @@ export const UserSchema = new Schema<IUser, IUserModel>(
   }
 );
 
- /* -------------------------- get user by id method ------------------------- */
+/* -------------------------- get user by id method ------------------------- */
 
 UserSchema.static("findByEmail", function findByEmail(email: string) {
   return this.findOne({ email: email });

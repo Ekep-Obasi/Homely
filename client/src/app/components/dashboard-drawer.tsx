@@ -18,6 +18,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
+import { useApp } from "../context/app-context";
+import { generateAcronym } from "../utils";
 
 interface componentProps {
   title: string;
@@ -29,7 +31,7 @@ const components: componentProps[] = [
   {
     title: "Your Profile",
     icon: <Icons.User2 />,
-    href: "/profile",
+    href: "dashboard/profile",
   },
   {
     title: "Your Properties",
@@ -72,13 +74,14 @@ const anotherComponent: componentProps[] = [
 export function DashboardDrawer() {
   const linkStyles = `w-full group inline-flex h-10 items-center justify-start space-x-3 rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`;
   const pathname = usePathname();
+  const { user } = useApp();
 
   return (
     <Sheet>
       <SheetTrigger>
         <Avatar>
           <AvatarImage src="https://github.com/shadcn\.png" alt="@shadcn" />
-          <AvatarFallback>EO</AvatarFallback>
+          <AvatarFallback>{generateAcronym(user?.first_name)}</AvatarFallback>
         </Avatar>
       </SheetTrigger>
       <SheetContent side="right">
@@ -86,9 +89,11 @@ export function DashboardDrawer() {
           <SheetTitle className="flex space-x-2 items-center">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn\.png" alt="@shadcn" />
-              <AvatarFallback>EO</AvatarFallback>
+              <AvatarFallback>
+                {generateAcronym(user?.first_name)}
+              </AvatarFallback>
             </Avatar>
-            <p>Ekep-Obasi</p>
+            <p>{user?.first_name}</p>
           </SheetTitle>
         </SheetHeader>
 

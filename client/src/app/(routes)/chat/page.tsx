@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { chats } from "../constants/chats";
-import { ChatTab } from "../components/chat-tabs";
+import { Tabs, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import { chats } from "../../constants/chats";
+import { ChatTab } from "../../components/chat-tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
-import { Separator } from "../components/ui/separator";
-import ChatTabHeader from "../components/chat-tabs-header";
-import GeneralChat from "../components/general-chat-section";
+import { Separator } from "../../components/ui/separator";
+import ChatTabHeader from "../../components/chat-tabs-header";
+import GeneralChat from "../../components/general-chat-section";
 
 export default function ChatPage() {
   return (

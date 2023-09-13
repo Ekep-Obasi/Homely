@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Logo from "../assets/logo1.png";
+import Logo from "../../assets/logo1.png";
 import Link from "next/link";
 import React, { ReactNode } from "react";
-import AuthFooter from "../components/auth-footer";
+import AuthFooter from "../../components/auth-footer";
 
 type Props = { children: ReactNode };
 

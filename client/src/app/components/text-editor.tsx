@@ -3,15 +3,15 @@ import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-export default function Index() {
+export default function Index(props: any) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [text, setText] = useState();
 
-  const onEditorStateChange = function (editorState) {
+  const onEditorStateChange = function (editorState: any) {
     setEditorState(editorState);
     const { blocks } = convertToRaw(editorState.getCurrentContent());
     let text = editorState.getCurrentContent().getPlainText("\u0001");
-    setText(text);
+    props.onChange(text);
   };
 
   return (

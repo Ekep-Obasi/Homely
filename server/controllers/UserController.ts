@@ -1,15 +1,20 @@
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
-import { Request, Response, NextFunction, request, response } from "express";
+import { Request, Response } from "express";
+import ejs from "ejs";
+import path from "path";
 import {
   CreateUserInputs,
   ICreateUserTypes,
   IEditUserTypes,
   ILoginUserTypes,
   IPostReviewsTypes,
+  IPasswordRecovery,
 } from "../dto";
 import { Review, User } from "../models";
 import { SignAuthToken, ValidatePassword } from "../utility";
+import sgMail from "@sendgrid/mail";
+import { SENDGRID_API_KEY } from "../constant";
 
 /* -------------------------- Create User with OTP -------------------------- */
 
@@ -24,7 +29,7 @@ export default async function SignUpUser(req: Request, res: Response) {
     res.status(400).send(inputErrors);
   }
 
-  const {email, password, phone} = userInputs;  
+  const { email, password, phone } = userInputs;
 
   // const user = await User.create({
   //   first_name,
@@ -38,6 +43,8 @@ export default async function SignUpUser(req: Request, res: Response) {
 
 export async function CreateUser(req: Request, res: Response) {
   const { first_name, last_name, email, password } = <ICreateUserTypes>req.body;
+
+  console.log(req.body);
 
   // check for existing user
   const existingUser = await User.findByEmail(email);
@@ -90,6 +97,8 @@ export async function GetUserID(req: Request, res: Response) {
 export async function UserLogin(req: Request, res: Response) {
   const { email, password } = <ILoginUserTypes>req.body;
 
+  console.log(req.body);
+
   try {
     // check if user exists in database
     const existingUser = await User.findByEmail(email);
@@ -108,7 +117,11 @@ export async function UserLogin(req: Request, res: Response) {
           email: existingUser.email,
         });
 
-        return res.send(token);
+        existingUser.token = token;
+
+        const user = await existingUser.save();
+
+        return res.send(user);
       } else {
         return res.send({ message: "email or password is incorrect" });
       }
@@ -203,5 +216,94 @@ export async function PostUserReview(req: Request, res: Response) {
         err: err,
       });
     }
+  }
+}
+
+/* ---------------------------- Recover Password ---------------------------- */
+
+export async function RecoverPassword(req: Request, res: Response) {
+  const userInputs = plainToClass(IPasswordRecovery, req.body);
+
+  const inputErrors = await validate(userInputs, {
+    validationError: { target: true },
+  });
+
+  if (inputErrors.length > 0) {
+    res.status(400).send(inputErrors);
+  }
+
+  const { email } = userInputs;
+
+  try {
+    const user = await User.findByEmail(email);
+
+    if (user === null) {
+      res.status(404).send({ message: "user not found!" });
+    }
+
+    ejs
+      .renderFile(
+        path.join(__dirname, "../", "views/password-recovery-email.ejs"),
+        {
+          id: user._id.toString(),
+          time: `${new Date().toLocaleTimeString()} ${new Date().toDateString()}`,
+          email: user.email,
+        }
+      )
+      .then((emailTemplate) => {
+
+        // Create a new email message
+        const message = {
+          to: email,
+          from: "contact@aasalesimpex.com",
+          subject: "Reset Password",
+          html: emailTemplate,
+        };
+
+        // Send the email message
+        sgMail.setApiKey(SENDGRID_API_KEY);
+
+        sgMail
+          .send(message)
+          .then(() => {
+            return res
+              .status(200)
+              .send({ message: "email sent succesfully!" });
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  } catch (err) {
+    res.status(404).send({ message: "email not found!" });
+  }
+}
+
+/* ----------------------------- Reset Password ----------------------------- */
+
+export async function ResetPassword(req: Request, res: Response) {
+  const { password } = <ILoginUserTypes>req.body;
+  const user_id = req.params.id;
+
+  // verify if a user exists
+  try {
+    const existingUser = await User.findById(user_id);
+
+    if (existingUser !== null) {
+      existingUser.password = password;
+
+      try {
+        const user = await existingUser.save();
+
+        res.status(200).send(user);
+      } catch (err) {
+        res.status(500).send({ message: "Internal Server Error!" });
+      }
+    }
+  } catch (err) {
+    res.status(500).send({ message: "no such user with this email!" });
   }
 }

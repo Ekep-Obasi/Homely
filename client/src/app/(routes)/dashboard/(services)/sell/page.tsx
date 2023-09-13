@@ -2,10 +2,6 @@ import * as Icons from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 
@@ -15,7 +11,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/app/components/ui/tabs";
-
 import React from "react";
 import CreatePropertyForm from "@/app/components/forms/createPropertyForm";
 import PeopleDataTable from "./data-table";
@@ -57,15 +52,7 @@ const CreateProperty = () => {
           <Icons.Plus /> <span>Add Listing</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create A Property</DialogTitle>
-          <DialogDescription>
-            This information will be viewed by all users on this platform
-            <CreatePropertyForm />
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
+      <CreatePropertyForm />
     </Dialog>
   );
 };

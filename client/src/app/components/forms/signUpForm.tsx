@@ -2,7 +2,6 @@
 
 import React from "react";
 import * as z from "zod";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -24,14 +23,24 @@ import {
 import { registrationSchema } from "@/app/validator/auth";
 import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
+import { signUpUser } from "@/app/api/auth";
+import { useRouter } from "next/navigation";
+import { useApp } from "@/app/context/app-context";
+import { useToast } from "@/app/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
 
 const SignUpForm = () => {
+  const { loading, setLoading, setUser } = useApp();
   type InputProps = z.infer<typeof registrationSchema>;
+  const router = useRouter();
+  const {toast} = useToast();
 
   const form = useForm<InputProps>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      username: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       passwordConfirmation: "",
@@ -39,12 +48,36 @@ const SignUpForm = () => {
     },
   });
 
-  function onSubmit(values: InputProps) {
-    alert(JSON.stringify(values, null, 4));
+  async function onSubmit({
+    agree,
+    passwordConfirmation,
+    ...data
+  }: InputProps) {
+    try {
+      setLoading(true);
+      const res = await signUpUser(data);
+      if (res.data._id) {
+        setUser(res.data);
+        router.push("/login");
+        setLoading(false);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: res.data.message,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      return;
+    }
   }
 
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-w-[320px]">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Ready to start this journey with us?</CardDescription>
@@ -54,10 +87,23 @@ const SignUpForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
               control={form.control}
-              name="username"
+              name="first_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username:</FormLabel>
+                  <FormLabel>First Name:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your fullname" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name:</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your fullname" {...field} />
                   </FormControl>
@@ -132,7 +178,9 @@ const SignUpForm = () => {
                 );
               }}
             />
-            <Button className="my-3 w-full">Sign Up</Button>
+            <Button className="my-3 w-full" disabled={loading}>
+              {loading ? "You will be signed in soon..." : "Sign Up"}
+            </Button>
             <p className="text-sm">
               Already Have An account?
               <Link

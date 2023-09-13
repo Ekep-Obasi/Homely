@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ProductCard } from "../../../components/product-card";
+import { ProductCard } from "../../../../components/product-card";
 import { products } from "@/app/constants/product-card";
 import * as Icons from "lucide-react";
 import {
@@ -13,7 +13,7 @@ import {
 import { Switch } from "@/app/components/ui/switch";
 import { Label } from "@/app/components/ui/label";
 import { DropDown } from "@/app/components/dropdown";
-import { quality, sortQueries } from "../../../constants/product-card";
+import { quality, sortQueries } from "../../../../constants/product-card";
 import { AppContext } from "@/app/context/app-context";
 import ProductTabs from "@/app/components/product-tabs";
 type Props = {};

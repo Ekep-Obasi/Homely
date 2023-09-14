@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -33,45 +33,58 @@ import {
 } from "@/app/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/app/components/ui/calendar";
-import { generateAcronym, getUserEntries } from "@/app/utils";
+import { generateAcronym, getUserEntries, setFormData } from "@/app/utils";
+import { updateUser } from "@/app/api/users";
+import { EditUser } from "@/app/types/user";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof EditProfileSchema>;
   const { loading, setLoading, setUser, user } = useApp();
   const router = useRouter();
   const { toast } = useToast();
-  const param = useParams();
   const defaultValues = getUserEntries(user);
+  const formData = new FormData();
+  const [file, setFile] = useState("");
 
   const form = useForm<InputProps>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues,
   });
 
+  const handleImageChange = (e: any) => {
+    setFile(e.target.files[0]);
+    formData.append("avatar", file);
+  };
+
   async function onSubmit(values: z.infer<typeof EditProfileSchema>) {
     alert(JSON.stringify(values, null, 4));
-    // try {
-    //   setLoading(true);
-    //   const res = await loginUser(values);
-    //   if (res.data.token) {
-    //     setUser(res.data);
-    //     localStorage.saveToken(res.data.token);
-    //     router.push("/dashboard");
-    //   } else {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Uh oh! Something went wrong.",
-    //       description: res.data.message,
-    //       action: <ToastAction altText="Try again">Try again</ToastAction>,
-    //     });
-    //     setLoading(false);
-    //   }
-    //   setLoading(false);
-    // } catch (err) {
-    //   console.error(err);
-    //   setLoading(false);
-    //   return;
-    // }
+
+    setFormData<InputProps>(values, formData);
+
+    try {
+      setLoading(true);
+      const res = await updateUser(formData);
+      if (res.data.status === 200) {
+        setUser(res.data);
+        toast({
+          title: "Success",
+          description: "User updated succesfully!",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: res.data.message,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+        setLoading(false);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      return;
+    }
   }
 
   return (
@@ -88,15 +101,15 @@ const LoginForm = () => {
                 </Avatar>
                 <FormField
                   control={form.control}
-                  name="image"
-                  render={({ field }) => (
+                  name="avatar"
+                  render={() => (
                     <FormItem className="text-transparent z-50 cursor-pointer">
                       <FormControl>
                         <Input
-                          multiple={true}
+                          name="avatar"
                           type="file"
+                          onChange={handleImageChange}
                           className="absolute h-[40px] w-[40px] flex justify-center items-center rounded-full p-0 right-0 top-2/3 bg-primary text-primary"
-                          {...field}
                         />
                       </FormControl>
                       <FormMessage />

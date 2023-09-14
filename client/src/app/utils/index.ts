@@ -16,9 +16,13 @@ type UserKeyType = keyof User;
 
 export function getUserEntries(user: User) {
   return Object.keys(user)
-      .filter((entries) => user[entries as UserKeyType] !== "")
-      .reduce(
-        (acc, curr) => ({ ...acc, ...{ [curr]: user[curr as UserKeyType] } }),
-        {}
-      )
+    .filter((entries) => user[entries as UserKeyType] !== "")
+    .reduce(
+      (acc, curr) => ({ ...acc, ...{ [curr]: user[curr as UserKeyType] } }),
+      {}
+    );
+}
+
+export function setFormData<T>(obj: T, formData: FormData) {
+  Object.keys(obj).map((val) => formData.append(val, obj[val as keyof T]));
 }

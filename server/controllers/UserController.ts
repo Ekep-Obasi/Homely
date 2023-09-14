@@ -156,20 +156,24 @@ export async function EditUserProfile(req: Request, res: Response) {
     try {
       const fullUserData = await User.findByEmail(user.email);
 
-      const { first_name, last_name, address } = <IEditUserTypes>req.body;
+      console.log(fullUserData);
+
+      const { first_name, last_name } = <IEditUserTypes>req.body;
 
       fullUserData.first_name = first_name;
       fullUserData.last_name = last_name;
-      fullUserData.address = address;
 
       const updatedUser = await fullUserData.save();
 
-      res.send(updatedUser);
+      console.log(updatedUser);
+
+      res.status(200).send(updatedUser);
     } catch (err) {
-      res.send("Internal server error");
+      console.error(err);
+      res.status(500).send("Internal server error");
     }
   } else {
-    return res.send("Something went wrong, please try again");
+    return res.status(500).send("Something went wrong, please try again");
   }
 }
 
@@ -251,7 +255,6 @@ export async function RecoverPassword(req: Request, res: Response) {
         }
       )
       .then((emailTemplate) => {
-
         // Create a new email message
         const message = {
           to: email,
@@ -266,9 +269,7 @@ export async function RecoverPassword(req: Request, res: Response) {
         sgMail
           .send(message)
           .then(() => {
-            return res
-              .status(200)
-              .send({ message: "email sent succesfully!" });
+            return res.status(200).send({ message: "email sent succesfully!" });
           })
           .catch((err) => {
             throw new Error(err);

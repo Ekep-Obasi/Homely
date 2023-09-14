@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { httpClient } from "../config/axios";
-import { ResetPassword, UserLogin, UserSignUp } from "../types";
+import { ResetPassword, UserLogin, UserSignUp } from "../types/user";
 
 export async function signUpUser(
   payload: UserSignUp

@@ -10,10 +10,10 @@ export const EditProfileSchema = z.object({
   phone: z.string().optional(),
   status: z.enum(["client", "other"]).optional(),
   address: z.string().optional(),
-  image: z
+  avatar: z
     .any({ required_error: "image required!" })
     .refine(
-      (file: File) => file && file?.size <= MAX_FILE_SIZE,
+      (file: File) => file && file?.size >= MAX_FILE_SIZE,
       `Max image size is 5KB.`
     )
     .refine(

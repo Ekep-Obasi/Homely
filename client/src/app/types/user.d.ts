@@ -30,3 +30,7 @@ export interface ResetPassword {
   id: string;
   password: string;
 }
+
+export interface EditUser extends User {
+  id: string;
+}

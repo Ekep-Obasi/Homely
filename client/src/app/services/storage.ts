@@ -1,11 +1,17 @@
 class LOCAL_STORAGE {
   static get(key: string) {
     const item = localStorage.getItem(key);
-    return item !== null ? JSON.parse(item) : null;
+    return item !== null
+      ? item.includes("{")
+        ? JSON.parse(item)
+        : item
+      : null;
   }
 
   static set(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value));
+    typeof value === "string"
+      ? localStorage.setItem(key, value)
+      : localStorage.setItem(key, JSON.stringify(value));
   }
 
   static remove(key: string) {

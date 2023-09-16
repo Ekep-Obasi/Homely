@@ -13,3 +13,4 @@ export default async (app: Application) => {
   app.use("/api/v1/user", UserRouter);
   app.use("/api/v1/property", PropertyRouter);
 };
+

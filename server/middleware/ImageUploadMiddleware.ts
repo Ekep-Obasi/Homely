@@ -15,5 +15,5 @@ export const propertyImageListMiddleWare = multer({
 
 
 export const profileImageMiddleWare = multer({ storage: imageStorage }).single(
-  "image"
+  "avatar"
 );

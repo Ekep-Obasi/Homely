@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MdModeEdit } from "react-icons/md";
 import {
   Form,
   FormControl,
@@ -19,11 +18,14 @@ import {
 } from "@/app/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useRouter, useParams } from "next/navigation";
-import Link from "next/link";
 import { useApp } from "@/app/context/app-context";
 import { useToast } from "@/app/hooks/use-toast";
 import { ToastAction } from "@/app/components/ui/toast";
-import { Avatar, AvatarFallback } from "@/app/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
 import { Separator } from "@/app/components/ui/separator";
 import { EditProfileSchema } from "@/app/validator/user";
 import {
@@ -35,16 +37,18 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/app/components/ui/calendar";
 import { generateAcronym, getUserEntries, setFormData } from "@/app/utils";
 import { updateUser } from "@/app/api/users";
-import { EditUser } from "@/app/types/user";
+import { User } from "@/app/types/user";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof EditProfileSchema>;
   const { loading, setLoading, setUser, user } = useApp();
-  const router = useRouter();
+  const formRef = useRef();
   const { toast } = useToast();
   const defaultValues = getUserEntries(user);
   const formData = new FormData();
   const [file, setFile] = useState("");
+  const [editable, setEditable] = useState(true);
+  const [image, setImage] = useState("");
 
   const form = useForm<InputProps>({
     resolver: zodResolver(EditProfileSchema),
@@ -53,13 +57,17 @@ const LoginForm = () => {
 
   const handleImageChange = (e: any) => {
     setFile(e.target.files[0]);
+    setImage(URL.createObjectURL(e.target.file[0]));
+    console.log(file);
     formData.append("avatar", file);
   };
 
   async function onSubmit(values: z.infer<typeof EditProfileSchema>) {
     alert(JSON.stringify(values, null, 4));
 
-    setFormData<InputProps>(values, formData);
+    setFormData<InputProps>({ ...values, ...user, ...defaultValues }, formData);
+
+    console.log(formData);
 
     try {
       setLoading(true);
@@ -73,7 +81,7 @@ const LoginForm = () => {
       } else {
         toast({
           variant: "destructive",
-          title: "Uh oh! Something went wrong.",
+          title: res.data.message,
           description: res.data.message,
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
@@ -85,24 +93,27 @@ const LoginForm = () => {
       setLoading(false);
       return;
     }
+
+    setEditable(false);
   }
 
   return (
-    <div className="w-2/3 p-4 space-y-1 min-w-[350px] mx-auto">
+    <div className="w-2/3 p-4 space-y-1 min-h-full min-w-[350px] mx-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="py-2">
           <div>
             <div className="flex items-center space-x-3 py-2">
               <div className="relative">
                 <Avatar className="h-[120px] w-[120px]">
+                  <AvatarImage src={image} />
                   <AvatarFallback className="text-2xl">
                     {generateAcronym(user?.first_name)}
                   </AvatarFallback>
                 </Avatar>
                 <FormField
-                  control={form.control}
                   name="avatar"
-                  render={() => (
+                  control={form.control}
+                  render={({ field }) => (
                     <FormItem className="text-transparent z-50 cursor-pointer">
                       <FormControl>
                         <Input
@@ -162,6 +173,8 @@ const LoginForm = () => {
                       <Input
                         placeholder="Enter your email"
                         {...field}
+                        className="bg-muted hover:cursor-default"
+                        disabled
                         type="email"
                       />
                     </FormControl>
@@ -172,24 +185,29 @@ const LoginForm = () => {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password:</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    <FormDescription className="w-full text-right text-blue-400 text-sm">
-                      <Link href="/forgot-password" className="hover:underline">
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Password:</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Enter your password"
+                          defaultValue={user?.email}
+                          disabled={editable}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription
+                        className="w-full text-right text-blue-400 text-sm cursor-pointer"
+                        onClick={() => setEditable((prev) => !prev)}
+                      >
                         Edit
-                      </Link>
-                    </FormDescription>
-                  </FormItem>
-                )}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
               <FormField
                 control={form.control}
@@ -256,7 +274,11 @@ const LoginForm = () => {
                   <FormItem>
                     <FormLabel>Address:</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your Address" {...field} />
+                      <Input
+                        placeholder="Enter your Address"
+                        type="text"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -279,7 +301,7 @@ const LoginForm = () => {
           </div>
 
           <Button type="submit" className="my-3 self-end" disabled={loading}>
-            {loading ? "Saving..." : "Save"}
+            {loading ? "Saving..." : "Edit Profile"}
           </Button>
         </form>
       </Form>
@@ -288,3 +310,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+
+// Argument of type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is not assignable to parameter of type 'User'.
+//   Type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is missing the following properties from type 'User': _id, token

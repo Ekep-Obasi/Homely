@@ -1,5 +1,7 @@
 import { AxiosResponse } from "axios";
 import { httpClient } from "../config/axios";
+import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
+import { LOCAL_STORAGE } from "../services/storage";
 import { ResetPassword, UserLogin, UserSignUp } from "../types/user";
 
 export async function signUpUser(
@@ -26,4 +28,7 @@ export async function resetPassword(
   return await httpClient.post(`/user/reset-password/${id}`, password);
 }
 
-export function logout(payload: any) {}
+export function logout() {
+  LOCAL_STORAGE.remove(TOKEN_STORAGE_KEY);
+  LOCAL_STORAGE.remove(USER_STORAGE_KEY);
+}

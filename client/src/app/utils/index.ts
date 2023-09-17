@@ -16,13 +16,25 @@ type UserKeyType = keyof User;
 
 export function getUserEntries(user: User) {
   return Object.keys(user)
-    .filter((entries) => user[entries as UserKeyType] !== "")
+    .filter((key) => user[key as UserKeyType] !== "")
     .reduce(
       (acc, curr) => ({ ...acc, ...{ [curr]: user[curr as UserKeyType] } }),
       {}
     );
 }
 
-export function setFormData<T>(obj: T, formData: FormData) {
-  Object.keys(obj).map((val) => formData.append(val, obj[val as keyof T]));
+export function setFormData<T extends object>(obj: T, formData: FormData) {
+  Object.keys(obj)
+    .filter(
+      (key) =>
+        typeof obj[key as keyof T] === "string" ||
+        obj[key as keyof T] instanceof Blob
+    )
+    .forEach((key) => {
+      const value = obj[key as keyof T];
+
+      if ((typeof value === "string" || value instanceof Blob) && value) {
+        formData.append(key, value);
+      }
+    });
 }

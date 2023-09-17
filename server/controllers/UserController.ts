@@ -121,6 +121,9 @@ export async function UserLogin(req: Request, res: Response) {
 
         const user = await existingUser.save();
 
+        console.clear();
+        console.log(user);
+
         return res.send(user);
       } else {
         return res.send({ message: "email or password is incorrect" });
@@ -152,28 +155,29 @@ export async function GetUserProfile(req: Request, res: Response) {
 export async function EditUserProfile(req: Request, res: Response) {
   const user = req.user;
 
+  const [image] = req.files as [Express.Multer.File];
+
+  const profileImg = image.filename;
+
   if (user) {
     try {
-      const fullUserData = await User.findByEmail(user.email);
+      const existingUser = await User.findByEmail(user.email);
 
-      console.log(fullUserData);
+      const data = <IEditUserTypes>req.body;
 
-      const { first_name, last_name } = <IEditUserTypes>req.body;
+      const updatedUser = await User.findByIdAndUpdate(existingUser._id, data);
 
-      fullUserData.first_name = first_name;
-      fullUserData.last_name = last_name;
-
-      const updatedUser = await fullUserData.save();
-
-      console.log(updatedUser);
+      if(updatedUser === null ) throw new Error('Something went wrong');
+      
 
       res.status(200).send(updatedUser);
     } catch (err) {
-      console.error(err);
-      res.status(500).send("Internal server error");
+
+      res.status(500).send({ message: "Failed to update user" });
     }
   } else {
-    return res.status(500).send("Something went wrong, please try again");
+    
+    return res.status(500).send({ message: "Check your network connection" });
   }
 }
 

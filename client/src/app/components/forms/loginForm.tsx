@@ -33,6 +33,7 @@ import { useToast } from "@/app/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { FcGoogle } from "react-icons/fc";
 import { LOCAL_STORAGE } from "@/app/services/storage";
+import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "@/app/constants";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof LoginSchema>;
@@ -53,8 +54,10 @@ const LoginForm = () => {
       setLoading(true);
       const res = await loginUser(values);
       if (res.data.token) {
+        alert(JSON.stringify(res.data, null, 4));
         setUser(res.data);
-        LOCAL_STORAGE.set("token", res.data.token);
+        LOCAL_STORAGE.set(USER_STORAGE_KEY, res.data);
+        LOCAL_STORAGE.set(TOKEN_STORAGE_KEY, res.data.token);
         router.push("/dashboard");
       } else {
         toast({

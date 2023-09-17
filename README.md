@@ -11,8 +11,7 @@
 [![Map](https://img.shields.io/badge/Map-Amazing-blue)](https://github.com/Ekep-Obasi/homely)
 * 💬 **Minimal chat section** :speech_balloon:
 [![Chat](https://img.shields.io/badge/Chat-Minimal-orange)](https://github.com/Ekep-Obasi/homely)
-* 🗄️ **PostgreSQL and MongoDB for data storage** :database:
-[![Database](https://img.shields.io/badge/Database-PostgreSQL-purple)](https://github.com/Ekep-Obasi/homely)
+* 🗄️ **MongoDB for data storage**
 [![Database](https://img.shields.io/badge/Database-MongoDB-teal)](https://github.com/Ekep-Obasi/homely)
 
 ## Getting Started

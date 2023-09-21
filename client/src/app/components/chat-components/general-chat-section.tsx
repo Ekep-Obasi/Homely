@@ -1,7 +1,7 @@
 import * as React from "react";
-import { chats } from "../constants/chats";
+import { chats } from "../../constants/chats";
 import * as Icons from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Menubar,
   MenubarContent,
@@ -9,9 +9,9 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
-} from "./ui/menu-bar";
+} from "../ui/menu-bar";
 import { KeyBoard } from "./keyboard";
-import KeyBoardProvider from "../context/keyboard-context";
+import KeyBoardProvider from "../../context/keyboard-context";
 
 interface generalChatHeaderProps {
   image: string | undefined;

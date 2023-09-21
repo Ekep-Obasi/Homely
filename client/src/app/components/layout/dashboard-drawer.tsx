@@ -1,4 +1,4 @@
-import { Button } from "../components/ui/button";
+import { Button } from "../ui/button";
 import * as Icons from "lucide-react";
 import {
   Sheet,
@@ -8,18 +8,18 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../components/ui/sheet";
+} from "../ui/sheet";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
-} from "./ui/navigation-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+} from "../ui/navigation-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Separator } from "./ui/separator";
-import { useApp } from "../context/app-context";
-import { generateAcronym } from "../utils";
+import { Separator } from "../ui/separator";
+import { useApp } from "../../context/app-context";
+import { generateAcronym } from "../../utils";
 
 interface componentProps {
   title: string;

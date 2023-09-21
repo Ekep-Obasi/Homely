@@ -32,14 +32,14 @@ export async function AuthMiddleware(
         next();
       } catch (err) {
         
-        return res.send({ message: "token is invalid" });
+        return res.status(404).send({ message: "token is invalid" });
       }
 
       
     } else {
-      return res.send("Unable to login user");
+      return res.status(500).send("Unable to login user");
     }
   } else {
-    return res.send({ message: "login credentials not valid" });
+    return res.status(404).send({ message: "login credentials not valid" });
   }
 }

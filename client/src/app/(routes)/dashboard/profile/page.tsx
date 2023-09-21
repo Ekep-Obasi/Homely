@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/app/components/ui/form";
 import { useForm } from "react-hook-form";
-import { useRouter, useParams } from "next/navigation";
 import { useApp } from "@/app/context/app-context";
 import { useToast } from "@/app/hooks/use-toast";
 import { ToastAction } from "@/app/components/ui/toast";
@@ -35,14 +34,14 @@ import {
 } from "@/app/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/app/components/ui/calendar";
-import { generateAcronym, getUserEntries, setFormData } from "@/app/utils";
+import { generateAcronym, getUserEntries, jsonToFormData } from "@/app/utils";
 import { updateUser } from "@/app/api/users";
-import { User } from "@/app/types/user";
+import { LOCAL_STORAGE } from "@/app/services/storage";
+import { USER_STORAGE_KEY } from "@/app/constants";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof EditProfileSchema>;
   const { loading, setLoading, setUser, user } = useApp();
-  const formRef = useRef();
   const { toast } = useToast();
   const defaultValues = getUserEntries(user);
   const formData = new FormData();
@@ -58,22 +57,21 @@ const LoginForm = () => {
   const handleImageChange = (e: any) => {
     setFile(e.target.files[0]);
     setImage(URL.createObjectURL(e.target.file[0]));
-    console.log(file);
     formData.append("avatar", file);
   };
 
-  async function onSubmit(values: z.infer<typeof EditProfileSchema>) {
+  async function onSubmit({date_of_birth, ...values}: z.infer<typeof EditProfileSchema>) {
     alert(JSON.stringify(values, null, 4));
 
-    setFormData<InputProps>({ ...values, ...user, ...defaultValues }, formData);
-
-    console.log(formData);
+    if(date_of_birth) formData.append('date_of_birth', date_of_birth.toLocaleDateString())
+    jsonToFormData<InputProps>({ ...values }, formData);
 
     try {
       setLoading(true);
       const res = await updateUser(formData);
-      if (res.data.status === 200) {
+      if (res.status === 200) {
         setUser(res.data);
+        LOCAL_STORAGE.set(USER_STORAGE_KEY, res.data);
         toast({
           title: "Success",
           description: "User updated succesfully!",
@@ -89,11 +87,9 @@ const LoginForm = () => {
       }
       setLoading(false);
     } catch (err) {
-      console.error(err);
       setLoading(false);
       return;
     }
-
     setEditable(false);
   }
 
@@ -310,7 +306,6 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
 
 // Argument of type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is not assignable to parameter of type 'User'.
 //   Type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is missing the following properties from type 'User': _id, token

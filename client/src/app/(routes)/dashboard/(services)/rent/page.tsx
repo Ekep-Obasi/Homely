@@ -1,28 +1,24 @@
 "use client";
 
 import React from "react";
-import { ProductCard } from "../../../../components/product-card";
+import { ProductCard } from "../../../../components/cards/product-card";
 import { products } from "@/app/constants/product-card";
 import * as Icons from "lucide-react";
-import {
-  Tabs,
-  TabsTrigger,
-  TabsList,
-  TabsContent,
-} from "@/app/components/ui/tabs";
+import { Tabs, TabsTrigger, TabsList } from "@/app/components/ui/tabs";
 import { Switch } from "@/app/components/ui/switch";
 import { Label } from "@/app/components/ui/label";
 import { DropDown } from "@/app/components/dropdown";
 import { quality, sortQueries } from "../../../../constants/product-card";
-import { AppContext } from "@/app/context/app-context";
-import ProductTabs from "@/app/components/product-tabs";
+import { useApp } from "@/app/context/app-context";
+import ProductTabs from "@/app/components/layout/product-tabs";
+import { categories } from "@/app/constants";
+
 type Props = {};
 
 export default function RentPage({}: Props) {
   const styles = `inline-flex h-10 items-center justify-start space-x-3 rounded-full bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`;
-  const categories = ["All Categories", "Rooms", "Studio", "Apartement"];
-  const { toggleShowMap, setToggleShowMap }: any = React.useContext(AppContext);
 
+  const { toggleShowMap, setToggleShowMap }: any = useApp();
   return (
     <div className="w-full flex-row relative">
       <Tabs defaultValue={categories[0]} className="w-full p-4">
@@ -49,6 +45,7 @@ export default function RentPage({}: Props) {
               placeholder="Quality"
               styles="w-[100px]"
             />
+
             <DropDown
               options={sortQueries}
               label="Sort"

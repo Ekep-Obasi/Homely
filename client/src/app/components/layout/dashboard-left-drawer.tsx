@@ -2,23 +2,23 @@
 
 import React from "react";
 import * as Icons from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../components/ui/sheet";
+} from "../ui/sheet";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
-} from "./ui/navigation-menu";
+} from "../ui/navigation-menu";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 
 interface Component {
   title: string;
@@ -91,7 +91,7 @@ export function DashboardLeftMenu() {
           <SheetTitle>
             <Link href="/">
               <Image
-                src={require("../assets/logo1.png")}
+                src={require("../../assets/logo1.png")}
                 height="75"
                 alt="logo"
               />

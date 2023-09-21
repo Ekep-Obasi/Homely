@@ -7,9 +7,9 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "./ui/menu-bar";
+} from "../ui/menu-bar";
 import Picker from "./emoji-picker";
-import { KeyBoardContext } from "../context/keyboard-context";
+import { KeyBoardContext } from "../../context/keyboard-context";
 
 function AddOptions() {
   return (

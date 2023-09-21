@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TabsContent } from "./ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { TabsContent } from "../ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface chatTabProps {
   _id: string;

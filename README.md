@@ -64,7 +64,7 @@ The app will be available at 🔗 **http://localhost:3000**.
 ## Tech Stack
 
 * ✨ **Frontend:** Next.js, TypeScript, Shadcn UI
-* 🐙 **Backend:** Node.js, Express, Firebase, MongoDB
+* 🐙 **Backend:** Node.js, Express, MongoDB
 
 ## Contribution
 

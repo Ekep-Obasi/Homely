@@ -25,7 +25,7 @@
 
 ## 🛠️ Local development
 
-That's pretty easy. To ensure that you are able to install everything properly, we would recommend you to have <b>Git</b>, <b>NPM</b> and <b>Node.js</b> installed.
+To ensure that you are able to install everything properly, we would recommend you to have <b>Git</b>, <b>NPM</b> and <b>Node.js</b> installed.
 
 We will first start with setting up the Local Project Environment:
 

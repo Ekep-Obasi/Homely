@@ -51,7 +51,7 @@ export function PeopleDataTable<TData, TValue>({
   console.log(rowSelection);
 
   const table = useReactTable({
-    data,
+    data ,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

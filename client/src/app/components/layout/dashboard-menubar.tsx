@@ -2,22 +2,22 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from "../components/ui/navigation-menu";
-import { ModeToggle } from "./mode-toggle";
+} from "../ui/navigation-menu";
+import { ModeToggle } from "../mode-toggle";
 import { DashboardDrawer } from "./dashboard-drawer";
 import { DashboardLeftMenu } from "./dashboard-left-drawer";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Image from "next/image";
 import { Bell } from "lucide-react";
 import { Search } from "./search";
 import { usePathname } from "next/navigation";
-import { useApp } from "../context/app-context";
+import { useApp } from "../../context/app-context";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -72,7 +72,7 @@ export function DashBoardMenu() {
           <NavigationMenuItem className="flex justify-center items-center">
             <Link href="/">
               <Image
-                src={require("../../app/assets/white-logo.png")}
+                src={require("../../assets/white-logo.png")}
                 height="50"
                 alt="homely"
               />

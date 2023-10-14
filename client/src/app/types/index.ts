@@ -1,2 +1,5 @@
 export * from './user';
-export * from './listing';
+export interface Location {
+  latitude: number;
+  longitude: number;
+}

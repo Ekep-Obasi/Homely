@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, HydratedDocument, Model } from "mongoose";
+import mongoose, { Document, Schema, HydratedDocument, Model, CallbackWithoutResultAndOptionalError } from "mongoose";
 import { GenerateSalt, HashPassord } from "../utility";
 import { PropertySchema } from "./index";
 import { ReviewShema } from "./Reviews";
@@ -9,7 +9,7 @@ export interface IUser {
   last_name: string;
   email: string;
   password: string;
-  date_of_birth?: string;
+  date_of_birth?: string | Date;
   status: string;
   salt: string;
   phone?: string;
@@ -35,7 +35,7 @@ export const UserSchema = new Schema<IUser, IUserModel>(
     last_name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    date_of_birth: { type: String, default: "" },
+    date_of_birth: { type: mongoose.Schema.Types.Mixed, default: "" },
     status: { type: String, default: "" },
     salt: { type: String, default: "" },
     phone: { type: String, default: "" },
@@ -75,8 +75,12 @@ UserSchema.static("findByEmail", function findByEmail(email: string) {
 
 /* ---------------- Middleware to hash password before saving --------------- */
 
+
+
+
+
 UserSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
+  if (!this.isModified("password")) {
     try {
       const generatedSalt = await GenerateSalt();
 
@@ -92,5 +96,6 @@ UserSchema.pre("save", async function (next) {
     next();
   }
 });
+
 
 export const User = mongoose.model<IUser, IUserModel>("user", UserSchema);

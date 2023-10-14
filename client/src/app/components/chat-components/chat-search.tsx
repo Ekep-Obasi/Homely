@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Icons from "lucide-react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 export default function ChatSearch() {
   return (

@@ -5,3 +5,5 @@ export const MAX_FILE_SIZE = 5000;
 export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 export const USER_STORAGE_KEY = "user-data";
 export const TOKEN_STORAGE_KEY = "token";
+export const categories = ["All Categories", "Rooms", "Studio", "Apartement"];
+export const LISTING_STORAGE_KEY = "current-listing";

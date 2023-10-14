@@ -76,20 +76,21 @@ function ReadySearchBox({ onSelectAddress, defaultValue }: ISearchBoxProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full flex justify-end bg-opacity-0" asChild>
         <Button aria-expanded={open} className="flex items-center text-white">
+          <span>Search Location</span>
           <Search className="ml-2 h-4 w-4 shrink-0 text-xl opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-1/2 mx-auto p-0">
-        <Command className="">
+        <Command className="border-none">
           <Input
-            className="w-full"
+            className="w-full flex justify-between border-none outline-none ring-0"
             placeholder="Search Places..."
             disabled={!ready}
             onChange={(e: any) => {
               setValue(e.target.value);
             }}
           />
-          <CommandEmpty>No Location found.</CommandEmpty>
+          <CommandEmpty>No Location found!</CommandEmpty>
           <CommandGroup>
             {status === "OK" &&
               data?.map(({ place_id, description }) => (

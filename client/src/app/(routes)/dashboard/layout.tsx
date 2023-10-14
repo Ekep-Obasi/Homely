@@ -1,7 +1,7 @@
 "use client";
 
-import { DashBoardMenu } from "../../components/dashboard-menubar";
-import Footer from "../../components/footer";
+import { DashBoardMenu } from "../../components/layout/dashboard-menubar";
+import Footer from "../../components/layout/footer";
 import { ThemeProvider } from "../../components/theme-provider";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";

@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, createContext, useContext, ReactNode } from "react";
-import { User } from "../types";
+import {
+  useState,
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
+import { Location } from "../types/index";
+import { User } from "../types/user";
 
 interface Props {
   children: ReactNode;
@@ -17,8 +24,22 @@ export function useApp() {
 export default function AppProvider({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [toggleShowMap, setToggleShowMap] = useState<boolean>(true);
+  const [toggleShowMap, setToggleShowMap] = useState<boolean>(false);
   const [cameraShow, setCameraShow] = useState<boolean>(false);
+  const [location, setLocation] = useState<Location | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          setLocation({
+            latitude,
+            longitude,
+          });
+        }
+      );
+    }
+  }, []);
 
   const value = {
     user,
@@ -29,6 +50,8 @@ export default function AppProvider({ children }: Props) {
     setToggleShowMap,
     cameraShow,
     setCameraShow,
+    location, 
+    setLocation
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

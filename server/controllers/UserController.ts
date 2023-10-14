@@ -1,7 +1,7 @@
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
-import ejs from "ejs";
+import ejs from 'ejs';
 import path from "path";
 import {
   CreateUserInputs,
@@ -43,8 +43,6 @@ export default async function SignUpUser(req: Request, res: Response) {
 
 export async function CreateUser(req: Request, res: Response) {
   const { first_name, last_name, email, password } = <ICreateUserTypes>req.body;
-
-  console.log(req.body);
 
   // check for existing user
   const existingUser = await User.findByEmail(email);
@@ -96,8 +94,6 @@ export async function GetUserID(req: Request, res: Response) {
 
 export async function UserLogin(req: Request, res: Response) {
   const { email, password } = <ILoginUserTypes>req.body;
-
-  console.log(req.body);
 
   try {
     // check if user exists in database
@@ -155,9 +151,11 @@ export async function GetUserProfile(req: Request, res: Response) {
 export async function EditUserProfile(req: Request, res: Response) {
   const user = req.user;
 
-  const [image] = req.files as [Express.Multer.File];
+  // const [image] = req.files as [Express.Multer.File];
 
-  const profileImg = image.filename;
+  // const profileImg = image.filename;
+
+  console.log(req.body);
 
   if (user) {
     try {
@@ -168,9 +166,11 @@ export async function EditUserProfile(req: Request, res: Response) {
       const updatedUser = await User.findByIdAndUpdate(existingUser._id, data);
 
       if(updatedUser === null ) throw new Error('Something went wrong');
-      
 
-      res.status(200).send(updatedUser);
+      // called the save method to pass user through hash middleware 
+      const fullUser = await updatedUser.save();
+      
+      res.status(200).send(fullUser);
     } catch (err) {
 
       res.status(500).send({ message: "Failed to update user" });

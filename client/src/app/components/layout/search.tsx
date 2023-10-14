@@ -19,7 +19,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "./ui/command";
+} from "../ui/command";
 
 export function Search() {
   const [open, setOpen] = React.useState(false);

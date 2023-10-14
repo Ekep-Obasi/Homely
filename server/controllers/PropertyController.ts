@@ -18,9 +18,7 @@ export async function GetAllProperties(
   const query = req.query;
 
   if (user) {
-
     try {
-
       // no queries
 
       const properties = (await Property.find()) as [IProperty];
@@ -28,7 +26,6 @@ export async function GetAllProperties(
       if (Object.keys(req.query).length === 0) {
         return res.send(properties);
       } else {
-
         // query
 
         const filteredProperties = Object.keys(query).flatMap((key) =>
@@ -74,17 +71,21 @@ export async function GetPropertyByID(req: Request, res: Response) {
 export async function CreateProperty(req: Request, res: Response) {
   const user = req.user;
 
+  console.log(user);
+
   const files = req.files as [Express.Multer.File];
 
   const images = files.map((file: Express.Multer.File) => file.filename);
 
-  if (user) {
+  if(!user) return res.status(404).send({message: "Access forbidden!"});
+
+  const existingUser = await User.findByEmail(user.email); 
+
+  if (existingUser !== null) {
     const { address, image_list, ...rest } = <ICreatePropertyTypes>req.body;
 
     try {
       const existingProperty = await Property.findOne({ address: address });
-
-      const existingUser = await User.findByEmail(user.email);
 
       // check if the property already exists
 
@@ -103,6 +104,8 @@ export async function CreateProperty(req: Request, res: Response) {
 
         await existingUser.save();
 
+        console.log(property);
+
         return res.send(property);
       }
     } catch (err) {
@@ -115,10 +118,7 @@ export async function CreateProperty(req: Request, res: Response) {
 
 /* ----------------------------- Delete Property ---------------------------- */
 
-export function DeleteProperty(req: Response, res: Response) {
-
-
-}
+export function DeleteProperty(req: Response, res: Response) {}
 
 /* ----------------------- Post Review for a Property ----------------------- */
 
@@ -185,24 +185,12 @@ export async function EditProperties(req: Request, res: Response) {
       const existingProperty = await Property.findById(property_id);
 
       if (existingProperty) {
-        existingProperty.name = payload.name;
-        existingProperty.description = payload.description;
-        existingProperty.image_list = payload.image_list;
-        existingProperty.accomodation_count = payload.accomodation_count;
-        existingProperty.room_count = payload.room_count;
-        existingProperty.bed_count = payload.bed_count;
-        existingProperty.bath_count = payload.bath_count;
-        existingProperty.price = payload.price;
-        existingProperty.house_type = payload.house_type;
-        existingProperty.quality = payload.quality;
-        existingProperty.status = payload.status;
+        const updatedProperty = await Property.findOneAndUpdate(existingProperty._id, payload);
 
-        const updatedProperty = await existingProperty.save();
-
-        res.send(updatedProperty);
+        res.status(200).send(updatedProperty);
       }
     } catch (err) {
-      res.send({ message: "Something went wrong!" });
+      res.status(500).send({ message: "Something went wrong!" });
     }
   } else {
     res.send({ message: "Unauthorised user" });

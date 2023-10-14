@@ -23,7 +23,7 @@ export function getUserEntries(user: User) {
     );
 }
 
-export function setFormData<T extends object>(obj: T, formData: FormData) {
+export function jsonToFormData<T extends object>(obj: T, formData: FormData) {
   Object.keys(obj)
     .filter(
       (key) =>

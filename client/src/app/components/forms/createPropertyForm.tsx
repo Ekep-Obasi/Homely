@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -33,14 +33,21 @@ import { motion } from "framer-motion";
 import { createPropeterySchema } from "@/app/validator/listing";
 import { Progress } from "../ui/progress";
 import Map from "../googleMap/map";
-import { houseQuality, houseType } from "@/app/constants";
-import { Textarea } from "../ui/textarea";
-import TextEditor from '../text-editor';
+import { houseQuality, houseType, LISTING_STORAGE_KEY } from "@/app/constants";
+import TextEditor from "../text-editor";
+import { jsonToFormData } from "@/app/utils";
+import { createListing } from "@/app/api/listing";
+import { LOCAL_STORAGE } from "@/app/services/storage";
+import { toast } from "@/app/hooks/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import { useApp } from "@/app/context/app-context";
 
 const CreateProptertyForm = () => {
   type InputProps = z.infer<typeof createPropeterySchema>;
-  const [formStep, setFormStep] = React.useState(0);
-  const [images, setImages] = React.useState();
+  const [formStep, setFormStep] = useState(0);
+  const [images, setImages] = useState();
+  const formData = new FormData();
+  const { isLoading } = useApp();
 
   const form = useForm<InputProps>({
     resolver: zodResolver(createPropeterySchema),
@@ -48,15 +55,13 @@ const CreateProptertyForm = () => {
       name: "",
       description: "",
       address: "",
-      // email: "",
-      // image: "",
-      bedCount: "1",
-      accomodationCount: "2",
-      roomCount: "2",
-      bathCount: "1",
+      bed_count: "1",
+      accomodation_count: "2",
+      room_count: "2",
+      bath_count: "1",
       price: "10000",
-      houseType: "Room",
-      houseQuality: "Minimal",
+      house_type: "Room",
+      house_quality: "Minimal",
       // country: "",
       // city: "",
       // region: "",
@@ -66,8 +71,28 @@ const CreateProptertyForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof createPropeterySchema>) {
+  async function onSubmit(values: z.infer<typeof createPropeterySchema>) {
     alert(JSON.stringify(values, null, 4));
+    jsonToFormData<InputProps>(values, formData);
+    try {
+      const res = await createListing(formData);
+      if (res.status === 200) {
+        LOCAL_STORAGE.set(LISTING_STORAGE_KEY, res.data);
+        toast({
+          title: "succes",
+          description: "listing created successfully",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: res.data.message,
+          description: res.data.message,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    } catch {
+      return;
+    }
   }
 
   return (
@@ -126,7 +151,7 @@ const CreateProptertyForm = () => {
                       />
                       <FormField
                         control={form.control}
-                        name="houseQuality"
+                        name="house_quality"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>House Quality:</FormLabel>
@@ -153,7 +178,7 @@ const CreateProptertyForm = () => {
                       />
                       <FormField
                         control={form.control}
-                        name="houseType"
+                        name="house_type"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>House Types:</FormLabel>
@@ -191,7 +216,7 @@ const CreateProptertyForm = () => {
                     >
                       <FormField
                         control={form.control}
-                        name="accomodationCount"
+                        name="accomodation_count"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Guest Count:</FormLabel>
@@ -209,7 +234,7 @@ const CreateProptertyForm = () => {
                       />
                       <FormField
                         control={form.control}
-                        name="bedCount"
+                        name="bed_count"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Number of Beds:</FormLabel>
@@ -227,7 +252,7 @@ const CreateProptertyForm = () => {
                       />
                       <FormField
                         control={form.control}
-                        name="roomCount"
+                        name="room_count"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Number of Rooms:</FormLabel>
@@ -245,7 +270,7 @@ const CreateProptertyForm = () => {
                       />
                       <FormField
                         control={form.control}
-                        name="bathCount"
+                        name="bath_count"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Number of Bathrooms:</FormLabel>
@@ -262,7 +287,7 @@ const CreateProptertyForm = () => {
                         )}
                       />
                     </motion.div>
-                    <motion.div
+                    {/* <motion.div
                       className="flex-col space-y-3 translate-x-0"
                       animate={{
                         translateX: `-${formStep * 102}%`,
@@ -283,7 +308,7 @@ const CreateProptertyForm = () => {
                           </FormItem>
                         )}
                       />
-                    </motion.div>
+                    </motion.div> */}
                     <motion.div
                       className="flex-col space-y-3 translate-x-0"
                       animate={{
@@ -398,7 +423,9 @@ const CreateProptertyForm = () => {
                         <Icons.ArrowRight />
                       </Button>
                     ) : (
-                      <Button type="submit">Submit</Button>
+                      <Button type="submit">
+                        {isLoading ? "Creating..." : "Submit"}
+                      </Button>
                     )}
                   </div>
                 </form>

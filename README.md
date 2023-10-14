@@ -11,8 +11,7 @@
 [![Map](https://img.shields.io/badge/Map-Amazing-blue)](https://github.com/Ekep-Obasi/homely)
 * 💬 **Minimal chat section** :speech_balloon:
 [![Chat](https://img.shields.io/badge/Chat-Minimal-orange)](https://github.com/Ekep-Obasi/homely)
-* 🗄️ **PostgreSQL and MongoDB for data storage** :database:
-[![Database](https://img.shields.io/badge/Database-PostgreSQL-purple)](https://github.com/Ekep-Obasi/homely)
+* 🗄️ **MongoDB for data storage**
 [![Database](https://img.shields.io/badge/Database-MongoDB-teal)](https://github.com/Ekep-Obasi/homely)
 
 ## Getting Started
@@ -26,7 +25,7 @@
 
 ## 🛠️ Local development
 
-That's pretty easy. To ensure that you are able to install everything properly, we would recommend you to have <b>Git</b>, <b>NPM</b> and <b>Node.js</b> installed.
+To ensure that you are able to install everything properly, we would recommend you to have <b>Git</b>, <b>NPM</b> and <b>Node.js</b> installed.
 
 We will first start with setting up the Local Project Environment:
 
@@ -38,8 +37,6 @@ npm run dev:install
 Now we will add the environment variables in the client/ and server/
 
  - Create a .env file in both client and server folder according to .example.env given in both the folders respectively.
-
- - For creating and adding GOOGLE_CONFIG_BASE64 in server, checkout this [link](https://newbedev.com/deploying-firebase-app-with-service-account-to-heroku-environment-variables-with-dotenv)
 
 Once you run the Commands and get environment variables and everything fine, we are all set to run the app ✔️
 
@@ -62,12 +59,12 @@ The app will be available at 🔗 **http://localhost:3000**.
 * 🎉 **Interactive dashboard**
 * 🗺️ **Amazing map**
 * 💬 **Minimal chat section**
-* 🗄️ **PostgreSQL and MongoDB for data storage**
+* 🗄️ **MongoDB for data storage**
 
 ## Tech Stack
 
 * ✨ **Frontend:** Next.js, TypeScript, Shadcn UI
-* 🐙 **Backend:** Node.js, Express, Firebase, PostgreSQL, MongoDB
+* 🐙 **Backend:** Node.js, Express, MongoDB
 
 ## Contribution
 

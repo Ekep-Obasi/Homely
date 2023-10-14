@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/app/components/ui/form";
 import { useForm } from "react-hook-form";
+import { useRouter, useParams } from "next/navigation";
 import { useApp } from "@/app/context/app-context";
 import { useToast } from "@/app/hooks/use-toast";
 import { ToastAction } from "@/app/components/ui/toast";
@@ -38,6 +39,7 @@ import { generateAcronym, getUserEntries, jsonToFormData } from "@/app/utils";
 import { updateUser } from "@/app/api/users";
 import { LOCAL_STORAGE } from "@/app/services/storage";
 import { USER_STORAGE_KEY } from "@/app/constants";
+import { User } from "@/app/types/user";
 
 const LoginForm = () => {
   type InputProps = z.infer<typeof EditProfileSchema>;
@@ -90,6 +92,7 @@ const LoginForm = () => {
       setLoading(false);
       return;
     }
+
     setEditable(false);
   }
 
@@ -307,5 +310,3 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-// Argument of type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is not assignable to parameter of type 'User'.
-//   Type '{ first_name?: string | undefined; last_name?: string | undefined; email?: string | undefined; password?: string | undefined; date_of_birth?: Date | undefined; phone?: string | undefined; status?: "client" | ... 1 more ... | undefined; address?: string | undefined; avatar?: any; }' is missing the following properties from type 'User': _id, token

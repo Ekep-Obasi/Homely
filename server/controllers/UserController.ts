@@ -117,6 +117,9 @@ export async function UserLogin(req: Request, res: Response) {
 
         const user = await existingUser.save();
 
+        console.clear();
+        console.log(user);
+
         return res.send(user);
       } else {
         return res.send({ message: "email or password is incorrect" });

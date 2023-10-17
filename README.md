@@ -52,7 +52,7 @@ To lint the code files, run the following command on root level:
 npm run lint
 ```
 
-The app will be available at 🔗 **http://localhost:3000**.
+The app will be available at **http://localhost:3000**.
 
 ## Features
 

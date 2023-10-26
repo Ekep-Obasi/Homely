@@ -76,12 +76,12 @@ export default function Logout() {
   }
 
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
         <CardTitle>Reset Password</CardTitle>
       </CardHeader>
       <CardDescription>
-        Put a password that you can easily remember, make sure that you don't
+        Put a password that you can easily remember, make sure that you don&apos;t
         use your former password
       </CardDescription>
       <CardContent>

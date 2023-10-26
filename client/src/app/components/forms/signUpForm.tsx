@@ -34,7 +34,7 @@ const SignUpForm = () => {
   const { loading, setLoading, setUser } = useApp();
   type InputProps = z.infer<typeof registrationSchema>;
   const router = useRouter();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const form = useForm<InputProps>({
     resolver: zodResolver(registrationSchema),
@@ -77,7 +77,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 min-w-[320px]">
+    <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Ready to start this journey with us?</CardDescription>

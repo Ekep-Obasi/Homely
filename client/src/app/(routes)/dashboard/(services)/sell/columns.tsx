@@ -1,14 +1,7 @@
 "use client";
 import { Button } from "@/app/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Listing } from "@/app/types/listing";
 
 export const columns: ColumnDef<Listing>[] = [
@@ -17,9 +10,9 @@ export const columns: ColumnDef<Listing>[] = [
     cell: ({ row }) => {
       const listing = row.original;
       return (
-       <div className="border p-2 min-h-[120px]" >
-        <img src={listing.image_list[0]} height={100} width={100} alt="something" /> 
-       </div>
+        <div className="border p-2 min-h-[120px] flex justify-center items-center">
+          <img src={listing.image_list[0]} width={120} alt="something" />
+        </div>
       );
     },
     enableSorting: false,

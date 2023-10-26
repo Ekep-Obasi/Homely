@@ -22,9 +22,13 @@ export default function ListingCard(props: Listing) {
         <Separator className="my-2" />
       </div>
       <div className="flex space-x-1 space-y-1 py-3 items-center p-1 text-sm">
-        <span className="text-sm p-1 bg-slate-300 rounded-sm">{props.availability}</span>
+        <span className="text-sm p-1 bg-slate-300 rounded-sm">
+          {props.availability}
+        </span>
         <span>Updated Dec 5</span>
-        <Link href={`/rent/${props.id}`} className="text-blue text-sm">View Listing</Link>
+        <Link href={`/rent/${props.id}`} className="text-blue text-sm">
+          View Listing
+        </Link>
       </div>
       <div className="bg-muted flex flex-col items-center p-1 px-2">
         <span>Last 30 days</span>
@@ -34,15 +38,15 @@ export default function ListingCard(props: Listing) {
             <span>12</span>
           </div>
           <Separator className="my-2" orientation="vertical" />
-            <div className="flex flex-col items-center">
-              <span>Reviews</span>
-              <span>2</span>
-            </div>
-            <Separator className="my-2" orientation="vertical" />
-            <div className="flex flex-col items-center">
-              <span>Applications</span>
-              <span>0</span>
-            </div>
+          <div className="flex flex-col items-center">
+            <span>Reviews</span>
+            <span>2</span>
+          </div>
+          <Separator className="my-2" orientation="vertical" />
+          <div className="flex flex-col items-center">
+            <span>Applications</span>
+            <span>0</span>
+          </div>
         </div>
       </div>
     </Card>

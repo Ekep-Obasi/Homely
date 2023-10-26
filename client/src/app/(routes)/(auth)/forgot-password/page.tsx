@@ -67,13 +67,13 @@ export default function Logout(props: Props) {
   }
 
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
-        <CardTitle>Forgot Password?</CardTitle>
+        <CardTitle className="text-center sm:text-left">Forgot Password?</CardTitle>
       </CardHeader>
-      <CardDescription>
+      <CardDescription className="px-6 text-center sm:text-left">
         A password reset event has been triggered. The password reset window is
-        limited to two hours, Check your email book
+        limited to two hours, Check your email box
       </CardDescription>
       <CardContent>
         <Form {...form}>

@@ -1,5 +1,4 @@
-import mongoose, { Document, Schema, HydratedDocument, Model, CallbackWithoutResultAndOptionalError } from "mongoose";
-import { GenerateSalt, HashPassord } from "../utility";
+import mongoose, { Document, Schema, HydratedDocument, Model } from "mongoose";
 import { PropertySchema } from "./index";
 import { ReviewShema } from "./Reviews";
 
@@ -75,27 +74,22 @@ UserSchema.static("findByEmail", function findByEmail(email: string) {
 
 /* ---------------- Middleware to hash password before saving --------------- */
 
+// UserSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) {
+//     try {
+//       const generatedSalt = await GenerateSalt();
 
+//       const hashedPassword = await HashPassord(this.password, generatedSalt);
 
+//       this.password = hashedPassword; // save hashed Password
 
-
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    try {
-      const generatedSalt = await GenerateSalt();
-
-      const hashedPassword = await HashPassord(this.password, generatedSalt);
-
-      this.password = hashedPassword; // save hashed Password
-
-      this.salt = generatedSalt; // save generated salt
-    } catch (err) {
-      throw new Error("An error occured while hashing password");
-    }
-  } else {
-    next();
-  }
-});
-
+//       this.salt = generatedSalt; // save generated salt
+//     } catch (err) {
+//       throw new Error("An error occured while hashing password");
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export const User = mongoose.model<IUser, IUserModel>("user", UserSchema);

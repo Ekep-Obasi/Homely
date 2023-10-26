@@ -31,11 +31,8 @@ export async function AuthMiddleware(
 
         next();
       } catch (err) {
-        
         return res.status(404).send({ message: "token is invalid" });
       }
-
-      
     } else {
       return res.status(500).send("Unable to login user");
     }

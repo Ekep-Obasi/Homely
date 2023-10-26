@@ -1,7 +1,7 @@
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import { Request, Response } from "express";
-import ejs from 'ejs';
+import ejs from "ejs";
 import path from "path";
 import {
   CreateUserInputs,
@@ -12,7 +12,7 @@ import {
   IPasswordRecovery,
 } from "../dto";
 import { Review, User } from "../models";
-import { SignAuthToken, ValidatePassword } from "../utility";
+import { GenerateSalt, HashPassord, SignAuthToken, ValidatePassword } from "../utility";
 import sgMail from "@sendgrid/mail";
 import { SENDGRID_API_KEY } from "../constant";
 
@@ -51,14 +51,23 @@ export async function CreateUser(req: Request, res: Response) {
     return res.send({ message: "user already exits with this email" });
 
   try {
-    const user = await User.create({
-      first_name,
-      last_name,
-      email,
-      password,
-    });
+    try {
+      const generatedSalt = await GenerateSalt();
 
-    res.send(user);
+      const hashedPassword = await HashPassord(password, generatedSalt);
+
+      const user = await User.create({
+        first_name,
+        last_name,
+        email,
+        password: hashedPassword,
+        salt: generatedSalt
+      });
+
+      res.send(user);
+    } catch (err) {
+      throw new Error("An error occured while hashing password");
+    }
   } catch (err) {
     res.send({ message: "An error occured in creating user", err: err });
   }
@@ -165,18 +174,16 @@ export async function EditUserProfile(req: Request, res: Response) {
 
       const updatedUser = await User.findByIdAndUpdate(existingUser._id, data);
 
-      if(updatedUser === null ) throw new Error('Something went wrong');
+      if (updatedUser === null) throw new Error("Something went wrong");
 
-      // called the save method to pass user through hash middleware 
+      // called the save method to pass user through hash middleware
       const fullUser = await updatedUser.save();
-      
+
       res.status(200).send(fullUser);
     } catch (err) {
-
       res.status(500).send({ message: "Failed to update user" });
     }
   } else {
-    
     return res.status(500).send({ message: "Check your network connection" });
   }
 }
@@ -268,7 +275,7 @@ export async function RecoverPassword(req: Request, res: Response) {
         };
 
         // Send the email message
-        sgMail.setApiKey(SENDGRID_API_KEY);
+        sgMail.setApiKey(SENDGRID_API_KEY as string);
 
         sgMail
           .send(message)

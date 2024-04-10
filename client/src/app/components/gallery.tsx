@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useState } from "react";
+import { useState } from 'react'
 
 interface Props {
-  image: string[];
+  image: string[]
 }
 
 interface ImgBoxProps {
-  image: string;
-  onFullScreen?: () => void;
+  image: string
+  onFullScreen?: () => void
 }
 
 const ImageBox = ({ image, onFullScreen }: ImgBoxProps) => {
@@ -17,18 +17,18 @@ const ImageBox = ({ image, onFullScreen }: ImgBoxProps) => {
       className="min-w-full h-full bg-center bg-contain flex-col justify-between items-center bg-no-repeat hover:scale-95 cursor-pointer"
       style={{
         background: `url(${image})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
       onClick={onFullScreen}
     />
-  );
-};
+  )
+}
 
 export default function Gallery({ image }: Props) {
-  const [fullScreen, setFullScreen] = useState(false);
-  const [imageIndex, setImageIndex] = useState(0);
+  const [fullScreen, setFullScreen] = useState(false)
+  const [imageIndex, setImageIndex] = useState(0)
 
   return (
     <div className="rounded-[16px] h-[650px] w-full flex gap-2 relative justify-center py-2">
@@ -36,8 +36,8 @@ export default function Gallery({ image }: Props) {
         <ImageBox
           image={image[0]}
           onFullScreen={() => {
-            setImageIndex(0);
-            setFullScreen(true);
+            setImageIndex(0)
+            setFullScreen(true)
           }}
         />
       </div>
@@ -47,20 +47,18 @@ export default function Gallery({ image }: Props) {
             <ImageBox
               image={src}
               onFullScreen={() => {
-                setImageIndex(i);
-                setFullScreen(true);
+                setImageIndex(i)
+                setFullScreen(true)
               }}
             />
           ))}
         <div
           className="w-full flex justify-center items-center"
           style={{
-            background: `linear-gradient(to right, #000000BA, #0000009C), url(${
-              image[image.length - 1]
-            })`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            background: `linear-gradient(to right, #000000BA, #0000009C), url(${image[image.length - 1]})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         >
           <h1 className="text-2xl text-white">+ 2</h1>
@@ -71,19 +69,15 @@ export default function Gallery({ image }: Props) {
         <div
           className="fullscreen-overlay active w-screen fixed h-screen bg-black flex justify-center items-center top-0 right-0"
           onClick={() => {
-            setImageIndex(0);
-            setFullScreen(false);
+            setImageIndex(0)
+            setFullScreen(false)
           }}
         >
           <div className="fullscreen-image">
-            <img
-              className="centered-image"
-              src={image[imageIndex]}
-              alt="Full Screen"
-            />
+            <img className="centered-image" src={image[imageIndex]} alt="Full Screen" />
           </div>
         </div>
       )}
     </div>
-  );
+  )
 }

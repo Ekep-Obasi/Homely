@@ -1,67 +1,49 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import * as z from "zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as Icons from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormLabel,
-  FormItem,
-  FormMessage,
-} from "../ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/app/components/ui/dialog";
-import { useForm } from "react-hook-form";
-import { CardContent, Card } from "../ui/card";
-import { motion } from "framer-motion";
-import { createPropeterySchema } from "@/app/validator/listing";
-import { Progress } from "../ui/progress";
-import Map from "../googleMap/map";
-import { houseQuality, houseType, LISTING_STORAGE_KEY } from "@/app/constants";
-import TextEditor from "../text-editor";
-import { jsonToFormData } from "@/app/utils";
-import { createListing } from "@/app/api/listing";
-import { LOCAL_STORAGE } from "@/app/services/storage";
-import { toast } from "@/app/hooks/use-toast";
-import { ToastAction } from "@radix-ui/react-toast";
-import { useApp } from "@/app/context/app-context";
+import { useState } from 'react'
+import * as z from 'zod'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as Icons from 'lucide-react'
+import { Form, FormControl, FormField, FormLabel, FormItem, FormMessage } from '../ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select'
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog'
+import { useForm } from 'react-hook-form'
+import { CardContent, Card } from '../ui/card'
+import { motion } from 'framer-motion'
+import { createPropeterySchema } from '@/app/validator/listing'
+import { Progress } from '../ui/progress'
+import Map from '../googleMap/map'
+import { houseQuality, houseType, LISTING_STORAGE_KEY } from '@/app/constants'
+import TextEditor from '../text-editor'
+import { jsonToFormData } from '@/app/utils'
+import { createListing } from '@/app/api/listing'
+import { LOCAL_STORAGE } from '@/app/services/storage'
+import { toast } from '@/app/hooks/use-toast'
+import { ToastAction } from '@radix-ui/react-toast'
+import { useApp } from '@/app/context/app-context'
 
 const CreateProptertyForm = () => {
-  type InputProps = z.infer<typeof createPropeterySchema>;
-  const [formStep, setFormStep] = useState(0);
-  const [images, setImages] = useState();
-  const formData = new FormData();
-  const { isLoading } = useApp();
+  type InputProps = z.infer<typeof createPropeterySchema>
+  const [formStep, setFormStep] = useState(0)
+  const [images, setImages] = useState()
+  const formData = new FormData()
+  const { isLoading } = useApp()
 
   const form = useForm<InputProps>({
     resolver: zodResolver(createPropeterySchema),
     defaultValues: {
-      name: "",
-      description: "",
-      address: "",
-      bed_count: "1",
-      accomodation_count: "2",
-      room_count: "2",
-      bath_count: "1",
-      price: "10000",
-      house_type: "Room",
-      house_quality: "Minimal",
+      name: '',
+      description: '',
+      address: '',
+      bed_count: '1',
+      accomodation_count: '2',
+      room_count: '2',
+      bath_count: '1',
+      price: '10000',
+      house_type: 'Room',
+      house_quality: 'Minimal',
       // country: "",
       // city: "",
       // region: "",
@@ -69,29 +51,29 @@ const CreateProptertyForm = () => {
       // latitude: "",
       // longitude: "",
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof createPropeterySchema>) {
-    alert(JSON.stringify(values, null, 4));
-    jsonToFormData<InputProps>(values, formData);
+    alert(JSON.stringify(values, null, 4))
+    jsonToFormData<InputProps>(values, formData)
     try {
-      const res = await createListing(formData);
+      const res = await createListing(formData)
       if (res.status === 200) {
-        LOCAL_STORAGE.set(LISTING_STORAGE_KEY, res.data);
+        LOCAL_STORAGE.set(LISTING_STORAGE_KEY, res.data)
         toast({
-          title: "succes",
-          description: "listing created successfully",
-        });
+          title: 'succes',
+          description: 'listing created successfully',
+        })
       } else {
         toast({
-          variant: "destructive",
+          variant: 'destructive',
           title: res.data.message,
           description: res.data.message,
           action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
+        })
       }
     } catch {
-      return;
+      return
     }
   }
 
@@ -112,7 +94,7 @@ const CreateProptertyForm = () => {
                         translateX: `-${formStep * 102}%`,
                       }}
                       transition={{
-                        ease: "easeInOut",
+                        ease: 'easeInOut',
                       }}
                     >
                       <FormField
@@ -122,11 +104,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Property Name:</FormLabel>
                             <FormControl>
-                              <Input
-                                className="lg:w-[415px] sm:w-[320px]"
-                                placeholder="Enter Proprerty name"
-                                {...field}
-                              />
+                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Enter Proprerty name" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -139,11 +117,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Property Address:</FormLabel>
                             <FormControl>
-                              <Input
-                                className="lg:w-[415px] sm:w-[320px]"
-                                placeholder="Enter Proprerty address"
-                                {...field}
-                              />
+                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Enter Proprerty address" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -155,10 +129,7 @@ const CreateProptertyForm = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>House Quality:</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select your preferred house quality" />
@@ -182,10 +153,7 @@ const CreateProptertyForm = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>House Types:</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select your preferred house type" />
@@ -211,7 +179,7 @@ const CreateProptertyForm = () => {
                         translateX: `-${formStep * 102}%`,
                       }}
                       transition={{
-                        ease: "easeInOut",
+                        ease: 'easeInOut',
                       }}
                     >
                       <FormField
@@ -224,7 +192,7 @@ const CreateProptertyForm = () => {
                               <Input
                                 className=" lg:w-[415px] sm:w-[320px]"
                                 placeholder="Enter Number of People that can be accomodated"
-                                type={"number"}
+                                type={'number'}
                                 {...field}
                               />
                             </FormControl>
@@ -239,12 +207,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Beds:</FormLabel>
                             <FormControl>
-                              <Input
-                                className=" lg:w-[415px] sm:w-[320px]"
-                                placeholder="Enter Number of Beds"
-                                {...field}
-                                type={"number"}
-                              />
+                              <Input className=" lg:w-[415px] sm:w-[320px]" placeholder="Enter Number of Beds" {...field} type={'number'} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -257,12 +220,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Rooms:</FormLabel>
                             <FormControl>
-                              <Input
-                                className="lg:w-[415px] sm:w-[320px]"
-                                placeholder="Number of Rooms"
-                                {...field}
-                                type={"number"}
-                              />
+                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Number of Rooms" {...field} type={'number'} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -275,12 +233,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Bathrooms:</FormLabel>
                             <FormControl>
-                              <Input
-                                className="lg:w-[415px] sm:w-[320px]"
-                                placeholder="Number of Bathrooms"
-                                {...field}
-                                type={"number"}
-                              />
+                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Number of Bathrooms" {...field} type={'number'} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -315,7 +268,7 @@ const CreateProptertyForm = () => {
                         translateX: `-${formStep * 102}%`,
                       }}
                       transition={{
-                        ease: "easeInOut",
+                        ease: 'easeInOut',
                       }}
                     >
                       <FormField
@@ -325,10 +278,7 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>description</FormLabel>
                             <FormControl>
-                              <TextEditor
-                                className="lg:w-[415px] sm:w-[320px]"
-                                {...field}
-                              />
+                              <TextEditor className="lg:w-[415px] sm:w-[320px]" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -377,7 +327,7 @@ const CreateProptertyForm = () => {
                         translateX: `-${formStep * 102}%`,
                       }}
                       transition={{
-                        ease: "easeInOut",
+                        ease: 'easeInOut',
                       }}
                     >
                       <FormField
@@ -387,12 +337,7 @@ const CreateProptertyForm = () => {
                           <FormItem className="ring-0">
                             <FormLabel>Price</FormLabel>
                             <FormControl>
-                              <Input
-                                type={"number"}
-                                className="lg:w-[415px] sm:w-[320px]"
-                                placeholder="Set Listing Price"
-                                {...field}
-                              />
+                              <Input type={'number'} className="lg:w-[415px] sm:w-[320px]" placeholder="Set Listing Price" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -404,42 +349,29 @@ const CreateProptertyForm = () => {
                     {formStep === 0 ? (
                       <></>
                     ) : (
-                      <Button
-                        className="flex items-center space-x-1"
-                        onClick={() => setFormStep((prev) => prev - 1)}
-                        type="button"
-                      >
+                      <Button className="flex items-center space-x-1" onClick={() => setFormStep((prev) => prev - 1)} type="button">
                         <Icons.ArrowLeft />
                         <span>Prev</span>
                       </Button>
                     )}
                     {formStep !== 5 ? (
-                      <Button
-                        className="flex items-center space-x-1"
-                        onClick={() => setFormStep((prev) => prev + 1)}
-                        type="button"
-                      >
+                      <Button className="flex items-center space-x-1" onClick={() => setFormStep((prev) => prev + 1)} type="button">
                         <span>Next</span>
                         <Icons.ArrowRight />
                       </Button>
                     ) : (
-                      <Button type="submit">
-                        {isLoading ? "Creating..." : "Submit"}
-                      </Button>
+                      <Button type="submit">{isLoading ? 'Creating...' : 'Submit'}</Button>
                     )}
                   </div>
                 </form>
               </Form>
-              <Progress
-                className="h-[7px] w-full my-4 lg:w-[415px]"
-                value={formStep * 20}
-              />
+              <Progress className="h-[7px] w-full my-4 lg:w-[415px]" value={formStep * 20} />
             </CardContent>
           </Card>
         </DialogDescription>
       </DialogHeader>
     </DialogContent>
-  );
-};
+  )
+}
 
-export default CreateProptertyForm;
+export default CreateProptertyForm

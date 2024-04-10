@@ -1,18 +1,18 @@
-import { convertToRaw, EditorState } from "draft-js";
-import { useState } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { convertToRaw, EditorState } from 'draft-js'
+import { useState } from 'react'
+import { Editor } from 'react-draft-wysiwyg'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 export default function Index(props: any) {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [text, setText] = useState();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [text, setText] = useState()
 
   const onEditorStateChange = function (editorState: any) {
-    setEditorState(editorState);
-    const { blocks } = convertToRaw(editorState.getCurrentContent());
-    let text = editorState.getCurrentContent().getPlainText("\u0001");
-    props.onChange(text);
-  };
+    setEditorState(editorState)
+    const { blocks } = convertToRaw(editorState.getCurrentContent())
+    let text = editorState.getCurrentContent().getPlainText('\u0001')
+    props.onChange(text)
+  }
 
   return (
     <>
@@ -21,9 +21,9 @@ export default function Index(props: any) {
         toolbarClassName="toolbarClassName"
         wrapperClassName="wrapperClassName"
         editorClassName="editorClassName"
-        editorStyle={{ width: "415px", height: "250px" }}
+        editorStyle={{ width: '415px', height: '250px' }}
         onEditorStateChange={onEditorStateChange}
       />
     </>
-  );
+  )
 }

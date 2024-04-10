@@ -1,14 +1,7 @@
-import * as Icons from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "../ui/menu-bar";
-import ChatSearch from "./chat-search";
+import * as Icons from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '../ui/menu-bar'
+import ChatSearch from './chat-search'
 
 export default function ChatTabHeader() {
   return (
@@ -33,5 +26,5 @@ export default function ChatTabHeader() {
       </div>
       <ChatSearch />
     </div>
-  );
+  )
 }

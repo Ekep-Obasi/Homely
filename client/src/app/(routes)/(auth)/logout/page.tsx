@@ -1,13 +1,8 @@
-import { Button } from "@/app/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/app/components/ui/card";
-import React from "react";
+import { Button } from '@/app/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card'
+import React from 'react'
 
-type Props = {};
+type Props = {}
 
 export default function Logout(props: Props) {
   return (
@@ -20,5 +15,5 @@ export default function Logout(props: Props) {
         <Button className="my-3 w-full">Sign Out</Button>
       </CardContent>
     </Card>
-  );
+  )
 }

@@ -1,47 +1,64 @@
-"use client";
+'use client'
 
-import {
-  useState,
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-} from "react";
-import { Location } from "../types/index";
-import { User } from "../types/user";
+import { useState, createContext, useContext, ReactNode, useEffect } from 'react'
+import { Location } from '../types/index'
+import { User } from '../types/user'
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
-// because the initial state is not fully know at this moment
-export const AppContext = createContext<(User & any) | undefined>(undefined);
+type AppStore = {
+  user: User | null
+  setUser: (k: User | null) => void
+  loading: boolean
+  setLoading: (k: boolean) => void
+  toggleShowMap: boolean
+  setToggleShowMap: (k: boolean) => void
+  cameraShow: boolean
+  setCameraShow: (k: boolean) => void
+  location: Location | null
+  setLocation: (k: Location | null) => void
+}
 
-export function useApp() {
-  return useContext<User & any>(AppContext);
+const defaultAppStore: AppStore = {
+  user: null,
+  setUser: (k: User | null) => null,
+  loading: false,
+  setLoading: (k: boolean) => null,
+  toggleShowMap: false,
+  setToggleShowMap: (k: boolean) => null,
+  cameraShow: false,
+  setCameraShow: (k: boolean) => null,
+  location: null,
+  setLocation: (k: Location | null) => null,
+}
+
+export const AppContext = createContext<AppStore>(defaultAppStore)
+
+export function useApp(): AppStore {
+  return useContext<AppStore>(AppContext)
 }
 
 export default function AppProvider({ children }: Props) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [toggleShowMap, setToggleShowMap] = useState<boolean>(false);
-  const [cameraShow, setCameraShow] = useState<boolean>(false);
-  const [location, setLocation] = useState<Location | null>(null);
+  const [loading, setLoading] = useState<boolean>(false)
+  const [user, setUser] = useState<User | null>(null)
+  const [toggleShowMap, setToggleShowMap] = useState<boolean>(false)
+  const [cameraShow, setCameraShow] = useState<boolean>(false)
+  const [location, setLocation] = useState<Location | null>(null)
 
   useEffect(() => {
     if (typeof window !== undefined) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) => {
-          setLocation({
-            latitude,
-            longitude,
-          });
-        }
-      );
+      navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+        setLocation({
+          latitude,
+          longitude,
+        })
+      })
     }
-  }, []);
+  }, [])
 
-  const value = {
+  const value: AppStore = {
     user,
     setUser,
     loading,
@@ -50,9 +67,9 @@ export default function AppProvider({ children }: Props) {
     setToggleShowMap,
     cameraShow,
     setCameraShow,
-    location, 
-    setLocation
-  };
+    location,
+    setLocation,
+  }
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }

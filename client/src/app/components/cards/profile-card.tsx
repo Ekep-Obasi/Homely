@@ -1,13 +1,13 @@
-import { generateAcronym } from "@/app/utils";
-import { AvatarImage } from "@radix-ui/react-avatar";
-import Link from "next/link";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
+import { generateAcronym } from '@/app/utils'
+import { AvatarImage } from '@radix-ui/react-avatar'
+import Link from 'next/link'
+import { Avatar, AvatarFallback } from '../ui/avatar'
+import { Button } from '../ui/button'
+import { Card } from '../ui/card'
 
 type Props = {
-  id: string;
-};
+  id: string
+}
 
 export function ProfileCard({ id }: Props) {
   return (
@@ -15,9 +15,7 @@ export function ProfileCard({ id }: Props) {
       <div className="flex flex-col w-full items-center justify-center">
         <Avatar className="w-[100px] h-[100px] flex space-x-1">
           <AvatarImage src="/" />
-          <AvatarFallback className="text-2xl">
-            {generateAcronym("Blasise Pascal")}
-          </AvatarFallback>
+          <AvatarFallback className="text-2xl">{generateAcronym('Blasise Pascal')}</AvatarFallback>
         </Avatar>
         <div className="flex-col space-y-2 justify-center">
           <div className="flex space-x-1">
@@ -33,10 +31,10 @@ export function ProfileCard({ id }: Props) {
             <span></span>
           </div>
           <Button>
-            <Link href="/">View Profile</Link>
+            <a href="/">View Profile</a>
           </Button>
         </div>
       </div>
     </Card>
-  );
+  )
 }

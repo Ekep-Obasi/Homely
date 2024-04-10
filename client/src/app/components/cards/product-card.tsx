@@ -1,18 +1,17 @@
-import * as React from "react";
-import * as Icons from "lucide-react";
+import * as React from 'react'
+import * as Icons from 'lucide-react'
 
-import { Button } from "../ui/button";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
-import { usePathname, useRouter } from "next/navigation";
-import Carousel, { carouselType } from "../carousel";
-import { Listing } from "../../types/listing";
-
+import { Button } from '../ui/button'
+import { Card, CardContent, CardHeader } from '../ui/card'
+import { Separator } from '../ui/separator'
+import { Badge } from '../ui/badge'
+import { usePathname, useRouter } from 'next/navigation'
+import Carousel, { carouselType } from '../carousel'
+import { Listing } from '../../types/listing'
 
 export function ProductCard(props: Listing) {
-  const router = useRouter();
-  const pathname = usePathname();
+  const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <Card
@@ -49,5 +48,5 @@ export function ProductCard(props: Listing) {
         <p className="font-bold text-primary text-xl">{props.price}</p>
       </CardContent>
     </Card>
-  );
+  )
 }

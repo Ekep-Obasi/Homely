@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { Separator } from "../ui/separator";
+import Link from 'next/link'
+import { Separator } from '../ui/separator'
 
 export default function Footer() {
   return (
@@ -17,5 +17,5 @@ export default function Footer() {
         Copyright @ 2023. All rights reserved
       </Link>
     </footer>
-  );
+  )
 }

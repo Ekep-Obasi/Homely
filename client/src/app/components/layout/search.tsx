@@ -1,34 +1,15 @@
-"use client";
+'use client'
 
-import React from "react";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react";
+import React from 'react'
+import { Calculator, Calendar, CreditCard, Settings, Smile, User } from 'lucide-react'
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "../ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '../ui/command'
 
 export function Search() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   return (
-    <Command
-      className="rounded-lg border shadow-md"
-      onClick={() => setOpen((prev) => !prev)}
-    >
+    <Command className="rounded-lg border shadow-md" onClick={() => setOpen((prev) => !prev)}>
       <CommandInput placeholder="Search..." />
       {open && (
         <CommandList className="border bg-white rounded absolute -ml-8 mt-12 z-20 w-[300px]">
@@ -68,5 +49,5 @@ export function Search() {
         </CommandList>
       )}
     </Command>
-  );
+  )
 }

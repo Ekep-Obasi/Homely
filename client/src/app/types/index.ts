@@ -1,5 +1,5 @@
-export * from './user';
+export * from './user'
 export interface Location {
-  latitude: number;
-  longitude: number;
+  latitude: number
+  longitude: number
 }

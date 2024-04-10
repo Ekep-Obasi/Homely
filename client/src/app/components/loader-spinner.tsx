@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import React from "react";
-import { MutatingDots } from "react-loader-spinner";
+import React from 'react'
+import { MutatingDots } from 'react-loader-spinner'
 
 export default function LoaderSpinner() {
   return (
@@ -18,5 +18,5 @@ export default function LoaderSpinner() {
         visible={true}
       />
     </div>
-  );
+  )
 }

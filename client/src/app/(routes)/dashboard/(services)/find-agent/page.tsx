@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
-type Props = {};
+type Props = {}
 
 export default function AgentPage(props: Props) {
-  return <div>Agent Page</div>;
+  return <div>Agent Page</div>
 }

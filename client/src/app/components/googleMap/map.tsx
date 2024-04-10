@@ -1,33 +1,28 @@
-"use clinet";
+'use clinet'
 
-import React from "react";
-import ReactMapGL, { Marker, ViewState, Popup, MapRef } from "react-map-gl";
-import MapSearchBox from "./map-search";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { products } from "@/app/constants/product-card";
-import { FaHome } from "react-icons/fa";
-import { ProductCard } from "../cards/product-card";
-import { useApp } from "@/app/context/app-context";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import React from 'react'
+import ReactMapGL, { Marker, ViewState, Popup, MapRef } from 'react-map-gl'
+import MapSearchBox from './map-search'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { products } from '@/app/constants/product-card'
+import { FaHome } from 'react-icons/fa'
+import { ProductCard } from '../cards/product-card'
+import { useApp } from '@/app/context/app-context'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 
 interface Props {
-  width: string;
-  height: string;
+  width: string
+  height: string
 }
 
 export default function Map({ width, height }: Props) {
-  const mapRef = React.useRef<MapRef | null>(null);
-  const { location } = useApp();
+  const mapRef = React.useRef<MapRef | null>(null)
+  const { location } = useApp()
   const [viewport, setViewPort] = React.useState<ViewState>({
     latitude: location.latitude,
     longitude: location.longitude,
     zoom: 10,
-  });
+  })
 
   return (
     <div className="relative flex">
@@ -44,18 +39,11 @@ export default function Map({ width, height }: Props) {
         scrollZoom={true}
       >
         {products.map((item, index, arr) => (
-          <Marker
-            latitude={item.latitude}
-            longitude={item.longitude}
-            className="w-[50px] h-[50px]"
-            key={index}
-            offsetTop={-15}
-            offsetLeft={-15}
-          >
+          <Marker latitude={item.latitude} longitude={item.longitude} className="w-[50px] h-[50px]" key={index} offsetTop={-15} offsetLeft={-15}>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <FaHome color="#fff" className='w-[35px] h-[35px]' />
+                  <FaHome color="#fff" className="w-[35px] h-[35px]" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.name}</p>
@@ -68,5 +56,5 @@ export default function Map({ width, height }: Props) {
         <MapSearchBox defaultValue="" />
       </ReactMapGL>
     </div>
-  );
+  )
 }

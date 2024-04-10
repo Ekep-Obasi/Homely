@@ -1,7 +1,7 @@
-import { Listing } from "@/app/types/listing";
-import Link from "next/link";
-import { Card } from "../ui/card";
-import { Separator } from "../ui/separator";
+import { Listing } from '@/app/types/listing'
+import Link from 'next/link'
+import { Card } from '../ui/card'
+import { Separator } from '../ui/separator'
 
 export default function ListingCard(props: Listing) {
   return (
@@ -10,9 +10,9 @@ export default function ListingCard(props: Listing) {
         className="w-full min-h-[150px] block rounded-sm"
         style={{
           backgroundImage: `url(${props.image_list[0]})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
         }}
       ></div>
       <div className="flex flex-col p-1">
@@ -22,13 +22,11 @@ export default function ListingCard(props: Listing) {
         <Separator className="my-2" />
       </div>
       <div className="flex space-x-1 space-y-1 py-3 items-center p-1 text-sm">
-        <span className="text-sm p-1 bg-slate-300 rounded-sm">
-          {props.availability}
-        </span>
+        <span className="text-sm p-1 bg-slate-300 rounded-sm">{props.availability}</span>
         <span>Updated Dec 5</span>
-        <Link href={`/rent/${props.id}`} className="text-blue text-sm">
+        <a href={`/rent/${props.id}`} className="text-blue text-sm">
           View Listing
-        </Link>
+        </a>
       </div>
       <div className="bg-muted flex flex-col items-center p-1 px-2">
         <span>Last 30 days</span>
@@ -50,5 +48,5 @@ export default function ListingCard(props: Listing) {
         </div>
       </div>
     </Card>
-  );
+  )
 }

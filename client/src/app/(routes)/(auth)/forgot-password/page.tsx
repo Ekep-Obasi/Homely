@@ -40,8 +40,8 @@ export default function Logout(props: Props) {
           description: res.data.message,
           action: <ToastAction altText="Okay">Okay</ToastAction>,
         })
+        router.push('/login')
       }
-      setLoading(false)
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -49,19 +49,18 @@ export default function Logout(props: Props) {
         description: 'Check your connection and try again!',
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
-
+      setLoading(false)
+    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
+    <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
         <CardTitle className="text-center sm:text-left">Forgot Password?</CardTitle>
       </CardHeader>
-      <CardDescription className="px-6 text-center sm:text-left">
-        A password reset event has been triggered. The password reset window is limited to two hours, Check your email box
-      </CardDescription>
+      <CardDescription className="px-6 text-center sm:text-left">A password reset event has been triggered, Check your email box</CardDescription>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">

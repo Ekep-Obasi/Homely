@@ -19,7 +19,7 @@ import { houseQuality, houseType, LISTING_STORAGE_KEY } from '@/app/constants'
 import TextEditor from '../text-editor'
 import { jsonToFormData } from '@/app/utils'
 import { createListing } from '@/app/api/listing'
-import { LOCAL_STORAGE } from '@/app/services/storage'
+import { storage } from '@/app/services/storage'
 import { toast } from '@/app/hooks/use-toast'
 import { ToastAction } from '@radix-ui/react-toast'
 import { useApp } from '@/app/context/app-context'
@@ -29,7 +29,7 @@ const CreateProptertyForm = () => {
   const [formStep, setFormStep] = useState(0)
   const [images, setImages] = useState()
   const formData = new FormData()
-  const { isLoading } = useApp()
+  const { loading } = useApp()
 
   const form = useForm<InputProps>({
     resolver: zodResolver(createPropeterySchema),
@@ -59,7 +59,7 @@ const CreateProptertyForm = () => {
     try {
       const res = await createListing(formData)
       if (res.status === 200) {
-        LOCAL_STORAGE.set(LISTING_STORAGE_KEY, res.data)
+        storage.set(LISTING_STORAGE_KEY, res.data)
         toast({
           title: 'succes',
           description: 'listing created successfully',
@@ -360,7 +360,7 @@ const CreateProptertyForm = () => {
                         <Icons.ArrowRight />
                       </Button>
                     ) : (
-                      <Button type="submit">{isLoading ? 'Creating...' : 'Submit'}</Button>
+                      <Button type="submit">{loading ? 'Creating...' : 'Submit'}</Button>
                     )}
                   </div>
                 </form>

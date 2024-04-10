@@ -8,25 +8,23 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
 import { CardDescription, CardHeader, CardTitle, CardContent, Card } from '../ui/card'
-
 import { useRouter } from 'next/navigation'
-import { LoginSchema } from '@/app/validator/auth'
+import { LoginSchema, loginFormFeilds } from '@/app/validator/auth'
 import { MdOutlineFacebook } from 'react-icons/md'
 import { loginUser } from '@/app/api/auth'
 import { useApp } from '@/app/context/app-context'
 import { useToast } from '@/app/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
 import { FcGoogle } from 'react-icons/fc'
-import { LOCAL_STORAGE } from '@/app/services/storage'
+import { storage } from '@/app/services/storage'
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from '@/app/constants'
 
 const LoginForm = () => {
-  type InputProps = z.infer<typeof LoginSchema>
   const { loading, setLoading, setUser } = useApp()
   const router = useRouter()
   const { toast } = useToast()
 
-  const form = useForm<InputProps>({
+  const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
@@ -39,10 +37,9 @@ const LoginForm = () => {
       setLoading(true)
       const res = await loginUser(values)
       if (res.data.token) {
-        alert(JSON.stringify(res.data, null, 4))
         setUser(res.data)
-        LOCAL_STORAGE.set(USER_STORAGE_KEY, res.data)
-        LOCAL_STORAGE.set(TOKEN_STORAGE_KEY, res.data.token)
+        storage.set(USER_STORAGE_KEY, res.data)
+        storage.set(TOKEN_STORAGE_KEY, res.data.token)
         router.push('/dashboard')
       } else {
         toast({
@@ -53,54 +50,42 @@ const LoginForm = () => {
         })
         setLoading(false)
       }
-      setLoading(false)
     } catch (err) {
-      console.error(err)
       setLoading(false)
-      return
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto">
+    <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto gap-4">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Welcome Back!</CardDescription>
+        <CardDescription>Welcome Back! 👋</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email:</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password:</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Enter your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription className="w-full text-right text-blue-400 text-sm">
-                    <a href="/forgot-password" className="hover:underline">
-                      Forgot Password?
-                    </a>
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
+            {loginFormFeilds.map((props) => (
+              <FormField
+                control={form.control}
+                name={props.name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{props.label}:</FormLabel>
+                    <FormControl>
+                      <Input placeholder={props.placeholder} type={props.type} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            <FormDescription className="w-full text-right text-blue-400 text-sm">
+              <a href="/forgot-password" className="hover:underline">
+                Forgot Password?
+              </a>
+            </FormDescription>
             <Button className="my-3 w-full" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>

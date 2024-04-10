@@ -61,7 +61,7 @@ export default function Logout() {
   }
 
   return (
-    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
+    <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded p-4 space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
         <CardTitle>Reset Password</CardTitle>
       </CardHeader>

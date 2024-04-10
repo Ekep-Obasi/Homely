@@ -6,7 +6,7 @@ type Props = {}
 
 export default function Logout(props: Props) {
   return (
-    <Card className="w-1/3 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <Card className="w-1/4 border rounded p-4 space-y-1 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <CardHeader>
         <CardTitle>Sign Out</CardTitle>
       </CardHeader>

@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
 import { CardDescription, CardHeader, CardTitle, CardContent, Card } from '../ui/card'
-import { registrationSchema } from '@/app/validator/auth'
+import { registrationSchema, signUpFormFeilds } from '@/app/validator/auth'
 import { Checkbox } from '../ui/checkbox'
 import { Input } from '../ui/input'
 import { signUpUser } from '@/app/api/auth'
@@ -28,12 +28,12 @@ const SignUpForm = () => {
       user_name: '',
       email: '',
       password: '',
-      passwordConfirmation: '',
+      pswd_confirm: '',
       agree: false,
     },
   })
 
-  async function onSubmit({ agree, passwordConfirmation, ...data }: InputProps) {
+  async function onSubmit({ agree, pswd_confirm, ...data }: InputProps) {
     try {
       setLoading(true)
       const res = await signUpUser(data)
@@ -58,7 +58,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <Card className="w-1/3 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto">
+    <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Ready to start this journey with us?</CardDescription>
@@ -66,58 +66,21 @@ const SignUpForm = () => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="user_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name:</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email:</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password:</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Enter your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="passwordConfirmation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password:</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Confirm your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {signUpFormFeilds.map((props) => (
+              <FormField
+                control={form.control}
+                name={props.name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{props.label}:</FormLabel>
+                    <FormControl>
+                      <Input placeholder={props.placeholder} type={props.type} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
             <FormField
               control={form.control}
               name="agree"
@@ -127,10 +90,10 @@ const SignUpForm = () => {
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
+                    <div className="space-y-1 leading-none flex-col">
                       <FormLabel>Accept all terms & conditions</FormLabel>
+                      <FormMessage />
                     </div>
-                    <FormMessage />
                   </FormItem>
                 )
               }}

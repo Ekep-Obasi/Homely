@@ -20,7 +20,7 @@ import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/app/components/ui/calendar'
 import { generateAcronym, getUserEntries, jsonToFormData } from '@/app/utils'
 import { updateUser } from '@/app/api/users'
-import { LOCAL_STORAGE } from '@/app/services/storage'
+import { storage } from '@/app/services/storage'
 import { USER_STORAGE_KEY } from '@/app/constants'
 
 const LoginForm = () => {
@@ -55,7 +55,7 @@ const LoginForm = () => {
       const res = await updateUser(formData)
       if (res.status === 200) {
         setUser(res.data)
-        LOCAL_STORAGE.set(USER_STORAGE_KEY, res.data)
+        storage.set(USER_STORAGE_KEY, res.data)
         toast({
           title: 'Success',
           description: 'User updated succesfully!',
@@ -81,7 +81,7 @@ const LoginForm = () => {
   if (!user) return null
 
   return (
-    <div className="w-1/3 p-4 space-y-1 min-h-full min-w-[350px] mx-auto">
+    <div className="w-1/4 p-4 space-y-1 min-h-full min-w-[350px] mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="py-2">
           <div>

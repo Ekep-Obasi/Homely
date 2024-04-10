@@ -1,15 +1,16 @@
-import Image from 'next/image'
 import React, { ReactNode } from 'react'
-import AuthFooter from '../../components/layout/auth-footer'
+import AuthFooter from '@/app/components/layout/auth-footer'
 
 type Props = { children: ReactNode }
 
 const AuthLayout = ({ children }: Props) => {
   return (
     <section>
-      <a href="/" className="ml-[250px]">
-        <Image src="/images/logo1.png" width="120" alt="logo" height="50" />
-      </a>
+      <div className="px-12 mb-4">
+        <a href="/">
+          <img src="/images/logo1.png" width="120px" alt="logo" />
+        </a>
+      </div>
       <div className="min-h-screen flex flex-col justify-between gap-8">
         {children}
         <AuthFooter />

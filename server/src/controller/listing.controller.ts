@@ -53,7 +53,7 @@ class ListingController {
       const errors = await ValidatePayload(CreateListingPayload, requestPayload)
 
       // TODO: enable validation
-      // I've disable validation bcs formdata apparently 
+      // I've disable validation bcs formdata apparently
       // does not care about feild types
       if (!errors.length) {
         return res.send(ErrorResponse(400, errors))

@@ -53,7 +53,7 @@ export class CreateListingPayload {
   longitude: number
 }
 
-export class EditListingPayload  {
+export class EditListingPayload {
   @IsString()
   @Length(10, 100, { message: 'listing name must be greater than 10 characters' })
   name: string

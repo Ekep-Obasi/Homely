@@ -1,0 +1,6 @@
+{
+    "exec": "nodemon --exec ts-node -r tsconfig-paths/register",
+    "watch": ["src"],
+    "ext": "ts"
+  }
+  

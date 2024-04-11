@@ -1,2 +1,2 @@
 export * from './app.error'
-export * from './error.handler'
+export { default as ErrorHandler } from './error.handler'

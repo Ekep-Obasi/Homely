@@ -1,28 +1,25 @@
 import bcrypt from 'bcrypt'
 
 /**
- * generates salt and returns it
- * @returns {Promise<string>}
+ * Generates a salt using bcrypt.
+ * @returns {Promise<string>} A promise that resolves to a generated salt value.
  */
-
 export const GenerateSalt = async (): Promise<string> => await bcrypt.genSalt()
 
 /**
- * hashes user password with generated salt value
- * @param password
- * @param salt
- * @returns {Promise<string>}
+ * Hashes the user password using bcrypt with the provided salt value.
+ * @param {string} password The password to hash.
+ * @param {string} salt The salt value used for hashing.
+ * @returns {Promise<string>} A promise that resolves to the hashed password.
  */
-
-export const HashPassord = async (password: string, salt: string): Promise<string> => await bcrypt.hash(password, salt)
+export const HashPassword = async (password: string, salt: string): Promise<string> => await bcrypt.hash(password, salt)
 
 /**
- *
- * @param enteredPassword
- * @param savedPassword
- * @param salt
- * @returns {Promise<string>}
+ * Validates the entered password by hashing it with the provided salt and comparing it to the saved password.
+ * @param {string} enteredPassword The password entered by the user.
+ * @param {string} savedPassword The saved hashed password.
+ * @param {string} salt The salt value used for hashing.
+ * @returns {Promise<boolean>} A promise that resolves to true if the entered password matches the saved password; otherwise, false.
  */
-
 export const ValidatePassword = async (enteredPassword: string, savedPassword: string, salt: string): Promise<boolean> =>
-  savedPassword === (await HashPassord(enteredPassword, salt))
+  savedPassword === (await HashPassword(enteredPassword, salt))

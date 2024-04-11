@@ -1,33 +1,63 @@
-import { NextFunction, Request, Response } from 'express'
 import ListingReposity from '@/repository/listing.repo'
-import { CreateListingPayload } from '../dto/listing.dto'
+import { CreateListingPayload, ListingQuery } from '../dto/listing.dto'
+import { ServerError } from '@/utils/error'
+import { Listing } from '@/domains'
 
 class ListingService {
-  repo: ListingReposity
+  private repo: ListingReposity
 
   constructor() {
     this.repo = new ListingReposity()
   }
 
-  public async createListing(req: Request, res: Response, next: NextFunction) {
-    const requestBody = <CreateListingPayload>req.body
-
+  public async createListing(data: CreateListingPayload, ownerRef: string, file: Express.Multer.File[]): Promise<Listing> {
     try {
-      const listing = await this.repo.createListing({ ...requestBody, owner_id: req.user?.id })
-
-      return listing
-    } catch {
-      next(new Error(''))
+      return await this.repo.createListing({ ...data, owner_id: ownerRef }, file)
+    } catch (err) {
+      console.log(err)
+      throw new ServerError()
     }
   }
 
-  public async getAllListings(req: Request, res: Response, next: NextFunction) {}
-
-  public async getListingById(req: Request, res: Response, next: NextFunction) {
+  public async getAllListings(): Promise<Listing[]> {
     try {
-      return await this.repo.findListingById(req.params.id)
+      return await this.repo.findAllListings()
     } catch {
-      next(new Error(''))
+      throw new ServerError()
+    }
+  }
+
+  public async queryListings(query: ListingQuery): Promise<Listing[] | Listing> {
+    try {
+      return await this.repo.queryListings(query)
+    } catch {
+      throw new ServerError()
+    }
+  }
+
+  public async getListingById(id: string): Promise<Listing | null> {
+    try {
+      return await this.repo.findListingById(id)
+    } catch {
+      throw new ServerError()
+    }
+  }
+
+  public async deleteListing(id: string) {
+    try {
+      return await this.repo.deteteListing(id)
+    } catch (err) {
+      throw new ServerError(500, 'INTERNAL_ERROR', `${err}`)
+    }
+  }
+
+  public async editListing(data: Partial<CreateListingPayload>, id: string) {
+    try {
+      await this.repo.updateListing(data, id)
+
+      return this.repo.findListingById(id)
+    } catch (err) {
+      throw new ServerError(500, 'INTERNAL_ERROR', `${err}`)
     }
   }
 }

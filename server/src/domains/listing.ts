@@ -11,13 +11,23 @@ export interface Listing {
   bed_count: number
   bath_count: number
   price: number
-  house_type: ThouseType
-  quality: ThouseQuality
+  type: ListingTypeEnum
+  quality: ListingQualityEnum
   location: string
   latitude: number
   longitude: number
   owner_id: any
+  createdAt: string
 }
 
-export type ThouseType = 'Rooms' | 'Studio' | 'Apartememts'
-export type ThouseQuality = 'Minimalist' | 'Classic' | 'Modern'
+export enum ListingTypeEnum {
+  ROOM = 'room',
+  STUDIO = 'studio',
+  APARTMENT = 'apartement',
+}
+
+export enum ListingQualityEnum {
+  MINIMALIST = 'minimalist',
+  CLASSIC = 'classic',
+  MODERN = 'modern',
+}

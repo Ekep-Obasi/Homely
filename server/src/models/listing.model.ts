@@ -1,11 +1,10 @@
 import mongoose, { Schema } from 'mongoose'
-import { houseQuality, houseType } from '@/constant'
 import { Listing } from '@/domains'
 
 export const ListingSchema = new Schema<Listing>(
   {
     name: { type: String, required: true },
-    address: { type: String, required: true, unique: true },
+    address: { type: String, required: true },
     description: { type: String, required: true },
     image_list: { type: [String], required: true },
     meta: {
@@ -17,8 +16,8 @@ export const ListingSchema = new Schema<Listing>(
     bed_count: { type: Number, default: 0 },
     bath_count: { type: Number, default: 0 },
     price: { type: Number, default: 0 },
-    house_type: { type: String, enum: houseType },
-    quality: { type: String, enum: houseQuality },
+    type: { type: String },
+    quality: { type: String },
     location: String,
     latitude: { type: Number },
     longitude: { type: Number },

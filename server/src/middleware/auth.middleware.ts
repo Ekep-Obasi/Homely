@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
-import { IAuthPayload } from '../dto/index.js'
-import { VerifyAuthToken } from '../utils/index.js'
-
-/* ------------- Enable user in the request interface of express ------------ */
+import { IAuthPayload } from '@/dto'
+import { VerifyAuthToken } from '@/utils/token'
+import { ErrorResponse } from '@/utils/response'
 
 declare global {
   namespace Express {
     interface Request {
+      /**
+       * Added user to request stream
+       * added express interface
+       */
       user?: IAuthPayload
     }
   }
@@ -34,12 +37,12 @@ export async function AuthMiddleware(req: Request, res: Response, next: NextFunc
 
         next()
       } catch (err) {
-        return res.status(404).send({ message: 'token is invalid' })
+        return res.send(ErrorResponse(401, 'invalid credentails'))
       }
     } else {
-      return res.status(500).send('Unable to login user')
+      res.send(ErrorResponse(401, 'invalid credentials'))
     }
   } else {
-    return res.status(404).send({ message: 'login credentials not valid' })
+    return res.send(ErrorResponse(400, 'you must login first'))
   }
 }

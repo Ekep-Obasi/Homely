@@ -11,8 +11,6 @@ import App from "@/config/app.config";
   await dbConnection();
 
   app.listen(PORTNUMBER, () => {
-    console.clear();
-
     console.log(`server is listening to port ${PORTNUMBER}`);
   });
 })();

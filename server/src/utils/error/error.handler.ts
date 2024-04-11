@@ -8,9 +8,14 @@ const LogErrors = winston.createLogger({
 })
 
 /**
- * Error Logger class
+ * Error Logger class for logging application errors.
  */
 class ErrorLogger {
+  /**
+   * Logs the given error to the error log file.
+   * @param {Error} err The error to log.
+   * @returns {Promise<boolean>} A promise that resolves to true if the error is logged successfully; otherwise, false.
+   */
   async logError(err: Error): Promise<boolean> {
     LogErrors.log({
       private: true,
@@ -20,15 +25,23 @@ class ErrorLogger {
     return false
   }
 
+  /**
+   * Checks if the given error is an instance of AppError.
+   * @param {Error} error The error to check.
+   * @returns {boolean} True if the error is an instance of AppError; otherwise, false.
+   */
   isAppError(error: Error): boolean {
-    if (error instanceof AppError) {
-      return true
-    } else {
-      return false
-    }
+    return error instanceof AppError
   }
 }
 
+/**
+ * Error handler middleware for Express.
+ * @param {AppError} err The error object.
+ * @param {Request} req The Express request object.
+ * @param {Response} res The Express response object.
+ * @param {NextFunction} next The Express next function.
+ */
 const ErrorHandler = async (err: AppError, req: Request, res: Response, next: NextFunction) => {
   const errorLogger = new ErrorLogger()
 
@@ -40,19 +53,20 @@ const ErrorHandler = async (err: AppError, req: Request, res: Response, next: Ne
   process.on('uncaughtException', (error: Error) => {
     errorLogger.logError(error)
     if (errorLogger.isAppError(err)) {
+      // Do something with AppError
     }
   })
 
   await errorLogger.logError(err)
   if (errorLogger.isAppError(err)) {
     if (err.stack && process.env.NODE_DEV === 'dev') {
-      return ErrorResponse(err.statusCode, err.stack)
+      return res.send(ErrorResponse(err.statusCode, err.stack))
     }
-    return ErrorResponse(err.statusCode, err.message)
+    return res.send(ErrorResponse(err.statusCode, err.message))
   }
 
   next()
-  return ErrorResponse(500, err.message)
+  return res.send(ErrorResponse(500, err.message))
 }
 
 export default ErrorHandler

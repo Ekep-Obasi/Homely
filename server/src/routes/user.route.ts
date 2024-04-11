@@ -27,4 +27,4 @@ router.get('/', GetAllUsers)
 router.get('/:id', GetUserID)
 router.post('/post/:id', PostUserReview)
 
-export { router as UserRouter }
+export { router as userRouter }

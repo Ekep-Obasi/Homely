@@ -1,5 +1,3 @@
-class AuthService {
-
-}
+class AuthService {}
 
 export default AuthService

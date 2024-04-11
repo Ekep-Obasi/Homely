@@ -1,14 +1,12 @@
 import express, { Express } from "express";
 import { PORTNUMBER } from "@/constant";
 import dbConnection from "@/config/db.config";
-// import App from "@/config/app.config";
+import App from "@/config/app.config";
 
 (async () => {
   const app: Express = express();
 
-  console.log("shit")
-
-  // await App(app);
+  await App(app);
 
   await dbConnection();
 

@@ -10,6 +10,6 @@ export default async (app: Application) => {
   app.use(express.urlencoded({ extended: true }))
   app.use(express.static(path.join(process.cwd(), 'public')))
 
-  app.use('/api/v1/user', UserRouter)
+  // app.use('/api/v1/user', UserRouter)
   app.use('/api/v1/property', PropertyRouter)
 }

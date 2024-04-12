@@ -1,56 +1,53 @@
-import { IsEmail, Length } from 'class-validator'
+import { authMethods } from '@/domains'
+import { IsEmail, IsEnum, IsPhoneNumber, IsString, Length, Max, Min } from 'class-validator'
 
-export class CreateUserInputs {
-  @IsEmail() email: string
+export class LoginUserPayload {
+  @IsEmail()
+  email: string
 
-  @Length(7, 12) phone: string
-
-  @Length(9, 12) password: string
+  @Length(9, 12)
+  password: string
 }
 
-export interface ICreateUserTypes {
+export class CreateUserPayload extends LoginUserPayload {
+  @IsString()
+  @Length(4, 35)
   user_name: string
-  email: string
-  password: string
+
+  @IsEnum(authMethods)
+  auth_method: authMethods
 }
 
-export interface ILoginUserTypes {
+export class EditUserPayload {
+  @IsString()
+  @Length(4, 10)
+  user_email: string
+
+  @IsEmail()
   email: string
-  password: string
+
+  @IsString()
+  status: string
+
+  @IsPhoneNumber('CM')
+  phone?: string
+
+  @IsString()
+  address?: string
+
+  @IsString()
+  avatar?: string
+
+  @IsString()
+  role: 'client' | 'property-owner'
 }
 
 export interface IAuthPayload {
-  id: string
+  id: string | undefined
   email: string
-  password: string
-}
-
-export interface IUserPayload {
-  _id: string
-  user_name: string
-  email: string
-  password: string
-  date_of_birth?: string
-  status?: string
-  salt?: string
-  phone?: string
-  adress?: string
-  avatar?: string
-  role?: 'client' | 'property-owner'
-}
-
-export interface IEditUserTypes {
-  user_name: string
-  password?: string
-  date_of_birth?: string
-  status?: string
-  salt?: string
-  phone?: string
-  adress?: string
-  avatar?: string
-  role?: 'client' | 'property-owner'
 }
 
 export class IPasswordRecovery {
-  @IsEmail() email: string
+  @IsEmail()
+  email: string
 }

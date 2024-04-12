@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { IAuthPayload } from '@/dto'
-import { VerifyAuthToken } from '@/utils/token'
+import { VerifyAuthToken } from '@/utils'
 import { ErrorResponse } from '@/utils/response'
+import { UserRepository } from '@/repository'
 
 declare global {
   namespace Express {
@@ -26,6 +27,7 @@ declare global {
 
 export async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const authorization = req.get('Authorization')
+  const userRepo = new UserRepository()
 
   if (authorization) {
     const token = authorization.split(' ').pop()
@@ -33,14 +35,15 @@ export async function AuthMiddleware(req: Request, res: Response, next: NextFunc
     if (token) {
       try {
         const user = (await VerifyAuthToken(token)) as IAuthPayload
+
         req.user = user
 
         next()
-      } catch (err) {
+      } catch (error) {
         return res.send(ErrorResponse(401, 'invalid credentails'))
       }
     } else {
-      res.send(ErrorResponse(401, 'invalid credentials'))
+      return res.send(ErrorResponse(401, 'invalid credentials'))
     }
   } else {
     return res.send(ErrorResponse(400, 'you must login first'))

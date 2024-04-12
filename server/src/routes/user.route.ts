@@ -1,30 +1,18 @@
-import express from 'express'
-import {
-  CreateUser,
-  EditUserProfile,
-  GetAllUsers,
-  GetUserID,
-  GetUserProfile,
-  PostUserReview,
-  RecoverPassword,
-  ResetPassword,
-  UserLogin,
-} from '@/services'
-import { AuthMiddleware } from '@/middleware/auth.middleware'
+import { UserController } from '@/controller'
+import { AuthMiddleware, ValidateParamMiddleware } from '@/middleware'
+import express, { Router } from 'express'
 
-const router = express.Router()
+const router: Router = express.Router()
 
-router.post('/login', UserLogin)
-router.post('/signup', CreateUser)
-router.post('/password-recovery', RecoverPassword)
-router.post('/reset-password/:id', ResetPassword)
+const controller = new UserController()
 
-// Protected Routes
-router.use(AuthMiddleware)
-router.get('/profile', GetUserProfile)
-router.patch('/profile/edit', EditUserProfile)
-router.get('/', GetAllUsers)
-router.get('/:id', GetUserID)
-router.post('/post/:id', PostUserReview)
+router.get('/all', controller.GetAllUsers.bind(controller))
+router.get('/:id', ValidateParamMiddleware, controller.GetCurrentUser.bind(controller))
+router.post('/login', controller.LoginUser.bind(controller))
+router.post('/signup', controller.SignupUser.bind(controller))
+router.post('/logout', controller.LogoutUser.bind(controller))
+
+router.put('/:id', AuthMiddleware, ValidateParamMiddleware, controller.EditProfile.bind(controller))
+router.delete('/:id', AuthMiddleware, ValidateParamMiddleware, controller.DeleteAccount.bind(controller))
 
 export { router as userRouter }

@@ -8,9 +8,6 @@
 export const formatResponse = (statusCode: number, message: string, data: unknown): object => {
   return {
     statusCode,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
     body: {
       message,
       ...(data ? { data } : {}),
@@ -38,9 +35,6 @@ export const ErrorResponse = (code: number, error: unknown): object => {
   if (Array.isArray(error)) {
     return {
       statusCode: code,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
       body: {
         message: 'an error ocurred',
         error,

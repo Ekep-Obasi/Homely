@@ -3,7 +3,6 @@ import { ListingService } from '@/services'
 import { ValidatePayload } from '@/utils'
 import { ErrorResponse, SuccessResponse, formatResponse } from '@/utils/response'
 import { Request, NextFunction, Response } from 'express'
-import { FilterQuery } from 'mongoose'
 
 class ListingController {
   private readonly service: ListingService
@@ -25,8 +24,8 @@ class ListingController {
       let listings = await this.service.queryListings(queries)
 
       return res.send(SuccessResponse(listings))
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
     }
   }
 
@@ -38,9 +37,9 @@ class ListingController {
 
       if (!listing) return res.send(formatResponse(404, `listing not found!`, listing))
 
-      res.send(SuccessResponse(listing))
-    } catch (err) {
-      next(err)
+      return res.send(SuccessResponse(listing))
+    } catch (error) {
+      next(error)
     }
   }
 
@@ -55,15 +54,15 @@ class ListingController {
       // TODO: enable validation
       // I've disable validation bcs formdata apparently
       // does not care about feild types
-      if (!errors.length) {
+      if (!errors.length || !ownerRef) {
         return res.send(ErrorResponse(400, errors))
       }
 
-      const listing = await this.service.createListing(requestPayload, ownerRef ?? '6617c23006bbf679694fd6d8', file)
+      const listing = await this.service.createListing(requestPayload, ownerRef, file)
 
       return res.send(SuccessResponse(listing))
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
     }
   }
   async EditListing(req: Request, res: Response, next: NextFunction) {
@@ -84,8 +83,24 @@ class ListingController {
       if (!listing) return res.send(ErrorResponse(404, 'listing not found!'))
 
       return res.send(SuccessResponse(listing))
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public async GetUserListings(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id
+
+      const listings = await this.service.getUserListings(id)
+
+      if (!listings) {
+        return res.send(SuccessResponse([]))
+      }
+
+      return res.send(SuccessResponse(listings?.listings))
+    } catch (error) {
+      next(error)
     }
   }
 
@@ -96,8 +111,8 @@ class ListingController {
       await this.service.deleteListing(id)
 
       return res.send(SuccessResponse({}))
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
     }
   }
 }

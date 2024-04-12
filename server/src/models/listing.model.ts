@@ -21,7 +21,7 @@ export const ListingSchema = new Schema<Listing>(
     location: String,
     latitude: { type: Number },
     longitude: { type: Number },
-    owner_id: { type: mongoose.SchemaTypes.ObjectId, ref: 'user' },
+    owner_id: { type: Schema.Types.ObjectId, ref: 'user' },
   },
   {
     timestamps: true,

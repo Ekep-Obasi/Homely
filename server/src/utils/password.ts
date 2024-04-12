@@ -21,5 +21,5 @@ export const HashPassword = async (password: string, salt: string): Promise<stri
  * @param {string} salt The salt value used for hashing.
  * @returns {Promise<boolean>} A promise that resolves to true if the entered password matches the saved password; otherwise, false.
  */
-export const ValidatePassword = async (enteredPassword: string, savedPassword: string, salt: string): Promise<boolean> =>
+export const VerifyPassword = async (enteredPassword: string, savedPassword: string, salt: string): Promise<boolean> =>
   savedPassword === (await HashPassword(enteredPassword, salt))

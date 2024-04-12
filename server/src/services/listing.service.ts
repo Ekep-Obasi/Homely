@@ -1,63 +1,86 @@
-import ListingReposity from '@/repository/listing.repo'
+import { ListingReposity, UserRepository } from '@/repository'
 import { CreateListingPayload, ListingQuery } from '../dto/listing.dto'
+import { Listing, User } from '@/domains'
 import { ServerError } from '@/utils/error'
-import { Listing } from '@/domains'
 
 class ListingService {
-  private repo: ListingReposity
+  private listingRepo: ListingReposity
+  private userRepo: UserRepository
 
   constructor() {
-    this.repo = new ListingReposity()
+    this.listingRepo = new ListingReposity()
+    this.userRepo = new UserRepository()
   }
 
   public async createListing(data: CreateListingPayload, ownerRef: string, file: Express.Multer.File[]): Promise<Listing> {
     try {
-      return await this.repo.createListing({ ...data, owner_id: ownerRef }, file)
-    } catch (err) {
-      console.log(err)
-      throw new ServerError()
+      const listing = await this.listingRepo.createListing({ ...data, owner_id: ownerRef }, file)
+
+      const listingOwner = await this.userRepo.findUserById(ownerRef)
+
+      if (!listing._id || !listingOwner) {
+        throw new ServerError()
+      }
+
+      listingOwner.listings.push(listing._id.toString())
+
+      await listingOwner.save()
+
+      return listing
+    } catch (error) {
+      throw error
     }
   }
 
   public async getAllListings(): Promise<Listing[]> {
     try {
-      return await this.repo.findAllListings()
-    } catch {
-      throw new ServerError()
+      return await this.listingRepo.findAllListings()
+    } catch (error) {
+      throw error
     }
   }
 
   public async queryListings(query: ListingQuery): Promise<Listing[] | Listing> {
     try {
-      return await this.repo.queryListings(query)
-    } catch {
-      throw new ServerError()
+      return await this.listingRepo.queryListings(query)
+    } catch (error) {
+      throw error
     }
   }
 
   public async getListingById(id: string): Promise<Listing | null> {
     try {
-      return await this.repo.findListingById(id)
-    } catch {
-      throw new ServerError()
+      return await this.listingRepo.findListingById(id)
+    } catch (error) {
+      throw error
     }
   }
 
   public async deleteListing(id: string) {
     try {
-      return await this.repo.deteteListing(id)
-    } catch (err) {
-      throw new ServerError(500, 'INTERNAL_ERROR', `${err}`)
+      return await this.listingRepo.deteteListing(id)
+    } catch (error) {
+      throw error
     }
   }
 
   public async editListing(data: Partial<CreateListingPayload>, id: string) {
     try {
-      await this.repo.updateListing(data, id)
+      await this.listingRepo.updateListing(data, id)
 
-      return this.repo.findListingById(id)
-    } catch (err) {
-      throw new ServerError(500, 'INTERNAL_ERROR', `${err}`)
+      return this.listingRepo.findListingById(id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getUserListings(id: string): Promise<User | null> {
+    try {
+      const user = await this.userRepo.findUserWithListings(id)
+
+      return user
+    } catch (error) {
+      throw error
     }
   }
 }

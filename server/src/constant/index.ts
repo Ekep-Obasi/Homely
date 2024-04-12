@@ -13,3 +13,4 @@ export const houseQuality = ['Minimal', 'Classic', 'Modern'] as const
 export const houseType = ['Room', 'Studio', 'Apartement'] as const
 export const userRoles = ['client', 'landloard'] as const
 export const authMethods = ['email-and-password', 'google', 'facebook'] as const
+export const defaultAvatar = 'https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png'

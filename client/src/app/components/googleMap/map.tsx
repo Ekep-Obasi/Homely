@@ -6,9 +6,9 @@ import MapSearchBox from './map-search'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { products } from '@/app/constants/product-card'
 import { FaHome } from 'react-icons/fa'
-import { ProductCard } from '../cards/product-card'
 import { useApp } from '@/app/context/app-context'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
+import { MAP_BOX_API_TOKEN } from '@/app/constants'
 
 interface Props {
   width: string
@@ -19,8 +19,8 @@ export default function Map({ width, height }: Props) {
   const mapRef = React.useRef<MapRef | null>(null)
   const { location } = useApp()
   const [viewport, setViewPort] = React.useState<ViewState>({
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: location?.latitude,
+    longitude: location?.longitude,
     zoom: 10,
   })
 
@@ -30,7 +30,7 @@ export default function Map({ width, height }: Props) {
         {...viewport}
         height={height}
         width={width}
-        mapboxApiAccessToken="pk.eyJ1Ijoia2VsbWl0aCIsImEiOiJjbGx4NmE3bm8wNzBwM3BwZ3hycnRjenZrIn0.1rmQnWTCFD2zcmITVNZj2A"
+        mapboxApiAccessToken={MAP_BOX_API_TOKEN}
         onViewStateChange={(nextViewPort: any) => setViewPort(nextViewPort)}
         ref={(instance) => (mapRef.current = instance)}
         mapStyle="mapbox://styles/leighhalliday/ckhjaksxg0x2v19s1ovps41ef"

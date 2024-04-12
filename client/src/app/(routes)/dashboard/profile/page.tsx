@@ -81,7 +81,7 @@ const LoginForm = () => {
   if (!user) return null
 
   return (
-    <div className="w-1/4 p-4 space-y-1 min-h-full min-w-[350px] mx-auto">
+    <div className="w-1/2 p-4 space-y-1 min-h-full min-w-[350px] mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="py-2">
           <div>

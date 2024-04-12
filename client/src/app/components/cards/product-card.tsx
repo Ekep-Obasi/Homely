@@ -1,10 +1,7 @@
 import * as React from 'react'
 import * as Icons from 'lucide-react'
-
-import { Button } from '../ui/button'
-import { Card, CardContent, CardHeader } from '../ui/card'
+import { Card, CardContent } from '../ui/card'
 import { Separator } from '../ui/separator'
-import { Badge } from '../ui/badge'
 import { usePathname, useRouter } from 'next/navigation'
 import Carousel, { carouselType } from '../carousel'
 import { Listing } from '../../types/listing'

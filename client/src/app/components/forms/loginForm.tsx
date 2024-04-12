@@ -10,14 +10,15 @@ import { useForm } from 'react-hook-form'
 import { CardDescription, CardHeader, CardTitle, CardContent, Card } from '../ui/card'
 import { useRouter } from 'next/navigation'
 import { LoginSchema, loginFormFeilds } from '@/app/validator/auth'
-import { MdOutlineFacebook } from 'react-icons/md'
 import { loginUser } from '@/app/api/auth'
 import { useApp } from '@/app/context/app-context'
 import { useToast } from '@/app/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
-import { FcGoogle } from 'react-icons/fc'
 import { storage } from '@/app/services/storage'
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from '@/app/constants'
+import GoogleOAuth from '../google-auth'
+import FacebookOAuth from '../facebook-auth'
+import OAuth from '../oauth'
 
 const LoginForm = () => {
   const { loading, setLoading, setUser } = useApp()
@@ -86,27 +87,10 @@ const LoginForm = () => {
                 Forgot Password?
               </a>
             </FormDescription>
-            <Button className="my-3 w-full" disabled={loading}>
+            <Button type="submit" className="my-3 w-full" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
-            <div
-              className="mx-auto my-3 flex w-full items-center justify-evenly
-            before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400
-            after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400"
-            >
-              or
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="w-full flex space-x-1 items-center">
-                <FcGoogle size={18} />
-                <span>Google</span>
-              </Button>
-
-              <Button variant="outline" className="w-full flex space-x-1 items-center">
-                <MdOutlineFacebook size={18} />
-                <span>facebook</span>
-              </Button>
-            </div>
+            <OAuth />
             <div className="w-full text-left text-sm">
               Do you have an account? &nbsp;
               <a href="/signup" className=" text-blue-400 hover:underline">

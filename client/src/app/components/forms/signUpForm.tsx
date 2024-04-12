@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useApp } from '@/app/context/app-context'
 import { useToast } from '@/app/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
+import OAuth from '../oauth'
 
 const SignUpForm = () => {
   const { loading, setLoading, setUser } = useApp()
@@ -101,6 +102,7 @@ const SignUpForm = () => {
             <Button className="my-3 w-full" disabled={loading}>
               {loading ? 'You will be signed in soon...' : 'Sign Up'}
             </Button>
+            <OAuth />
             <p className="text-sm">
               Already Have An account?
               <a href="/login" className="text-blue-400 ml-1 hover:underline">

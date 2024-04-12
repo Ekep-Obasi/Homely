@@ -6,7 +6,6 @@ import { ModeToggle } from '../mode-toggle'
 import { DashboardDrawer } from './DashboardDrawer'
 import { DashboardLeftMenu } from './dashboard-left-drawer'
 import { Button } from '../ui/button'
-import Image from 'next/image'
 import { Bell } from 'lucide-react'
 import { Search } from './search'
 import { usePathname } from 'next/navigation'
@@ -33,7 +32,7 @@ export function DashBoardMenu() {
           </NavigationMenuItem>
           <NavigationMenuItem className="flex justify-center items-center">
             <Link href="/">
-              <Image src="/images/white-logo.png" height="50" alt="homely" />
+              <img src="/images/white-logo.png" width="50px" alt="homely" />
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem className="flex justify-center items-center">

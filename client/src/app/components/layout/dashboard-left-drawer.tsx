@@ -6,7 +6,6 @@ import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '../ui/navigation-menu'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Separator } from '../ui/separator'
 
@@ -77,7 +76,7 @@ export function DashboardLeftMenu() {
         <SheetHeader>
           <SheetTitle>
             <a href="/">
-              <Image src="/images/logo1.png" height="75" alt="logo" />
+              <img src="/images/logo1.png" height="75px" alt="logo" />
             </a>
           </SheetTitle>
         </SheetHeader>

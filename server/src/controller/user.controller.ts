@@ -20,12 +20,12 @@ class UserController {
       const errors = await ValidatePayload(CreateUserPayload, payload)
 
       if (errors.length) {
-        return res.send(ErrorResponse(401, errors))
+        return res.status(401).send(ErrorResponse(401, errors))
       }
 
       const user = await this.authService.signupUser(payload)
 
-      return res.send(SuccessResponse(user))
+      return res.status(200).send(SuccessResponse(user))
     } catch (error) {
       next(error)
     }
@@ -37,7 +37,7 @@ class UserController {
       const errors = await ValidatePayload(LoginUserPayload, payload)
 
       if (errors.length) {
-        return res.send(ErrorResponse(401, errors))
+        return res.status(401).send(ErrorResponse(401, errors))
       }
 
       const { user, token } = await this.authService.loginUser(payload)
@@ -46,7 +46,7 @@ class UserController {
 
       res.cookie('access_token', token, { httpOnly: true })
 
-      return res.send(SuccessResponse({ ...rest }))
+      return res.status(200).send(SuccessResponse({ ...rest }))
     } catch (error) {
       next(error)
     }
@@ -55,8 +55,8 @@ class UserController {
   public async LogoutUser(req: Request, res: Response, next: NextFunction) {
     try {
       res.clearCookie('access_token')
-      
-      return res.send(formatResponse(200, 'User has been logged out!', null))
+
+      return res.status(200).send(formatResponse(200, 'User has been logged out!', null))
     } catch (error) {
       next(error)
     }
@@ -70,16 +70,16 @@ class UserController {
 
       // TODO
       if (!errors.length) {
-        return res.send(ErrorResponse(401, errors))
+        return res.status(401).send(ErrorResponse(401, errors))
       }
 
       const user = await this.userService.editProfile(payload, id)
 
       if (!user) {
-        return res.send(ErrorResponse(404, 'user not found!'))
+        return res.status(404).send(ErrorResponse(404, 'user not found!'))
       }
 
-      return res.send(SuccessResponse(user))
+      return res.status(200).send(SuccessResponse(user))
     } catch (error) {
       next(error)
     }
@@ -89,7 +89,7 @@ class UserController {
     try {
       const users = await this.userService.getAllUsers()
 
-      return res.send(SuccessResponse(users))
+      return res.status(200).send(SuccessResponse(users))
     } catch (error) {
       next(error)
     }
@@ -102,10 +102,10 @@ class UserController {
       const user = await this.userService.getCurrentUser(id)
 
       if (!user) {
-        return res.send(ErrorResponse(404, 'user not found!'))
+        return res.status(404).send(ErrorResponse(404, 'user not found!'))
       }
 
-      return res.send(SuccessResponse(user))
+      return res.status(200).send(SuccessResponse(user))
     } catch (error) {
       next(error)
     }
@@ -119,7 +119,7 @@ class UserController {
 
       res.clearCookie('access_token')
 
-      return res.send(formatResponse(200, 'account deleted successful', null))
+      return res.status(200).send(formatResponse(200, 'account deleted successful', null))
     } catch (error) {
       next(error)
     }

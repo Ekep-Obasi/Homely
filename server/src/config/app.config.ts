@@ -1,5 +1,5 @@
 import express, { Application } from 'express'
-import { routesInit } from '../routes'
+import { routesInit } from '@/routes'
 import path from 'path'
 import cors from 'cors'
 import { ErrorHandler } from '@/utils/error'

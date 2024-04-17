@@ -18,12 +18,12 @@ class ListingController {
       if (!queries) {
         const listings = await this.service.getAllListings()
 
-        return res.send(SuccessResponse(listings))
+        return res.status(200).send(SuccessResponse(listings))
       }
 
       let listings = await this.service.queryListings(queries)
 
-      return res.send(SuccessResponse(listings))
+      return res.status(200).send(SuccessResponse(listings))
     } catch (error) {
       next(error)
     }
@@ -37,7 +37,7 @@ class ListingController {
 
       if (!listing) return res.send(formatResponse(404, `listing not found!`, listing))
 
-      return res.send(SuccessResponse(listing))
+      return res.status(200).send(SuccessResponse(listing))
     } catch (error) {
       next(error)
     }
@@ -55,12 +55,12 @@ class ListingController {
       // I've disable validation bcs formdata apparently
       // does not care about feild types
       if (!errors.length || !ownerRef) {
-        return res.send(ErrorResponse(400, errors))
+        return res.status(400).send(ErrorResponse(400, errors))
       }
 
       const listing = await this.service.createListing(requestPayload, ownerRef, file)
 
-      return res.send(SuccessResponse(listing))
+      return res.status(200).send(SuccessResponse(listing))
     } catch (error) {
       next(error)
     }
@@ -75,14 +75,14 @@ class ListingController {
       // TODO: re-enable validation and make sure
       // it works properly
       if (!errors.length) {
-        return res.send(ErrorResponse(400, errors))
+        return res.status(400).send(ErrorResponse(400, errors))
       }
 
       const listing = await this.service.editListing(requestPayload, listingId)
 
-      if (!listing) return res.send(ErrorResponse(404, 'listing not found!'))
+      if (!listing) return res.status(400).send(ErrorResponse(404, 'listing not found!'))
 
-      return res.send(SuccessResponse(listing))
+      return res.status(200).send(SuccessResponse(listing))
     } catch (error) {
       next(error)
     }
@@ -95,10 +95,10 @@ class ListingController {
       const listings = await this.service.getUserListings(id)
 
       if (!listings) {
-        return res.send(SuccessResponse([]))
+        return res.status(200).send(SuccessResponse([]))
       }
 
-      return res.send(SuccessResponse(listings?.listings))
+      return res.status(200).send(SuccessResponse(listings?.listings))
     } catch (error) {
       next(error)
     }
@@ -110,7 +110,7 @@ class ListingController {
 
       await this.service.deleteListing(id)
 
-      return res.send(SuccessResponse({}))
+      return res.status(200).send(SuccessResponse({}))
     } catch (error) {
       next(error)
     }

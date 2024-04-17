@@ -8,3 +8,15 @@
 {"level":"error","message":"Thu Apr 11 2024 13:11:58 GMT+0100 (West Africa Standard Time)-{\"statusCode\":500,\"errorType\":\"INTERNAL_ERROR\",\"isOperational\":true,\"logError\":true}","private":true}
 {"level":"error","message":"Thu Apr 11 2024 13:39:05 GMT+0100 (West Africa Standard Time)-{}","private":true}
 {"level":"error","message":"Thu Apr 11 2024 16:40:07 GMT+0100 (West Africa Standard Time)-{\"statusCode\":500,\"errorType\":\"INTERNAL_ERROR\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 00:38:46 GMT+0100 (West Africa Standard Time)-{}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 00:38:53 GMT+0100 (West Africa Standard Time)-{}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 00:39:54 GMT+0100 (West Africa Standard Time)-{}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 00:43:12 GMT+0100 (West Africa Standard Time)-{\"statusCode\":409,\"errorType\":\"CONFLICT\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 01:07:15 GMT+0100 (West Africa Standard Time)-{\"statusCode\":403,\"errorType\":\"UNAUTHORIZED\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 12:32:36 GMT+0100 (West Africa Standard Time)-{\"statusCode\":409,\"errorType\":\"CONFLICT\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 12:33:26 GMT+0100 (West Africa Standard Time)-{\"statusCode\":403,\"errorType\":\"UNAUTHORIZED\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Sun Apr 14 2024 13:38:48 GMT+0100 (West Africa Standard Time)-{\"statusCode\":403,\"errorType\":\"UNAUTHORIZED\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Tue Apr 16 2024 21:05:15 GMT+0100 (West Africa Standard Time)-{\"statusCode\":409,\"errorType\":\"CONFLICT\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Tue Apr 16 2024 21:07:17 GMT+0100 (West Africa Standard Time)-{\"statusCode\":409,\"errorType\":\"CONFLICT\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Tue Apr 16 2024 22:27:57 GMT+0100 (West Africa Standard Time)-{\"statusCode\":403,\"errorType\":\"UNAUTHORIZED\",\"isOperational\":true,\"logError\":true}","private":true}
+{"level":"error","message":"Wed Apr 17 2024 02:46:51 GMT+0100 (West Africa Standard Time)-{\"message\":\"request to https://storage.googleapis.com/storage/v1/b/homely-3b035.appspot.com/o/listings%2F661f25d60c9b040a67117c22%2Flynn-van-den-broeck-9KSoHS5_xiM-unsplash.jpg/acl? failed, reason: socket hang up\",\"type\":\"system\",\"errno\":\"ECONNRESET\",\"code\":\"ECONNRESET\"}","private":true}

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { MONGODB_URI } from '../constant'
+import { MONGODB_URI } from '@/constant'
 
 export default async () => {
   try {

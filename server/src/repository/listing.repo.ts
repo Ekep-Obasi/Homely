@@ -22,7 +22,7 @@ class ListingReposity {
   }
 
   public async findListingById(id: string): Promise<Listing | null> {
-    return await this.model.findById(id).populate("owner_id")
+    return await this.model.findById(id).populate('owner_id')
   }
 
   public async findAllListings() {

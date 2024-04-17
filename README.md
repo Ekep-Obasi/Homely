@@ -1,5 +1,5 @@
 # Homely 🏠
-[![Homely](client/src/app/assets/preview.jpg)](https://github.com/Ekep-Obasi/homely)
+[![Homely](client/public/preview.png)](https://github.com/Ekep-Obasi/homely)
 
 ## 💥 Introduction
 

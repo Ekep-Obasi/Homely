@@ -7,21 +7,21 @@ import { Button } from '../ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
-import { CardDescription, CardHeader, CardTitle, CardContent, Card } from '../ui/card'
+import { CardHeader, CardTitle, CardContent, Card } from '../ui/card'
 import { useRouter } from 'next/navigation'
 import { LoginSchema, loginFormFeilds } from '@/app/validator/auth'
 import { loginUser } from '@/app/api/auth'
-import { useApp } from '@/app/context/app-context'
+import { useAppStore } from '@/app/store/appStore'
 import { useToast } from '@/app/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
 import { storage } from '@/app/services/storage'
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from '@/app/constants'
-import GoogleOAuth from '../google-auth'
-import FacebookOAuth from '../facebook-auth'
 import OAuth from '../oauth'
+import { useUserStore } from '@/app/store/userStore'
 
 const LoginForm = () => {
-  const { loading, setLoading, setUser } = useApp()
+  const { setUser } = useUserStore((s) => s)
+  const { loading, setLoading } = useAppStore((s) => s)
   const router = useRouter()
   const { toast } = useToast()
 
@@ -37,7 +37,7 @@ const LoginForm = () => {
     try {
       setLoading(true)
       const res = await loginUser(values)
-      if (res.data.token) {
+      if (res.data) {
         setUser(res.data)
         storage.set(USER_STORAGE_KEY, res.data)
         storage.set(TOKEN_STORAGE_KEY, res.data.token)
@@ -49,10 +49,9 @@ const LoginForm = () => {
           description: res.data.message,
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         })
-        setLoading(false)
       }
     } catch (err) {
-      setLoading(false)
+      console.log('failed to authenticate')
     } finally {
       setLoading(false)
     }
@@ -61,8 +60,7 @@ const LoginForm = () => {
   return (
     <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto gap-4">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Welcome Back! 👋</CardDescription>
+        <CardTitle className="mx-auto">Sign in to Homely</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -91,12 +89,6 @@ const LoginForm = () => {
               {loading ? 'Logging in...' : 'Login'}
             </Button>
             <OAuth />
-            <div className="w-full text-left text-sm">
-              Do you have an account? &nbsp;
-              <a href="/signup" className=" text-blue-400 hover:underline">
-                sign up
-              </a>
-            </div>
           </form>
         </Form>
       </CardContent>

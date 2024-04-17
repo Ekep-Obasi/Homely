@@ -37,7 +37,13 @@ export default function SetLocationFromMap() {
   }, [])
 
   return (
-    <ReactMapGL {...initialViewState} mapStyle="mapbox://styles/mapbox/dark-v9" height="750px" width="100%" mapboxApiAccessToken={TOKEN}>
+    <ReactMapGL
+      {...initialViewState}
+      mapStyle="mapbox://styles/mapbox/dark-v9"
+      height="750px"
+      width="100%"
+      mapboxApiAccessToken={TOKEN}
+    >
       <Marker
         longitude={marker.longitude}
         latitude={marker.latitude}

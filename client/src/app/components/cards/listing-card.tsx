@@ -24,7 +24,7 @@ export default function ListingCard(props: Listing) {
       <div className="flex space-x-1 space-y-1 py-3 items-center p-1 text-sm">
         <span className="text-sm p-1 bg-slate-300 rounded-sm">{props.availability}</span>
         <span>Updated Dec 5</span>
-        <a href={`/rent/${props.id}`} className="text-blue text-sm">
+        <a href={`rent/${props._id}`} className="text-blue text-sm">
           View Listing
         </a>
       </div>

@@ -2,6 +2,7 @@ export interface UserSignUp {
   user_name: string
   email: string
   password: string
+  auth_method: string
 }
 
 export interface UserLogin {
@@ -10,16 +11,16 @@ export interface UserLogin {
 }
 
 export interface User {
-  user_name?: string
-  email?: string
-  date_of_birth?: string
+  user_name: string
+  email: string
+  phone: string
+  address: string
+  avatar: string
+  role: string
+  _id: string
+  password?: string
   status?: string
-  phone?: string
-  address?: string
-  avatar?: string
-  role?: string
-  _id?: string
-  properties?: any
+  listings?: any
   reviews?: any
   token?: string
 }

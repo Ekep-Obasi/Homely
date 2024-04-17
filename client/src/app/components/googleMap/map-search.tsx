@@ -9,8 +9,8 @@ import { Command, CommandEmpty, CommandGroup, CommandItem } from '../ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
 import { useGoogleMapsScript, Libraries } from 'use-google-maps-script'
-import { AppContext } from '../../context/app-context'
 import { Input } from '../ui/input'
+import { useAppStore } from '@/app/store'
 
 interface ISearchBoxProps {
   onSelectAddress?: (address: string, latitude: number | null, longitude: number | null) => void
@@ -41,14 +41,14 @@ function ReadySearchBox({ onSelectAddress, defaultValue }: ISearchBoxProps) {
   } = usePlacesAutocomplete({ debounce: 300, defaultValue })
 
   const [open, setOpen] = React.useState(false)
-  const { setLocation }: any = React.useContext(AppContext)
+  const { setLocation } = useAppStore((s) => s)
   const handleSelect = async (address: any) => {
     setValue(address, false)
     clearSuggestions()
 
     const result = await getGeocode({ address })
     const { lat, lng } = await getLatLng(result[0])
-    setLocation({ lat, lng, address: address })
+    setLocation({ latitude: lat, longitude: lng })
     setOpen(false)
   }
 

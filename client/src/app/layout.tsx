@@ -1,7 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import AppProvider, { useApp } from './context/app-context'
 import { Toaster } from './components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,10 +20,8 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <AppProvider>
-        <body className={inter.className}>{children}</body>
-        <Toaster />
-      </AppProvider>
+      <body className={inter.className}>{children}</body>
+      <Toaster />
     </html>
   )
 }

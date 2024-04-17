@@ -6,7 +6,7 @@ import MapSearchBox from './map-search'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { products } from '@/app/constants/product-card'
 import { FaHome } from 'react-icons/fa'
-import { useApp } from '@/app/context/app-context'
+import { useAppStore } from '@/app/store'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import { MAP_BOX_API_TOKEN } from '@/app/constants'
 
@@ -17,10 +17,10 @@ interface Props {
 
 export default function Map({ width, height }: Props) {
   const mapRef = React.useRef<MapRef | null>(null)
-  const { location } = useApp()
+  const { location } = useAppStore()
   const [viewport, setViewPort] = React.useState<ViewState>({
-    latitude: location?.latitude,
-    longitude: location?.longitude,
+    latitude: location?.latitude || 1,
+    longitude: location?.longitude || 1,
     zoom: 10,
   })
 
@@ -39,7 +39,14 @@ export default function Map({ width, height }: Props) {
         scrollZoom={true}
       >
         {products.map((item, index, arr) => (
-          <Marker latitude={item.latitude} longitude={item.longitude} className="w-[50px] h-[50px]" key={index} offsetTop={-15} offsetLeft={-15}>
+          <Marker
+            latitude={item.latitude}
+            longitude={item.longitude}
+            className="w-[50px] h-[50px]"
+            key={index}
+            offsetTop={-15}
+            offsetLeft={-15}
+          >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

@@ -4,15 +4,13 @@ import * as z from 'zod'
 
 export const registrationSchema = z
   .object({
-    user_name: z.string().min(3, 'Username must be 3 atleast characters').max(50, 'Username must not exceed 50 characters'),
+    user_name: z
+      .string()
+      .min(3, 'Username must be 3 atleast characters')
+      .max(50, 'Username must not exceed 50 characters'),
     email: z.string().email(),
-    password: z.string().min(1, 'Password Required').min(5, 'Password must be atleast 5 characters'),
-    pswd_confirm: z.string().min(1, 'Password Required'),
+    password: z.string().min(1, 'Password Required').min(8, 'Password must be atleast 5 characters'),
     agree: z.boolean().default(false).optional(),
-  })
-  .refine(({ password, pswd_confirm }) => password === pswd_confirm, {
-    path: ['pswd_confirm'],
-    message: 'Passwords do not match',
   })
   .refine(({ agree }) => agree === true, {
     path: ['agree'],
@@ -21,7 +19,7 @@ export const registrationSchema = z
 
 type signUpFeildTypes = {
   [k: string]: string
-  name: 'user_name' | 'email' | 'password' | 'pswd_confirm'
+  name: 'user_name' | 'email' | 'password'
 }[]
 
 export const signUpFormFeilds: signUpFeildTypes = [
@@ -42,12 +40,6 @@ export const signUpFormFeilds: signUpFeildTypes = [
     label: 'Password',
     type: 'password',
     placeholder: 'Enter your password',
-  },
-  {
-    name: 'pswd_confirm',
-    label: 'Confirm Password',
-    type: 'password',
-    placeholder: 'Confirm your password',
   },
 ]
 

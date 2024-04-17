@@ -48,4 +48,9 @@ export const anotherComponent: componentProps[] = [
     icon: <Icons.Settings />,
     href: '/',
   },
+  {
+    title: 'About',
+    icon: <Icons.GithubIcon />,
+    href: '/',
+  },
 ]

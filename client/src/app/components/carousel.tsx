@@ -41,12 +41,23 @@ export default function Carousel({ image, type, width }: Props) {
           )}
 
           <div className="flex justify-between  w-full right-0 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-1">
-            <ChevronLeft className="cursor-pointer" onClick={() => setIndex((prev) => (prev === 0 ? image.length - 1 : prev - 1))} />
-            <ChevronRight className="cursor-pointer" onClick={() => setIndex((prev) => (prev === image.length - 1 ? 0 : prev + 1))} />
+            <ChevronLeft
+              className="cursor-pointer"
+              onClick={() => setIndex((prev) => (prev === 0 ? image.length - 1 : prev - 1))}
+            />
+            <ChevronRight
+              className="cursor-pointer"
+              onClick={() => setIndex((prev) => (prev === image.length - 1 ? 0 : prev + 1))}
+            />
           </div>
           <div className="absolute gap-[1px] bottom-0 m-auto left-0 right-0 w-full flex justify-center cursor-pointer px-1">
             {image.map((_, key) => (
-              <Dot key={key} size={40} className={key === index ? 'text-white' : 'text-black'} onClick={() => setIndex(key)} />
+              <Dot
+                key={key}
+                size={40}
+                className={key === index ? 'text-white' : 'text-black'}
+                onClick={() => setIndex(key)}
+              />
             ))}
           </div>
         </motion.div>

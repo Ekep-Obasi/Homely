@@ -6,19 +6,20 @@ import { Button } from '../ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
-import { CardDescription, CardHeader, CardTitle, CardContent, Card } from '../ui/card'
+import { CardHeader, CardTitle, CardContent, Card } from '../ui/card'
 import { registrationSchema, signUpFormFeilds } from '@/app/validator/auth'
 import { Checkbox } from '../ui/checkbox'
 import { Input } from '../ui/input'
 import { signUpUser } from '@/app/api/auth'
 import { useRouter } from 'next/navigation'
-import { useApp } from '@/app/context/app-context'
 import { useToast } from '@/app/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
 import OAuth from '../oauth'
+import { useUserStore, useAppStore } from '@/app/store'
 
 const SignUpForm = () => {
-  const { loading, setLoading, setUser } = useApp()
+  const { loading, setLoading } = useAppStore()
+  const { setUser } = useUserStore()
   type InputProps = z.infer<typeof registrationSchema>
   const router = useRouter()
   const { toast } = useToast()
@@ -29,19 +30,17 @@ const SignUpForm = () => {
       user_name: '',
       email: '',
       password: '',
-      pswd_confirm: '',
       agree: false,
     },
   })
 
-  async function onSubmit({ agree, pswd_confirm, ...data }: InputProps) {
+  async function onSubmit({ agree, ...data }: InputProps) {
     try {
       setLoading(true)
-      const res = await signUpUser(data)
-      if (res.data._id) {
+      const res = await signUpUser({ ...data, auth_method: 'email-and-password' })
+      if (res.data) {
         setUser(res.data)
         router.push('/login')
-        setLoading(false)
       } else {
         toast({
           variant: 'destructive',
@@ -49,24 +48,22 @@ const SignUpForm = () => {
           description: res.data.message,
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         })
-        setLoading(false)
       }
     } catch (err) {
       console.error(err)
+    } finally {
       setLoading(false)
-      return
     }
   }
 
   return (
     <Card className="w-1/4 md:border md:shadow-md border-0 shadow-none rounded space-y-1 min-w-[350px] mx-auto">
       <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Ready to start this journey with us?</CardDescription>
+        <CardTitle className="mx-auto">Create Homely Account</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form {...form} onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             {signUpFormFeilds.map((props) => (
               <FormField
                 control={form.control}
@@ -99,16 +96,10 @@ const SignUpForm = () => {
                 )
               }}
             />
-            <Button className="my-3 w-full" disabled={loading}>
+            <Button type="submit" className="my-3 w-full">
               {loading ? 'You will be signed in soon...' : 'Sign Up'}
             </Button>
             <OAuth />
-            <p className="text-sm">
-              Already Have An account?
-              <a href="/login" className="text-blue-400 ml-1 hover:underline">
-                Login
-              </a>
-            </p>
           </form>
         </Form>
       </CardContent>

@@ -1,25 +1,41 @@
 import * as React from 'react'
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select'
+import { useDataStore } from '../store'
+import { listingTypes } from '../types/listing'
+
+export type OptionsList = {
+  label: string
+  value: listingTypes
+}
 
 interface dropDownProps {
   label?: string
   placeholder?: string | React.ReactNode
-  options: string[]
+  options: OptionsList[]
   styles?: string
 }
 
 export function DropDown(props: dropDownProps) {
+  const { listingQueries, setListingQueries } = useDataStore()
   return (
-    <Select>
-      <SelectTrigger className={props.styles}>
+    <Select onValueChange={(value) => setListingQueries({ ...listingQueries, type: value })}>
+      <SelectTrigger  className={props.styles}>
         <SelectValue placeholder={props.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {props.options?.map((option) => (
-            <SelectItem key={option.toLocaleLowerCase()} value={option.toLocaleLowerCase()}>
-              {option}
+          {props.options.map(({ value, label }) => (
+            <SelectItem key={value} value={value} >
+              {label}
             </SelectItem>
           ))}
         </SelectGroup>

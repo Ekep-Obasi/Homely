@@ -2,35 +2,32 @@ import * as React from 'react'
 import * as Icons from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
 import { Separator } from '../ui/separator'
-import { usePathname, useRouter } from 'next/navigation'
-import Carousel, { carouselType } from '../carousel'
+import { useRouter } from 'next/navigation'
 import { Listing } from '../../types/listing'
 
-export function ProductCard(props: Listing) {
+export function ListingCard(props: Listing) {
   const router = useRouter()
-  const pathname = usePathname()
 
   return (
     <Card
-      className="min-w-[325px] hover:cursor-pointer scale-100 hover:scale-95 transition-all"
-      onClick={() => router.push(`${pathname}/${props.id}`)}
+      className="w-[320px] h-[425px] hover:cursor-pointer scale-100 hover:scale-95 transition-all"
+      onClick={() => router.replace(`dashboard/rent/${props._id}`)}
     >
-      <Carousel image={props.image_list} type={carouselType.CARD} />
-      <CardContent className="py-2 space-y-2">
-        <div className="flex text-sm items-center space-x-1">
-          <Icons.BadgeCheck className="bg-green" /> <p>verified</p>
-        </div>
-        <div className="w-full">
-          <p className="flex font-bold">{props.address}</p>
-          <div className="flex items-center space-x-1 text-muted-foreground">
-            <Icons.MapPin /> <p>{props.name}</p>
+      <img src={props.image_list[1]} className='w-full h-[250px]' />
+      <CardContent className="py-2 space-y-3">
+        <div className="w-full space-y-2">
+          <p className="flex font-bold overflow-hidden truncate w-[290px]">{props.name}</p>
+          <div className="flex items-center space-x-1 text-accent-foreground">
+            <Icons.LucideMapPin color='red' /> <p className='overflow-hidden truncate w-[290px]'>{props.address}</p>
           </div>
+          <p className="line-clamp-2 text-muted-foreground text-sm">
+            {props.description}
+          </p>
         </div>
-
         <Separator className="my-2" />
-
+        <div className='flex justify-between'>
         <div className="flex justify-between">
-          <div className="flex items-center justify-between space-x-1">
+          <div className="flex items-center justify-between space-x-2">
             <div className="flex items-center space-x-1 text-sm">
               <Icons.Bed /> <p>{props.room_count}</p>
             </div>
@@ -42,7 +39,8 @@ export function ProductCard(props: Listing) {
             </div>
           </div>
         </div>
-        <p className="font-bold text-primary text-xl">{props.price}</p>
+        <span className="font-bold text-primary text-xl">{props.price}</span>
+        </div>
       </CardContent>
     </Card>
   )

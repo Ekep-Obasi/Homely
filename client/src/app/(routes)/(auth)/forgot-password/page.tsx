@@ -10,7 +10,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Form } from '@/app/components/ui/form'
 import * as z from 'zod'
-import { useApp } from '@/app/context/app-context'
+import { useAppStore } from '@/app/store'
 import { forgotPassword } from '@/app/api/auth'
 import { ToastAction } from '@/app/components/ui/toast'
 import { useRouter } from 'next/navigation'
@@ -20,7 +20,7 @@ type Props = {}
 export default function Logout(props: Props) {
   type InputProps = z.infer<typeof PasswordRecoverySchema>
   const { toast } = useToast()
-  const { loading, setLoading } = useApp()
+  const { loading, setLoading } = useAppStore()
   const router = useRouter()
 
   const form = useForm<InputProps>({
@@ -60,7 +60,9 @@ export default function Logout(props: Props) {
       <CardHeader>
         <CardTitle className="text-center sm:text-left">Forgot Password?</CardTitle>
       </CardHeader>
-      <CardDescription className="px-6 text-center sm:text-left">A password reset event has been triggered, Check your email box</CardDescription>
+      <CardDescription className="px-6 text-center sm:text-left">
+        A password reset event has been triggered, Check your email box
+      </CardDescription>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">

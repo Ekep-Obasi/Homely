@@ -1,7 +1,10 @@
 import * as z from 'zod'
 
 export const createPropeterySchema = z.object({
-  name: z.string().min(6, 'Your property name must be atleast 4 character').max(12, 'Your Property name should not exist 16 characters'),
+  name: z
+    .string()
+    .min(6, 'Your property name must be atleast 4 character')
+    .max(12, 'Your Property name should not exist 16 characters'),
   address: z.string({ required_error: 'Address required' }),
   description: z
     .string({ required_error: 'Description is required' })

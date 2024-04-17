@@ -1,8 +1,23 @@
-export type listingQuality = 'Minimal' | 'Classic' | 'Modern'
-export type listingTypes = 'Room' | 'Studio' | 'Apartement'
+import { User } from '.'
+
+export type listingQuality = 'minimalist' | 'classic' | 'modern' | ''
+export type listingTypes = 'room' | 'studio' | 'apartement' | string
+
+interface listingQueries {
+  sortBy?: 'asc' | 'desc'
+  type?: listingTypes
+  quality?: listingQuality
+  limit?: number
+  search?: string
+}
+
+export type listingCategoryTypes = {
+  label: string
+  value: listingQuality
+}
 
 export interface Listing {
-  id: string
+  _id: string
   name: string
   address: string
   description: string
@@ -23,7 +38,7 @@ export interface Listing {
   street: string
   latitude: number
   longitude: number
-  owner_id: string
+  owner_id: User
   availability: string
 }
 

@@ -11,9 +11,8 @@ import PeopleDataTable from './data-table'
 import { columns } from './columns'
 import { products } from '@/app/constants/product-card'
 import ProductTabs from '@/app/components/layout/product-tabs'
-import { ProductCard } from '@/app/components/cards/product-card'
+import { ListingCard } from '@/app/components/cards/product-card'
 import { Listing } from '@/app/types/listing'
-import ListingCard from '@/app/components/cards/listing-card'
 
 type Props = {}
 
@@ -38,7 +37,7 @@ export default function Sell(props: Props) {
             {products.length !== 0 ? (
               products.map((payload: Listing, id: number) => <ListingCard key={id} {...payload} />)
             ) : (
-              <>No Available products yet</>
+              <>No Available listings yet</>
             )}
           </section>
         </TabsContent>

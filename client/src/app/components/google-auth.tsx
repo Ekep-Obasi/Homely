@@ -4,11 +4,15 @@ import { Button } from './ui/button'
 import { FcGoogle } from 'react-icons/fc'
 import { app } from '../config/firebase'
 import { httpClient } from '../config/axios'
-import { useApp } from '../context/app-context'
+import { useUserStore } from '../store'
 import { User } from '../types/user'
+import { usePathname, useRouter } from 'next/navigation'
+import { ApiResponse } from '../types/index'
 
 const GoogleOAuth = () => {
-  const { setUser } = useApp()
+  const { setUser } = useUserStore()
+  const path = usePathname()
+  const router = useRouter()
 
   const handleGoogleAuth = async () => {
     try {
@@ -16,28 +20,34 @@ const GoogleOAuth = () => {
 
       const auth = getAuth(app)
 
+      localStorage.clear()
+
       const result = await signInWithPopup(auth, provider)
 
-      const user = (await httpClient.post(
-        '/auth',
-        JSON.stringify({
-          user_name: result.user.displayName,
-          email: result.user.email,
-          avatar: result.user.photoURL,
-          is_verified: result.user.emailVerified,
-        }),
-      )) as User
+      const requestBody = {
+        ...(path === '/signup'
+          ? {
+              user_name: result.user.displayName,
+              avatar: result.user.photoURL,
+              auth_method: 'google',
+            }
+          : {}),
+        email: result.user.email,
+        password: result.user.displayName?.slice(0, 11),
+      }
 
-      setUser(user)
+      const user = (await httpClient.post(`/user/${path}`, requestBody)) as ApiResponse<User>
 
-      console.log(result)
+      setUser(user.data.data)
+
+      router.push('/dashboard')
     } catch {
       console.log('failed to authenticate')
     }
   }
 
   return (
-    <Button onClick={handleGoogleAuth} variant="outline" className="w-full flex space-x-1 items-center">
+    <Button type="button" onClick={handleGoogleAuth} variant="outline" className="w-full flex space-x-1 items-center">
       <FcGoogle size={18} />
       <span>Google</span>
     </Button>

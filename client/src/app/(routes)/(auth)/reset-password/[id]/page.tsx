@@ -11,7 +11,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Form } from '@/app/components/ui/form'
 import * as z from 'zod'
-import { useApp } from '@/app/context/app-context'
+import { useAppStore } from '@/app/store/appStore'
 import { resetPassword } from '@/app/api/auth'
 import { ToastAction } from '@/app/components/ui/toast'
 import { useRouter } from 'next/navigation'
@@ -20,7 +20,7 @@ import { useParams } from 'next/navigation'
 export default function Logout() {
   type InputProps = z.infer<typeof PasswordResetSchema>
   const { toast } = useToast()
-  const { loading, setLoading } = useApp()
+  const { loading, setLoading } = useAppStore()
   const router = useRouter()
   const params = useParams()
 
@@ -65,7 +65,9 @@ export default function Logout() {
       <CardHeader>
         <CardTitle>Reset Password</CardTitle>
       </CardHeader>
-      <CardDescription>Put a password that you can easily remember, make sure that you don&apos;t use your former password</CardDescription>
+      <CardDescription>
+        Put a password that you can easily remember, make sure that you don&apos;t use your former password
+      </CardDescription>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">

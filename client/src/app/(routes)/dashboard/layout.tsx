@@ -5,7 +5,7 @@ import Footer from '../../components/layout/footer'
 import { ThemeProvider } from '../../components/theme-provider'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useApp } from '@/app/context/app-context'
+import { useUserStore } from '@/app/store'
 import { storage } from '@/app/services/storage'
 import { USER_STORAGE_KEY } from '@/app/constants'
 
@@ -14,13 +14,17 @@ interface Props {
 }
 
 export default function DashBoardLayout({ children }: Props) {
-  const { user, setUser } = useApp()
+  const { user, setUser } = useUserStore()
   const router = useRouter()
 
   // checks if there is a user before the dom is painted
   useEffect(() => {
     const storedUser = storage.get(USER_STORAGE_KEY)
-    storedUser !== null ? setUser(storedUser) : user !== null ? storage.set(USER_STORAGE_KEY, user) : router.push('/signup')
+    storedUser !== null
+      ? setUser(storedUser)
+      : user !== null
+        ? storage.set(USER_STORAGE_KEY, user)
+        : router.push('/signup')
   }, [])
 
   return (

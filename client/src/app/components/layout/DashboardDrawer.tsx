@@ -6,29 +6,29 @@ import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Separator } from '../ui/separator'
-import { useApp } from '../../context/app-context'
 import { generateAcronym } from '../../utils'
 import { components, otherComponents, anotherComponent } from './dashboard-drawer'
+import { useUserStore } from '@/app/store'
 
 export function DashboardDrawer() {
   const linkStyles = `w-full group inline-flex h-10 items-center justify-start space-x-3 rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`
   const pathname = usePathname()
-  const { user } = useApp()
+  const { user } = useUserStore((s) => s)
 
   return (
     <Sheet>
       <SheetTrigger>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn\.png" alt="@shadcn" />
-          <AvatarFallback>{generateAcronym(user?.user_name)}</AvatarFallback>
+          <AvatarImage src={user?.avatar} alt="@shadcn" />
+          <AvatarFallback>{generateAcronym(user?.user_name || '')}</AvatarFallback>
         </Avatar>
       </SheetTrigger>
       <SheetContent side="right">
         <SheetHeader>
           <SheetTitle className="flex space-x-2 items-center">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn\.png" alt="@shadcn" />
-              <AvatarFallback>{generateAcronym(user?.user_name)}</AvatarFallback>
+              <AvatarImage src={user?.avatar} alt="@shadcn" />
+              <AvatarFallback>{generateAcronym(user?.user_name || '')}</AvatarFallback>
             </Avatar>
             <p>{user?.user_name}</p>
           </SheetTitle>

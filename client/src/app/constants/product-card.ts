@@ -2,7 +2,7 @@ import { Listing } from '../types/listing'
 
 export const products: Listing[] = [
   {
-    id: '80da54f16700c7baf7170b4c5cb1abfc',
+    _id: '80da54f16700c7baf7170b4c5cb1abfc',
     name: 'Modern Room for Rent',
     image_list: [
       'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjZ8fGhvdXNlc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -15,8 +15,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Minimal',
+    house_type: 'classic',
+    quality: 'minimalist',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',
@@ -33,7 +33,7 @@ export const products: Listing[] = [
     status: '',
   },
   {
-    id: '593b54d2d82f4ec3bf963ed2cda806f7',
+    _id: '593b54d2d82f4ec3bf963ed2cda806f7',
     name: 'Modern Studio',
     image_list: [
       'https://plus.unsplash.com/premium_photo-1676637000073-5829b51b85ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGhvdXNlc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -46,8 +46,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Modern',
+    house_type: 'classic',
+    quality: 'modern',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',
@@ -64,7 +64,7 @@ export const products: Listing[] = [
     status: '',
   },
   {
-    id: 'd2e1cee42143d5e9edea8ae30f7aaa7b',
+    _id: 'd2e1cee42143d5e9edea8ae30f7aaa7b',
     name: 'Chambre a Louer',
     image_list: [
       'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGhvdXNlc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -77,8 +77,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Minimal',
+    house_type: 'classic',
+    quality: 'minimalist',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',
@@ -95,7 +95,7 @@ export const products: Listing[] = [
     status: '',
   },
   {
-    id: '11148ad87927cc5f969c7eecbed06a41',
+    _id: '11148ad87927cc5f969c7eecbed06a41',
     name: '04 Room Apartement',
     image_list: [
       'https://images.unsplash.com/photo-1555636222-cae831e670b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGhvdXNlc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -108,8 +108,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Minimal',
+    house_type: 'classic',
+    quality: 'minimalist',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',
@@ -126,7 +126,7 @@ export const products: Listing[] = [
     status: '',
   },
   {
-    id: '2ce82a4353598afaf5cde61e3ff781a',
+    _id: '2ce82a4353598afaf5cde61e3ff781a',
     name: 'Classy Room for Rent',
     image_list: [
       'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZXN0YXRlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
@@ -135,8 +135,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Minimal',
+    house_type: 'classic',
+    quality: 'minimalist',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',
@@ -153,7 +153,7 @@ export const products: Listing[] = [
     status: '',
   },
   {
-    id: '3a0fa6d82ca2eba9fd36351c0a1220a6',
+    _id: '3a0fa6d82ca2eba9fd36351c0a1220a6',
     name: 'Minimal Studio for Rent',
     image_list: [
       'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGVzdGF0ZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -162,8 +162,8 @@ export const products: Listing[] = [
     reviews: {},
     accomodation_count: 0,
     bed_count: 0,
-    house_type: 'Classic',
-    quality: 'Minimal',
+    house_type: 'classic',
+    quality: 'minimalist',
     country: 'cameroon',
     city: 'yaounde',
     region: 'Center',

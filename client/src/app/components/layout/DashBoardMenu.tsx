@@ -1,7 +1,12 @@
 'use client'
 import * as React from 'react'
 import Link from 'next/link'
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '../ui/navigation-menu'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from '../ui/navigation-menu'
 import { ModeToggle } from '../mode-toggle'
 import { DashboardDrawer } from './DashboardDrawer'
 import { DashboardLeftMenu } from './dashboard-left-drawer'
@@ -9,13 +14,13 @@ import { Button } from '../ui/button'
 import { Bell } from 'lucide-react'
 import { Search } from './search'
 import { usePathname } from 'next/navigation'
-import { useApp } from '../../context/app-context'
 import { components } from './dashboard-menubar'
+import { useUserStore } from '@/app/store'
 
 export function DashBoardMenu() {
   const urlRef = React.useRef<string>('')
   const pathname = usePathname()
-  const { user } = useApp()
+  const { user } = useUserStore()
 
   console.log(pathname)
 
@@ -65,7 +70,11 @@ export function DashBoardMenu() {
           <NavigationMenuItem className="list-none" key={title}>
             <Link href={href} legacyBehavior passHref>
               <NavigationMenuLink
-                className={pathname === href ? `${navigationMenuTriggerStyle()} border-b-2 border-yellow-500` : navigationMenuTriggerStyle()}
+                className={
+                  pathname === href
+                    ? `${navigationMenuTriggerStyle()} border-b-2 border-yellow-500`
+                    : navigationMenuTriggerStyle()
+                }
               >
                 {title}
               </NavigationMenuLink>

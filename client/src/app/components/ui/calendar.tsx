@@ -20,7 +20,10 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         caption: 'flex justify-center pt-1 relative items-center',
         caption_label: 'text-sm font-medium',
         nav: 'space-x-1 flex items-center',
-        nav_button: cn(buttonVariants({ variant: 'outline' }), 'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'),
+        nav_button: cn(
+          buttonVariants({ variant: 'outline' }),
+          'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+        ),
         nav_button_previous: 'absolute left-1',
         nav_button_next: 'absolute right-1',
         table: 'w-full border-collapse space-y-1',

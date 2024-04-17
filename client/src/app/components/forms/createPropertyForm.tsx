@@ -21,7 +21,7 @@ import { createListing } from '@/app/api/listing'
 import { storage } from '@/app/services/storage'
 import { toast } from '@/app/hooks/use-toast'
 import { ToastAction } from '@radix-ui/react-toast'
-import { useApp } from '@/app/context/app-context'
+import { useApp } from '@/app/store/appStore'
 
 const CreateProptertyForm = () => {
   type InputProps = z.infer<typeof createPropeterySchema>
@@ -103,7 +103,11 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Property Name:</FormLabel>
                             <FormControl>
-                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Enter Proprerty name" {...field} />
+                              <Input
+                                className="lg:w-[415px] sm:w-[320px]"
+                                placeholder="Enter Proprerty name"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -116,7 +120,11 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Property Address:</FormLabel>
                             <FormControl>
-                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Enter Proprerty address" {...field} />
+                              <Input
+                                className="lg:w-[415px] sm:w-[320px]"
+                                placeholder="Enter Proprerty address"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -206,7 +214,12 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Beds:</FormLabel>
                             <FormControl>
-                              <Input className=" lg:w-[415px] sm:w-[320px]" placeholder="Enter Number of Beds" {...field} type={'number'} />
+                              <Input
+                                className=" lg:w-[415px] sm:w-[320px]"
+                                placeholder="Enter Number of Beds"
+                                {...field}
+                                type={'number'}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -219,7 +232,12 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Rooms:</FormLabel>
                             <FormControl>
-                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Number of Rooms" {...field} type={'number'} />
+                              <Input
+                                className="lg:w-[415px] sm:w-[320px]"
+                                placeholder="Number of Rooms"
+                                {...field}
+                                type={'number'}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -232,7 +250,12 @@ const CreateProptertyForm = () => {
                           <FormItem>
                             <FormLabel>Number of Bathrooms:</FormLabel>
                             <FormControl>
-                              <Input className="lg:w-[415px] sm:w-[320px]" placeholder="Number of Bathrooms" {...field} type={'number'} />
+                              <Input
+                                className="lg:w-[415px] sm:w-[320px]"
+                                placeholder="Number of Bathrooms"
+                                {...field}
+                                type={'number'}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -336,7 +359,12 @@ const CreateProptertyForm = () => {
                           <FormItem className="ring-0">
                             <FormLabel>Price</FormLabel>
                             <FormControl>
-                              <Input type={'number'} className="lg:w-[415px] sm:w-[320px]" placeholder="Set Listing Price" {...field} />
+                              <Input
+                                type={'number'}
+                                className="lg:w-[415px] sm:w-[320px]"
+                                placeholder="Set Listing Price"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -348,13 +376,21 @@ const CreateProptertyForm = () => {
                     {formStep === 0 ? (
                       <></>
                     ) : (
-                      <Button className="flex items-center space-x-1" onClick={() => setFormStep((prev) => prev - 1)} type="button">
+                      <Button
+                        className="flex items-center space-x-1"
+                        onClick={() => setFormStep((prev) => prev - 1)}
+                        type="button"
+                      >
                         <Icons.ArrowLeft />
                         <span>Prev</span>
                       </Button>
                     )}
                     {formStep !== 5 ? (
-                      <Button className="flex items-center space-x-1" onClick={() => setFormStep((prev) => prev + 1)} type="button">
+                      <Button
+                        className="flex items-center space-x-1"
+                        onClick={() => setFormStep((prev) => prev + 1)}
+                        type="button"
+                      >
                         <span>Next</span>
                         <Icons.ArrowRight />
                       </Button>
